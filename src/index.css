@@ -1,8 +1,42 @@
 /* src/index.css */
-  @import "tailwindcss";
+@import "tailwindcss";
 
-  /* Otros estilos globales si los necesitas */
-  body {
-    margin: 0;
-    font-family: sans-serif;
+/* Custom Animations for Home Page */
+@layer utilities {
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+}
+
+/* Puedes ajustar los delays directamente en el JSX o definir más clases aquí */
+.delay-200 { animation-delay: 0.2s; }
+.delay-400 { animation-delay: 0.4s; }
+/* ... y así sucesivamente para otros delays */
+
+/* Otros estilos globales si los necesitas */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
