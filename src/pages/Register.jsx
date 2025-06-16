@@ -7,6 +7,8 @@ import axios from 'axios';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import MessageBox from '../components/MessageBox';
+// Asegúrate de que estos iconos estén instalados: npm install @heroicons/react
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'; 
 
 // Importa la imagen de fondo para el lado de la imagen (asegúrate de que esta ruta sea correcta)
 import registerImage from '../assets/6.jpg'; // Asegúrate de tener una imagen en esta ruta, por ejemplo, una foto de una clínica dental moderna o una sonrisa.
@@ -28,6 +30,10 @@ function Register() {
   const [error, setError] = useState('');
   const [passwordMismatchError, setPasswordMismatchError] = useState('');
 
+  // Nuevos estados para controlar la visibilidad de las contraseñas
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -41,6 +47,15 @@ function Register() {
       setError('');
       setPasswordMismatchError('');
     }
+  };
+
+  // Funciones para alternar la visibilidad de las contraseñas
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword((prev) => !prev);
   };
 
   const handleSubmit = async (e) => {
@@ -201,11 +216,12 @@ function Register() {
               placeholder="Ej. correo@example.com"
             />
 
+            {/* Campo de Contraseña con Toggle de Visibilidad */}
             <div className="relative">
               <Input
                 label="Contraseña"
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'} // Cambia el tipo según el estado
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -214,19 +230,44 @@ function Register() {
                 maxLength="20"
                 placeholder="Mínimo 6 caracteres"
               />
+              <button
+                type="button" // Importante: tipo "button" para que no envíe el formulario
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5" // Ajusta la posición del botón
+                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+                ) : (
+                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+                )}
+              </button>
             </div>
 
+            {/* Campo de Confirmar Contraseña con Toggle de Visibilidad */}
             <div className="relative">
               <Input
                 label="Confirmar Contraseña"
                 id="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'} // Cambia el tipo según el estado
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
                 placeholder="Confirma tu contraseña"
               />
+              <button
+                type="button" // Importante: tipo "button" para que no envíe el formulario
+                onClick={toggleConfirmPasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5" // Ajusta la posición del botón
+                aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              >
+                {showConfirmPassword ? (
+                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+                ) : (
+                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+                )}
+              </button>
             </div>
 
             <Input
