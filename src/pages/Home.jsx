@@ -34,10 +34,10 @@ function Home() {
     };
 
     return (
-        <div className="bg-background-light min-h-screen"> {/* Usando tu nuevo color de fondo claro */}
+        <div className="bg-background-light min-h-screen">
             {/* Hero Section */}
             <motion.section
-                className="relative bg-gradient-to-r from-primary to-secondary text-white py-20 md:py-32 flex items-center justify-center overflow-hidden" /* Degradado con tu azul principal y secundario */
+                className="relative bg-gradient-to-r from-primary to-secondary text-white py-20 md:py-32 flex items-center justify-center overflow-hidden"
                 style={{ minHeight: 'calc(100vh - 64px)' }}
                 initial="hidden"
                 animate="visible"
@@ -45,9 +45,6 @@ function Home() {
             >
                 {/* Fondo con formas sutiles para un toque profesional - Color de fondo SVG */}
                 <div className="absolute inset-0 z-0 opacity-10">
-                    {/* El 'fill' del SVG usará 'currentColor', que hereda el color del texto del padre si no se especifica.
-                        Dado que el padre tiene 'text-white', la forma será blanca y semitransparente.
-                        Si quieres que el SVG tenga otro color de tu paleta, añade una clase como 'text-primary' al div del SVG. */}
                     <svg className="w-full h-full" fill="currentColor" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0,160L48,176C96,192,192,224,288,208C384,192,480,128,576,122.7C672,117,768,171,864,181.3C960,192,1056,155,1152,149.3C1248,144,1344,171,1392,184L1440,192L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
                     </svg>
@@ -73,7 +70,7 @@ function Home() {
                     >
                         <Link
                             to="/contact"
-                            className="inline-block bg-white text-primary font-bold py-3 px-8 rounded-full shadow-xl hover:bg-background-light hover:scale-105 transition duration-300 ease-in-out text-lg" /* Botón con tu azul principal */
+                            className="inline-block bg-white text-primary font-bold py-3 px-8 rounded-full shadow-xl hover:bg-background-light hover:scale-105 transition duration-300 ease-in-out text-lg"
                         >
                             Agenda Tu Cita Hoy
                         </Link>
@@ -82,19 +79,19 @@ function Home() {
             </motion.section>
 
             {/* Sección del Carrusel - Nuevo */}
-            <section className="py-16 bg-white">
+            <section className="py-16 bg-white"> {/* Fondo blanco para resaltar el carrusel */}
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-4xl font-extrabold text-text-dark mb-12"> {/* Título con tu gris oscuro */}
+                    <h2 className="text-4xl font-extrabold text-text-dark mb-12">
                         Nuestros Valores en Imágenes
                     </h2>
-                    <Carousel /> {/* Aquí se inserta el carrusel */}
+                    <Carousel />
                 </div>
             </section>
 
             {/* Servicios Destacados Section */}
-            <section className="py-20 bg-white shadow-inner"> {/* Fondo blanco para contraste */}
+            <section className="py-20 bg-background-light shadow-inner"> {/* Fondo con tu gris claro */}
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-4xl font-extrabold text-text-dark mb-12"> {/* Título con tu gris oscuro */}
+                    <h2 className="text-4xl font-extrabold text-text-dark mb-12">
                         Nuestros Servicios Principales
                     </h2>
                     <motion.div
@@ -106,19 +103,19 @@ function Home() {
                     >
                         {/* Tarjeta de Servicio 1 */}
                         <motion.div
-                            className="bg-background-light p-8 rounded-lg shadow-md" /* Fondo de tarjeta claro */
+                            className="bg-white p-8 rounded-lg shadow-md" /* Fondo de tarjeta blanco para contraste */
                             variants={cardVariants}
                             whileHover="hover"
                         >
                             <div className="text-primary text-5xl mb-4">🦷</div> {/* Icono con tu azul principal */}
-                            <h3 className="text-text-dark text-2xl font-semibold mb-3">Odontología General</h3> {/* Título de tarjeta con gris oscuro */}
-                            <p className="text-gray-600 leading-relaxed"> {/* Puedes dejar gray-600 o cambiar a 'text-text-dark' si quieres más consistencia */}
+                            <h3 className="text-text-dark text-2xl font-semibold mb-3">Odontología General</h3>
+                            <p className="text-gray-600 leading-relaxed">
                                 Chequeos regulares, limpiezas, empastes y tratamientos preventivos para mantener tu salud bucal.
                             </p>
                         </motion.div>
                         {/* Tarjeta de Servicio 2 */}
                         <motion.div
-                            className="bg-background-light p-8 rounded-lg shadow-md"
+                            className="bg-white p-8 rounded-lg shadow-md"
                             variants={cardVariants}
                             whileHover="hover"
                         >
@@ -130,7 +127,7 @@ function Home() {
                         </motion.div>
                         {/* Tarjeta de Servicio 3 */}
                         <motion.div
-                            className="bg-background-light p-8 rounded-lg shadow-md"
+                            className="bg-white p-8 rounded-lg shadow-md"
                             variants={cardVariants}
                             whileHover="hover"
                         >
@@ -143,7 +140,7 @@ function Home() {
                     </motion.div>
                     <Link
                         to="/services"
-                        className="inline-block mt-12 bg-accent hover:bg-primary text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105" /* Botón CTA con tu verde de acento */
+                        className="inline-block mt-12 bg-accent hover:bg-primary text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105" /* Botón CTA con tu rosa/magenta, hover a tu azul principal */
                     >
                         Ver Todos los Servicios
                     </Link>
@@ -151,9 +148,9 @@ function Home() {
             </section>
 
             {/* ¿Por Qué Elegirnos? Section */}
-            <section className="py-20 bg-background-light"> {/* Fondo con tu color claro */}
+            <section className="py-20 bg-white"> {/* Fondo blanco para mayor contraste */}
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-4xl font-extrabold text-text-dark mb-12"> {/* Título con tu gris oscuro */}
+                    <h2 className="text-4xl font-extrabold text-text-dark mb-12">
                         ¿Por Qué Elegirnos?
                     </h2>
                     <motion.div
@@ -164,22 +161,22 @@ function Home() {
                         variants={containerVariants}
                     >
                         {/* Cards de razones */}
-                        <motion.div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover"> {/* Fondo de tarjeta blanco */}
-                            <div className="text-primary text-4xl mb-4">👨‍⚕️</div> {/* Icono con tu azul principal */}
+                        <motion.div className="bg-background-light p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover"> {/* Fondo de tarjeta gris claro */}
+                            <div className="text-primary text-4xl mb-4">👨‍⚕️</div>
                             <h3 className="text-text-dark text-xl font-semibold mb-2">Profesionales Expertos</h3>
                             <p className="text-gray-600 text-sm">Equipo altamente cualificado y en constante formación.</p>
                         </motion.div>
-                        <motion.div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover">
+                        <motion.div className="bg-background-light p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover">
                             <div className="text-primary text-4xl mb-4">💡</div>
                             <h3 className="text-text-dark text-xl font-semibold mb-2">Tecnología de Vanguardia</h3>
                             <p className="text-gray-600 text-sm">Equipos modernos para diagnósticos precisos y tratamientos eficaces.</p>
                         </motion.div>
-                        <motion.div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover">
+                        <motion.div className="bg-background-light p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover">
                             <div className="text-primary text-4xl mb-4">😊</div>
                             <h3 className="text-text-dark text-xl font-semibold mb-2">Atención Personalizada</h3>
                             <p className="text-gray-600 text-sm">Un trato cercano y empático para cada paciente.</p>
                         </motion.div>
-                        <motion.div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover">
+                        <motion.div className="bg-background-light p-6 rounded-lg shadow-md flex flex-col items-center" variants={cardVariants} whileHover="hover">
                             <div className="text-primary text-4xl mb-4">🏆</div>
                             <h3 className="text-text-dark text-xl font-semibold mb-2">Resultados Garantizados</h3>
                             <p className="text-gray-600 text-sm">Comprometidos con tu salud y la belleza de tu sonrisa.</p>
@@ -189,11 +186,11 @@ function Home() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-primary text-white py-10 mt-20"> {/* Fondo con tu azul principal */}
+            <footer className="bg-primary text-white py-10 mt-20">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-sm">&copy; {new Date().getFullYear()} Clínica Odontológica. Todos los derechos reservados.</p>
+                    <p className="text-sm">&copy; {new Date().getFullYear()} Odontologic. Todos los derechos reservados.</p>
                     <div className="flex justify-center space-x-4 mt-4">
-                        <Link to="/privacy" className="text-gray-300 hover:text-white transition duration-300">Política de Privacidad</Link> {/* Enlace con gris claro, hover a blanco */}
+                        <Link to="/privacy" className="text-gray-300 hover:text-white transition duration-300">Política de Privacidad</Link>
                         <Link to="/terms" className="text-gray-300 hover:text-white transition duration-300">Términos de Servicio</Link>
                     </div>
                 </div>

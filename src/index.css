@@ -3,9 +3,9 @@
 
 @theme {
   /* Define tus colores como variables CSS */
-  --color-primary: #2C7DA0;        /* Azul principal */
-  --color-secondary: #84D2F6;      /* Azul claro/aguamarina */
-  --color-accent: #4CAF50;         /* Verde de acento/CTA */
+  --color-primary: #005F9E;        /* Azul principal */
+  --color-secondary: #4AA8E2;      /* Azul claro/aguamarina */
+  --color-accent: #D72F8B;         /* Verde de acento/CTA */
   --color-text-dark: #333333;      /* Gris oscuro para texto */
   --color-background-light: #F8F8F8; /* Gris muy claro para fondos */
    --color-primary-darker: #256E8F; /* Este es un 10% más oscuro que #2C7DA0 */

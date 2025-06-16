@@ -1,9 +1,12 @@
 // src/components/Navbar.jsx
 import React, { useState } from 'react';
-// Importa NavLink en lugar de Link
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { SparklesIcon, UserCircleIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline'; // Asegúrate de tener los iconos importados
+// Importa iconos de Heroicons (asegúrate de tenerlos instalados: npm install @heroicons/react)
+import { SparklesIcon, UserCircleIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
+// Si quieres un icono de diente más específico, podrías buscar en otras librerías o usar un SVG custom.
+// Por ejemplo, de @heroicons/react/24/solid podrías usar AcademicCapIcon para algo que parezca una muela o una corona, o un icono más genérico de "Health" o "Medical".
+// Por ahora, SparklesIcon sigue siendo una buena opción para "Sonrisa Radiante".
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,7 +17,7 @@ function Navbar() {
   };
 
   const linkVariants = {
-    hover: { scale: 1.1, color: 'var(--color-secondary)' },
+    hover: { scale: 1.1, color: 'var(--color-secondary)' }, // Texto de enlace a azul claro en hover
     tap: { scale: 0.95 },
   };
 
@@ -28,54 +31,50 @@ function Navbar() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     alert('Sesión cerrada (simulado)');
+    // Puedes también redirigir al usuario: navigate('/');
   };
 
-  // Función para obtener las clases de NavLink
-  // isActive es una propiedad proporcionada por NavLink
   const getNavLinkClasses = ({ isActive }) => {
-    // Clases base para todos los enlaces
     const baseClasses = "px-3 py-2 rounded-md text-sm font-medium transition duration-300 flex items-center space-x-1";
     // Clases específicas para el estado inactivo (default)
-    const inactiveClasses = "text-white hover:bg-primary-darker"; // Blanco sobre primary, hover más oscuro
+    const inactiveClasses = "text-white hover:bg-primary-darker"; // Texto blanco sobre primary, hover más oscuro de primary
 
-    // Clases para el estado activo
-    const activeClasses = "bg-secondary text-primary font-bold shadow-md"; // Tu azul secundario como fondo, texto azul primario
+    // Clases para el estado activo (fondo secundario, texto primario)
+    const activeClasses = "bg-secondary text-primary font-bold shadow-md";
 
     return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
   };
 
-  // Función para obtener las clases del NavLink del logo (solo si el path es '/')
   const getLogoNavLinkClasses = ({ isActive }) => {
     const baseClasses = "text-white text-2xl font-bold hover:text-secondary transition duration-300 flex items-center space-x-2";
-    // Para el logo, si está activo (en home), no queremos que cambie radicalmente,
-    // solo mantener su estilo normal. El hover ya lo distingue.
+    // El logo en Home no cambia drásticamente al estar activo, solo el hover.
     return baseClasses;
   };
 
 
   return (
     <motion.nav
-      className="bg-primary p-4 shadow-lg"
+      className="bg-primary p-4 shadow-lg" // Fondo con tu nuevo azul principal
       initial="hidden"
       animate="visible"
       variants={navVariants}
     >
       <div className="container mx-auto flex justify-between items-center">
-        {/* Usamos NavLink para el logo también */}
         <NavLink
           to="/"
-          className={getLogoNavLinkClasses} // Usa la función de clases
+          className={getLogoNavLinkClasses}
         >
-          <SparklesIcon className="h-8 w-8 text-secondary" />
-          <span>Odontologic</span>
+          {/* Icono de Heroicons para el logo Odontologic */}
+          <SparklesIcon className="h-8 w-8 text-secondary" /> {/* Icono con tu azul secundario */}
+          <span>Odontologic</span> {/* Nombre de la marca */}
         </NavLink>
         <ul className="flex items-center space-x-6">
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
               <NavLink
                 to="/"
-                className={getNavLinkClasses} // Aplica las clases condicionales
-                end // Importante para que solo sea activo cuando la ruta es exactamente "/"
+                className={getNavLinkClasses}
+                end
               >
                 Home
               </NavLink>
@@ -149,14 +148,11 @@ function Navbar() {
                   whileHover="hover"
                   whileTap="tap"
                 >
-                  {/* El botón de Registro es un caso especial porque tiene un estilo de botón más prominente */}
-                  {/* Podríamos hacer una función getButtonNavLinkClasses si queremos que también cambie en activo */}
-                  {/* Por ahora, lo dejaremos como está para mantener su estilo de botón CTA */}
                   <NavLink
                     to="/register"
                     className={({ isActive }) =>
                         `bg-accent text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ${
-                            isActive ? 'bg-secondary text-primary' : 'hover:bg-primary' // Si activo, usa secondary y primary text
+                            isActive ? 'bg-secondary text-primary' : 'hover:bg-primary'
                         }`
                     }
                   >
