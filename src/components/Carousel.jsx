@@ -1,4 +1,3 @@
-// src/components/Carousel.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import image1 from '../assets/1.jpg';
@@ -12,7 +11,6 @@ const images = [
     image2,
     image3,
     image4,
-
 ];
 
 const Carousel = () => {
@@ -20,126 +18,162 @@ const Carousel = () => {
     const [width, setWidth] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // useMotionValue para rastrear el valor X del arrastre
     const x = useMotionValue(0);
 
-    // useTransform para escalar y ajustar opacidad de las diapositivas inactivas
-    const scale = useTransform(x, (latestX) => {
-        // Escala para simular profundidad
-        const currentSlideOffset = latestX % width;
-        return 1 - (Math.abs(currentSlideOffset) / width) * 0.1; // Reduce escala en 10%
-    });
+    // Efecto de escala y opacidad para las diapositivas
+    // Calcula la escala y opacidad basándose en la distancia de cada slide al centro.
+    // Esto es un poco más complejo pero da un efecto mucho más cool.
+    const getSlideStyle = (index) => {
+        // Distancia actual del arrastre desde el inicio (en píxeles)
+        const currentDragOffset = x.get();
+        // Ancho de una sola diapositiva
+        const slideWidth = carouselRef.current?.offsetWidth || 0;
 
-    const opacity = useTransform(x, (latestX) => {
-        // Opacidad para desvanecer diapositivas inactivas
-        const currentSlideOffset = latestX % width;
-        return 1 - (Math.abs(currentSlideOffset) / width) * 0.5; // Reduce opacidad en 50%
-    });
-
-    // Calcula el ancho desplazable total del carrusel
-    useEffect(() => {
-        if (carouselRef.current) {
-            setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
+        // Si slideWidth es 0, retornamos valores por defecto para evitar divisiones por cero
+        if (slideWidth === 0) {
+            return { scale: 1, opacity: 1 };
         }
-    }, []);
 
-    // Función para ir a la siguiente diapositiva
-    const goToNext = () => {
-        setCurrentIndex((prevIndex) => {
-            const nextIndex = (prevIndex + 1) % images.length;
-            x.set(-nextIndex * carouselRef.current.offsetWidth); // Ajusta la posición X
-            return nextIndex;
-        });
+        // Posición ideal de la diapositiva actual (cuando está centrada)
+        const targetXForIndex = -index * slideWidth;
+
+        // Diferencia entre la posición actual del carrusel y la posición ideal de esta diapositiva
+        const diff = Math.abs(currentDragOffset - targetXForIndex);
+
+        // Calcula un factor basado en la distancia. Cuanto más lejos, más pequeño el factor.
+        const distanceFactor = Math.min(1, diff / slideWidth);
+
+        // Escala: 1 si está centrada, se reduce a 0.85 cuando está más lejos
+        const scaleValue = 1 - (distanceFactor * 0.15); // Reduce en un 15%
+        // Opacidad: 1 si está centrada, se reduce a 0.6 cuando está más lejos
+        const opacityValue = 1 - (distanceFactor * 0.4); // Reduce en un 40%
+
+        return { scale: scaleValue, opacity: opacityValue };
     };
 
-    // Función para ir a la diapositiva anterior
-    const goToPrev = () => {
-        setCurrentIndex((prevIndex) => {
-            const nextIndex = (prevIndex - 1 + images.length) % images.length;
-            x.set(-nextIndex * carouselRef.current.offsetWidth); // Ajusta la posición X
-            return nextIndex;
-        });
-    };
 
-    // Función para ir a una diapositiva específica por su índice
-    const goToSlide = (index) => {
-        setCurrentIndex(index);
-        x.set(-index * carouselRef.current.offsetWidth); // Ajusta la posición X
-    };
-
-    // Opcional: Auto-play
     useEffect(() => {
-        const interval = setInterval(goToNext, 5000); // Cambia cada 5 segundos
+        const updateWidth = () => {
+            if (carouselRef.current) {
+                // Asegúrate de que `scrollWidth` considere todos los elementos hijos, no solo el visible.
+                // Ya que `flex-shrink-0` hace que cada imagen ocupe su propio ancho.
+                setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
+            }
+        };
+
+        updateWidth(); // Llama al inicio
+        window.addEventListener('resize', updateWidth); // Actualiza al redimensionar la ventana
+
+        return () => window.removeEventListener('resize', updateWidth);
+    }, [images]); // Dependencia de `images` para recalcular si cambian las imágenes
+
+    const goToSlide = (index) => {
+        if (carouselRef.current) {
+            const slideWidth = carouselRef.current.offsetWidth;
+            setCurrentIndex(index);
+            // Anima la posición X para un desplazamiento suave
+            x.set(-index * slideWidth, { transition: { type: "spring", stiffness: 200, damping: 30 } });
+        }
+    };
+
+    const goToNext = () => {
+        const nextIndex = (currentIndex + 1) % images.length;
+        goToSlide(nextIndex);
+    };
+
+    const goToPrev = () => {
+        const nextIndex = (currentIndex - 1 + images.length) % images.length;
+        goToSlide(nextIndex);
+    };
+
+    useEffect(() => {
+        const interval = setInterval(goToNext, 5000);
         return () => clearInterval(interval);
-    }, [currentIndex]); // Reinicia el intervalo cada vez que cambia la diapositiva
+    }, [currentIndex, images.length]); // Dependencia de `images.length` para reinicio si cambian las imágenes
 
     return (
-        <div className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-lg shadow-xl">
+        <div className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-lg shadow-2xl bg-gray-900"> {/* Fondo oscuro y sombra más pronunciada */}
             <motion.div
                 ref={carouselRef}
-                className="flex cursor-grab"
+                className="flex cursor-grab items-center" // Centra verticalmente las imágenes si no llenan el alto
                 whileTap={{ cursor: "grabbing" }}
-                drag="x" // Permite arrastrar solo en el eje X
-                dragConstraints={{ right: 0, left: -width }} // Limita el arrastre al ancho del carrusel
-                style={{ x }} // Conecta el valor de movimiento `x` al estilo CSS `transformX`
+                drag="x"
+                dragConstraints={{ right: 0, left: -width }}
+                style={{ x }}
                 onDragEnd={(event, info) => {
-                    // Lógica para "snap" a la diapositiva más cercana al soltar
                     const offset = info.offset.x;
                     const velocity = info.velocity.x;
                     const currentOffset = x.get();
                     const slideWidth = carouselRef.current.offsetWidth;
 
                     let targetIndex = currentIndex;
-                    if (velocity < -500) { // Deslizar rápido a la izquierda
+                    if (velocity < -500) {
                         targetIndex = Math.min(images.length - 1, currentIndex + 1);
-                    } else if (velocity > 500) { // Deslizar rápido a la derecha
+                    } else if (velocity > 500) {
                         targetIndex = Math.max(0, currentIndex - 1);
-                    } else { // Deslizar lento o soltar
+                    } else {
+                        // Calcula el índice basado en la posición actual del arrastre
                         targetIndex = Math.round(currentOffset / -slideWidth);
-                        targetIndex = Math.max(0, Math.min(images.length - 1, targetIndex)); // Asegura que el índice esté dentro de los límites
+                        targetIndex = Math.max(0, Math.min(images.length - 1, targetIndex));
                     }
-                    setCurrentIndex(targetIndex);
-                    x.set(-targetIndex * slideWidth, { transition: { type: "spring", stiffness: 200, damping: 30 } }); // Anima al snap
+                    goToSlide(targetIndex); // Usa la función goToSlide para animar el snap
                 }}
             >
-                {images.map((image, index) => (
-                    <motion.div
-                        key={index}
-                        className="flex-shrink-0 w-full h-[500px] flex items-center justify-center"
-                        style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-                    // Aplica transformaciones de escala y opacidad para los elementos no centrales
-                    // Nota: Esto es un poco más complejo si quieres que solo la *actual* sea 100% y las demás se escalen/desvanezcan
-                    // Para simplificar, podríamos aplicar esto si no queremos arrastre y solo click
-                    // o usar `x.onChange` para calcular el transform para cada slide individualmente.
-                    // Por ahora, solo el contenedor principal se arrastra.
-                    >
-                        {/* Contenido opcional dentro de cada diapositiva */}
-                    </motion.div>
-                ))}
+                {images.map((image, index) => {
+                    // Obtiene los estilos de escala y opacidad para cada slide individualmente
+                    const { scale: slideScale, opacity: slideOpacity } = getSlideStyle(index);
+
+                    return (
+                        <motion.div
+                            key={index}
+                            className="flex-shrink-0 w-full h-[500px] flex items-center justify-center relative"
+                            style={{
+                                backgroundImage: `url(${image})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                scale: slideScale, // Aplica la escala calculada
+                                opacity: slideOpacity, // Aplica la opacidad calculada
+                                borderRadius: '8px', // Bordes ligeramente redondeados
+                            }}
+                            transition={{ type: "spring", stiffness: 300, damping: 30 }} // Transición suave para escala y opacidad
+                        >
+                            {/* Overlay sutil para mejorar la legibilidad de texto si lo agregas */}
+                            <div className="absolute inset-0 bg-black opacity-20"></div>
+                            {/* Aquí podrías agregar títulos o descripciones para cada slide */}
+                            <div className="relative z-10 text-white text-3xl font-bold drop-shadow-lg">
+                                {/* Título de la imagen si lo tienes */}
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </motion.div>
 
             {/* Controles de navegación */}
             <button
                 onClick={goToPrev}
-                className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-colors z-10"
+                className="absolute top-1/2 left-6 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-4 rounded-full hover:bg-opacity-40 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75 z-10"
+                aria-label="Previous slide"
             >
-                &#10094; {/* Icono de flecha izquierda */}
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
             <button
                 onClick={goToNext}
-                className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition-colors z-10"
+                className="absolute top-1/2 right-6 transform -translate-y-1/2 bg-white bg-opacity-20 text-white p-4 rounded-full hover:bg-opacity-40 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75 z-10"
+                aria-label="Next slide"
             >
-                &#10095; {/* Icono de flecha derecha */}
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
 
             {/* Paginación (puntos) */}
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-10">
+            <div className="absolute bottom-6 left-0 right-0 flex justify-center space-x-3 z-10">
                 {images.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
-                        className={`w-3 h-3 rounded-full ${index === currentIndex ? 'bg-white' : 'bg-gray-400 bg-opacity-75'
-                            } transition-colors`}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ease-in-out ${
+                            index === currentIndex ? 'bg-white scale-125' : 'bg-gray-400 bg-opacity-75 hover:bg-opacity-100'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
                     ></button>
                 ))}
             </div>

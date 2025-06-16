@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Register from './pages/Register'; // <-- Importa el nuevo componente Register
+import Login from './pages/Login';
+import ActivateAccount from './pages/ActivateAccount'; // <-- Importa el componente de activación de cuenta
 
 // Puedes crear componentes de página simples para las otras rutas
 const About = () => (
@@ -18,18 +20,7 @@ const Contact = () => (
     Página de Contacto
   </div>
 );
-// Componente dummy para login, que necesitarás crear más adelante
-const Login = () => (
-  <div className="min-h-screen bg-background-light flex items-center justify-center p-4">
-    <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md text-center text-text-dark">
-      <h2 className="text-3xl font-bold mb-4">Página de Inicio de Sesión</h2>
-      <p>Aquí irá tu formulario de inicio de sesión.</p>
-      <Link to="/register" className="font-medium text-primary hover:text-secondary mt-4 block">
-        ¿No tienes cuenta? Regístrate
-      </Link>
-    </div>
-  </div>
-);
+
 // Componente dummy para dashboard
 const Dashboard = () => (
   <div className="min-h-screen bg-background-light flex items-center justify-center p-4">
@@ -55,6 +46,9 @@ function App() {
         <Route path="/register" element={<Register />} /> {/* <-- Nueva ruta para el registro */}
         <Route path="/login" element={<Login />} />       {/* <-- Ruta para login (dummy por ahora) */}
         <Route path="/dashboard" element={<Dashboard />} /> {/* <-- Ruta para dashboard (dummy por ahora) */}
+        <Route path="/activate-account" element={<ActivateAccount />} /> {/* Ruta para activar cuenta */}
+
+        {/* Puedes agregar más rutas según sea necesario */}
 
         {/* Ruta para 404 Not Found */}
         <Route path="*" element={

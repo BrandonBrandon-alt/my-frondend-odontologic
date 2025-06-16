@@ -1,211 +1,286 @@
-// src/pages/Register.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// Importa los nuevos subcomponentes
+import Input from '../components/Input';
+import Button from '../components/Button';
+import MessageBox from '../components/MessageBox';
+
+// Importa la imagen de fondo para el lado de la imagen (asegúrate de que esta ruta sea correcta)
+import registerImage from '../assets/6.jpg'; // Asegúrate de tener una imagen en esta ruta, por ejemplo, una foto de una clínica dental moderna o una sonrisa.
 
 function Register() {
-  // Estado para los campos del formulario
   const [formData, setFormData] = useState({
     name: '',
     idNumber: '',
     email: '',
     password: '',
+    confirmPassword: '',
     phone: '',
+    address: '',
+    birth_date: '',
   });
 
-  // Estado para mensajes de carga, éxito y error
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [passwordMismatchError, setPasswordMismatchError] = useState('');
 
-  const navigate = useNavigate(); // Hook para la navegación programática
+  const navigate = useNavigate();
 
-  // Manejador de cambios para los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    // Limpia mensajes de error/éxito al empezar a escribir
-    if (message || error) {
+    if (message || error || passwordMismatchError) {
       setMessage('');
       setError('');
+      setPasswordMismatchError('');
     }
   };
 
-  // Manejador de envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
     setError('');
+    setPasswordMismatchError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordMismatchError('Las contraseñas no coinciden.');
+      setLoading(false);
+      return;
+    }
+
+    const dataToSend = { ...formData };
+    delete dataToSend.confirmPassword;
 
     try {
-      const response = await fetch('http://localhost:3000/api/registro', { // Asegúrate de que esta URL coincida con la de tu backend
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      const response = await axios.post('http://localhost:3000/api/registro', dataToSend);
+
+      setMessage(response.data.message || 'Registro exitoso. Revisa tu correo para activar tu cuenta.');
+      setFormData({
+        name: '', idNumber: '', email: '', password: '', confirmPassword: '',
+        phone: '', address: '', birth_date: ''
       });
 
-      const data = await response.json();
+      // Redirigir a la página de activación
+      setTimeout(() => {
+        navigate('/activate-account', { state: { email: formData.email } }); // Pasa el email a la página de activación
+      }, 1500); // Pequeño retraso para que el mensaje sea visible
 
-      if (response.ok) { // Si la respuesta es exitosa (código 2xx)
-        setMessage(data.message || 'Registro exitoso. Revisa tu correo para activar tu cuenta.');
-        // Opcional: Limpiar el formulario o redirigir
-        setFormData({ name: '', idNumber: '', email: '', password: '', phone: '' });
-        // Redirigir al usuario a la página de login o a una de éxito
-        setTimeout(() => {
-          navigate('/login'); // Redirige a la página de login después de un breve retraso
-        }, 3000);
-      } else { // Si la respuesta es un error (código 4xx o 5xx)
-        setError(data.error || 'Ocurrió un error inesperado durante el registro.');
-      }
     } catch (err) {
-      console.error('Error de red o del servidor:', err);
-      setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
+      console.error('Error al registrar usuario:', err);
+
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error);
+      } else if (err.request) {
+        setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
+      } else {
+        setError('Ocurrió un error inesperado. Inténtalo de nuevo.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Variantes de Framer Motion para la animación del formulario
+  // Variantes de animación
+  const pageVariants = {
+    hidden: { opacity: 0, scale: 0.98 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
   const formVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.2 } },
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.3 } },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } },
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
   return (
-    <div className="min-h-screen bg-background-light flex items-center justify-center p-4">
-      <motion.div
-        className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md"
-        initial="hidden"
-        animate="visible"
-        variants={formVariants}
-      >
-        <h2 className="text-3xl font-bold text-text-dark text-center mb-6">Regístrate</h2>
-        <p className="text-center text-gray-600 mb-8">Crea tu cuenta para acceder a nuestros servicios.</p>
+    <motion.div
+      className="min-h-screen bg-background-light flex items-center justify-center p-4 md:p-8"
+      initial="hidden"
+      animate="visible"
+      variants={pageVariants}
+    >
+      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[700px]"> {/* Contenedor principal responsive */}
 
-        {/* Mensajes de feedback */}
-        {message && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span className="block sm:inline">{message}</span>
+        {/* Columna de la Imagen (visible en md y superior) */}
+        <motion.div
+          className="hidden md:block md:w-1/2 relative overflow-hidden"
+          variants={imageVariants}
+        >
+          <img
+            src={registerImage}
+            alt="Fondo de registro de Odontologic"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          {/* Capa de degradado sobre la imagen para mejorar la legibilidad y estética */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-primary/70 to-secondary/70"></div>
+          <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
+            <div className="text-white z-10">
+              <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 drop-shadow-lg">
+                Tu Sonrisa, Nuestra Prioridad
+              </h2>
+              <p className="text-lg lg:text-xl font-light opacity-90 leading-relaxed">
+                Regístrate y comienza tu viaje hacia una salud bucal excepcional con Odontologic.
+              </p>
+            </div>
           </div>
-        )}
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span className="block sm:inline">{error}</span>
-          </div>
-        )}
+        </motion.div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              Nombre Completo
-            </label>
-            <input
-              type="text"
+        {/* Columna del Formulario */}
+        <motion.div
+          className="w-full md:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
+          variants={formVariants}
+        >
+          <motion.h2
+            className="text-3xl md:text-4xl font-extrabold text-primary text-center mb-4"
+            variants={textVariants}
+          >
+            Crea tu Cuenta
+          </motion.h2>
+          <motion.p
+            className="text-base text-text-dark text-center mb-8"
+            variants={textVariants}
+            transition={{ delay: 0.1 }}
+          >
+            Regístrate en pocos pasos y accede a tu perfil de paciente.
+          </motion.p>
+
+          <MessageBox type="success" message={message} />
+          <MessageBox type="error" message={error} />
+          <MessageBox type="warning" message={passwordMismatchError} />
+
+          <form onSubmit={handleSubmit} className="space-y-5"> {/* Espaciado ajustado */}
+            <Input
+              label="Nombre Completo"
               id="name"
+              type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               placeholder="Ej. Juan Pérez"
             />
-          </div>
 
-          <div>
-            <label htmlFor="idNumber" className="block text-sm font-medium text-gray-700 mb-1">
-              Número de Identificación
-            </label>
-            <input
-              type="text"
+            <Input
+              label="Número de Identificación"
               id="idNumber"
+              type="text"
               name="idNumber"
               value={formData.idNumber}
               onChange={handleChange}
               required
-              pattern="^[0-9]{8,10}$" // Validación básica de HTML5
+              pattern="^[0-9]{8,10}$"
               title="Debe tener entre 8 y 10 dígitos numéricos"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               placeholder="Ej. 123456789"
             />
-          </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Correo Electrónico
-            </label>
-            <input
-              type="email"
+            <Input
+              label="Correo Electrónico"
               id="email"
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               placeholder="Ej. correo@example.com"
             />
-          </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              minLength="6" // Validación básica de HTML5
-              maxLength="20"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-              placeholder="Mínimo 6 caracteres"
-            />
-          </div>
+            <div className="relative">
+              <Input
+                label="Contraseña"
+                id="password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength="6"
+                maxLength="20"
+                placeholder="Mínimo 6 caracteres"
+              />
+            </div>
 
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-              Teléfono
-            </label>
-            <input
-              type="tel" // Usar "tel" para mejor experiencia móvil
+            <div className="relative">
+              <Input
+                label="Confirmar Contraseña"
+                id="confirmPassword"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                placeholder="Confirma tu contraseña"
+              />
+            </div>
+
+            <Input
+              label="Teléfono"
               id="phone"
+              type="tel"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
               required
-              pattern="^[0-9]{10}$" // Validación básica de HTML5
+              pattern="^[0-9]{10}$"
               title="Debe tener 10 dígitos numéricos"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               placeholder="Ej. 3001234567"
             />
-          </div>
 
-          <button
-            type="submit"
-            disabled={loading} // Deshabilita el botón durante la carga
-            className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white ${
-              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-accent hover:bg-primary' // Tus colores de acento y primary
-            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-300`}
-          >
-            {loading ? 'Registrando...' : 'Registrarse'}
-          </button>
-        </form>
+            <Input
+              label="Dirección"
+              id="address"
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              maxLength="255"
+              required
+              placeholder="Ej. Calle 123 #45-67"
+            />
 
-        <p className="mt-6 text-center text-gray-600 text-sm">
-          ¿Ya tienes una cuenta?{' '}
-          <Link to="/login" className="font-medium text-primary hover:text-secondary">
-            Inicia Sesión aquí
-          </Link>
-        </p>
-      </motion.div>
-    </div>
+            <Input
+              label="Fecha de Nacimiento"
+              id="birth_date"
+              type="date"
+              name="birth_date"
+              value={formData.birth_date}
+              onChange={handleChange}
+              required
+            />
+
+            <Button loading={loading} className="py-3 mt-6"> {/* Mayor margen superior */}
+              Registrarse
+            </Button>
+          </form>
+
+          <p className="mt-6 text-center text-text-dark text-sm"> {/* Tamaño de texto ajustado */}
+            ¿Ya tienes una cuenta?{' '}
+            <Link
+              to="/login"
+              className="font-semibold text-primary hover:text-secondary underline"
+            >
+              Inicia Sesión
+            </Link>
+          </p>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }
 
