@@ -1,42 +1,34 @@
 /* src/index.css */
 @import "tailwindcss";
 
-/* Custom Animations for Home Page */
-@layer utilities {
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-  }
+@theme {
+  /* Define tus colores como variables CSS */
+  --color-primary: #2C7DA0;        /* Azul principal */
+  --color-secondary: #84D2F6;      /* Azul claro/aguamarina */
+  --color-accent: #4CAF50;         /* Verde de acento/CTA */
+  --color-text-dark: #333333;      /* Gris oscuro para texto */
+  --color-background-light: #F8F8F8; /* Gris muy claro para fondos */
+   --color-primary-darker: #256E8F; /* Este es un 10% más oscuro que #2C7DA0 */
 }
 
-/* Puedes ajustar los delays directamente en el JSX o definir más clases aquí */
-.delay-200 { animation-delay: 0.2s; }
-.delay-400 { animation-delay: 0.4s; }
-/* ... y así sucesivamente para otros delays */
+/* Tus animaciones personalizadas */
+@layer utilities {
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+  .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+}
 
-/* Otros estilos globales si los necesitas */
+/* Fondo global de la aplicación */
 body {
   margin: 0;
   font-family: sans-serif;
+  background-color: var(--color-background-light);
+  color: var(--color-text-dark); /* Color de texto base */
 }
