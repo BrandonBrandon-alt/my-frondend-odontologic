@@ -1,0 +1,23 @@
+/* Definición de la animación de centelleo */
+@keyframes sparkle-fade {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* Aplicar la animación a los elementos de brillo con diferentes retrasos */
+.sparkle-1 {
+  animation: sparkle-fade 2s infinite ease-in-out;
+}
+.sparkle-2 {
+  animation: sparkle-fade 2s infinite ease-in-out 0.5s; /* Retraso de 0.5s */
+}
+.sparkle-3 {
+  animation: sparkle-fade 2s infinite ease-in-out 1s; /* Retraso de 1s */
+}
+.sparkle-4 {
+  animation: sparkle-fade 2s infinite ease-in-out 1.5s; /* Retraso de 1.5s */
+}
+.sparkle-5 {
+  animation: sparkle-fade 2s infinite ease-in-out 0.25s; /* Retraso adicional */
+}

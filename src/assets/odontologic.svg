@@ -1,0 +1,20 @@
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo principal del diente (Color Primario: azul, puedes ajustar) -->
+  <path d="M30 0C19.39 0 10.74 8.65 10.74 19.26C10.74 34.39 30 59.97 30 59.97C30 59.97 49.26 34.39 49.26 19.26C49.26 8.65 40.61 0 30 0Z" fill="#007bff"/>
+
+  <!-- Brillo superior (más claro, como luz reflejada) -->
+  <path d="M30 0C25.5 0 21.61 1.79 19.01 4.5C18.66 4.88 18.06 4.91 17.67 4.56L14.7 1.83C14.31 1.48 14.28 0.88 14.63 0.49C18.3 0.11 23.01 0 30 0Z" fill="white" fillOpacity="0.8"/>
+
+  <!-- Brillo lateral sutil (para dar volumen, puedes ajustar el color o la opacidad) -->
+  <path d="M49.26 19.26C49.26 14.51 47.74 10.05 44.97 6.42L42.5 9.07C44.75 11.96 46.26 15.52 46.26 19.26C46.26 21.43 45.7 23.51 44.66 25.43L48.24 23.36C49.07 21.84 49.26 20.59 49.26 19.26Z" fill="white" fillOpacity="0.3"/>
+
+  <!-- Acabado brillante o "esmalte" (color de acento: teal/pink, ajusta según tu secondary o accent) -->
+  <path d="M30 4.5C23.01 4.5 17.06 9.87 15.82 16.5C15.71 17.04 15.93 17.61 16.42 17.87L18.73 19.16C19.22 19.42 19.82 19.21 20.03 18.68C20.91 16.42 22.84 14.5 25.17 13.06C26.79 12.06 28.37 11.75 30 11.75C31.63 11.75 33.21 12.06 34.83 13.06C37.16 14.5 39.09 16.42 39.97 18.68C40.18 19.21 40.78 19.42 41.27 19.16L43.58 17.87C44.07 17.61 44.29 17.04 44.18 16.5C42.94 9.87 36.99 4.5 30 4.5Z" fill="#20c997"/> <!-- Puedes cambiar a #fd7e14 para un rosa/naranja o el color de tu 'accent' -->
+
+  <!-- Elementos de brillo adicionales (círculos pequeños que se animan) -->
+  <circle class="sparkle-1" cx="38" cy="10" r="1.5" fill="white" />
+  <circle class="sparkle-2" cx="45" cy="22" r="1.2" fill="white" />
+  <circle class="sparkle-3" cx="22" cy="15" r="1.3" fill="white" />
+  <circle class="sparkle-4" cx="30" cy="5" r="1.8" fill="white" />
+  <circle class="sparkle-5" cx="15" cy="25" r="1.0" fill="white" />
+</svg>
