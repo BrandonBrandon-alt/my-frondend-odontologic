@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 
-// import axios from 'axios'; // ¡Asegúrate de que esta línea esté comentada o eliminada!
-
 // No necesitas importar authService directamente aquí, porque usarás el contexto
 // import { authService } from '../services';
 
@@ -18,7 +16,7 @@ import MessageBox from '../components/MessageBox';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 // Importa la imagen de fondo para el lado del login
-import loginImage from '../assets/6.jpg';
+import loginImage from '../assets/Login.png';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -98,11 +96,26 @@ function Login() {
     }
   };
 
-  // Variantes de Framer Motion (sin cambios)
-  const pageVariants = { /* ... */ };
-  const formVariants = { /* ... */ };
-  const imageVariants = { /* ... */ };
-  const textVariants = { /* ... */ };
+  // Variantes de Framer Motion (COPIADAS DIRECTAMENTE DESDE EL COMPONENTE REGISTER)
+  const pageVariants = {
+    hidden: { opacity: 0, scale: 0.98 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.3 } },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } },
+  };
+
+  const textVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
 
   return (
     <motion.div
@@ -115,6 +128,8 @@ function Login() {
         {/* Columna de la Imagen */}
         <motion.div
           className="hidden md:block md:w-1/2 relative overflow-hidden"
+          initial="hidden" // Añadir initial aquí
+          animate="visible" // Añadir animate aquí
           variants={imageVariants}
         >
           <img
@@ -138,6 +153,8 @@ function Login() {
         {/* Columna del Formulario */}
         <motion.div
           className="w-full md:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
+          initial="hidden" // Añadir initial aquí
+          animate="visible" // Añadir animate aquí
           variants={formVariants}
         >
           <motion.h2

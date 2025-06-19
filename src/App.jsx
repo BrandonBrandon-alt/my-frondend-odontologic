@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import ActivateAccount from './pages/ActivateAccount';
+import SolicitarReset from './pages/SolicitarReset';
+import CambiarPasswordReset from './pages/CambiarPasswordReset';
 
 // Importa tu AuthProvider y el ProtectedRoute
 import { AuthProvider } from './context/AuthContext';
@@ -58,6 +60,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/activate-account" element={<ActivateAccount />} />
             <Route path="/unauthorized" element={<Unauthorized />} /> {/* <-- Ruta para acceso denegado */}
+            <Route path="/solicitar-reset" element={<SolicitarReset />} />
+            <Route path="/cambiar-password-reset" element={<CambiarPasswordReset />} />
 
             {/*
               Rutas Protegidas por Rol

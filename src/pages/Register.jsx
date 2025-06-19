@@ -16,7 +16,7 @@ import MessageBox from '../components/MessageBox';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'; 
 
 // Importa la imagen de fondo para el lado de la imagen (asegúrate de que esta ruta sea correcta)
-import registerImage from '../assets/6.jpg'; // Asegúrate de tener una imagen en esta ruta.
+import registerImage from '../assets/Registro.png'; // Asegúrate de tener una imagen en esta ruta.
 
 function Register() {
   const [formData, setFormData] = useState({
