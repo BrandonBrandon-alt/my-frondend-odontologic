@@ -1,7 +1,12 @@
+
 import React, { useState } from 'react';
+
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios'; // ¡ELIMINA ESTA LÍNEA! Ya no la necesitas.
+
+// Importa el servicio de autenticación
+import { authService } from '../services/';
 
 // Importa los nuevos subcomponentes
 import Input from '../components/Input';
@@ -11,12 +16,12 @@ import MessageBox from '../components/MessageBox';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'; 
 
 // Importa la imagen de fondo para el lado de la imagen (asegúrate de que esta ruta sea correcta)
-import registerImage from '../assets/6.jpg'; // Asegúrate de tener una imagen en esta ruta, por ejemplo, una foto de una clínica dental moderna o una sonrisa.
+import registerImage from '../assets/6.jpg'; // Asegúrate de tener una imagen en esta ruta.
 
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
-    idNumber: '',
+    idNumber: '', // Asegúrate de que el nombre de la clave coincida con el DTO del backend
     email: '',
     password: '',
     confirmPassword: '',
@@ -30,7 +35,6 @@ function Register() {
   const [error, setError] = useState('');
   const [passwordMismatchError, setPasswordMismatchError] = useState('');
 
-  // Nuevos estados para controlar la visibilidad de las contraseñas
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -42,6 +46,7 @@ function Register() {
       ...prevData,
       [name]: value,
     }));
+    // Limpiar mensajes al cambiar los campos
     if (message || error || passwordMismatchError) {
       setMessage('');
       setError('');
@@ -49,7 +54,6 @@ function Register() {
     }
   };
 
-  // Funciones para alternar la visibilidad de las contraseñas
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
@@ -71,13 +75,29 @@ function Register() {
       return;
     }
 
-    const dataToSend = { ...formData };
-    delete dataToSend.confirmPassword;
+    // Prepara los datos para enviar.
+    // El backend espera 'id_number' y 'birth_date' si son opcionales y no se envían.
+    // Aunque tu DTO en el backend usa `idNumber` (camelCase) y `birth_date` (snake_case),
+    // el código actual de tu DTO es `idNumber`, por lo que lo mantengo así para el frontend.
+    // Si tu DTO real en el backend espera `id_number`, deberías ajustar `idNumber` aquí a `id_number`.
+    const dataToSend = {
+      name: formData.name,
+      idNumber: formData.idNumber, // Asegúrate de que este nombre coincida con tu DTO de backend (registroDTO.js)
+      email: formData.email,
+      password: formData.password,
+      phone: formData.phone,
+      address: formData.address,
+      birth_date: formData.birth_date,
+    };
+    // No necesitamos `delete dataToSend.confirmPassword;` si construimos `dataToSend` explícitamente.
 
     try {
-      const response = await axios.post('http://localhost:3000/api/registro', dataToSend);
+      // ***** CAMBIO CLAVE AQUÍ: Usamos el servicio en lugar de axios directo *****
+      const response = await authService.register(dataToSend);
 
-      setMessage(response.data.message || 'Registro exitoso. Revisa tu correo para activar tu cuenta.');
+      setMessage(response.message || 'Registro exitoso. Revisa tu correo para activar tu cuenta.');
+      
+      // Limpiar el formulario
       setFormData({
         name: '', idNumber: '', email: '', password: '', confirmPassword: '',
         phone: '', address: '', birth_date: ''
@@ -85,17 +105,21 @@ function Register() {
 
       // Redirigir a la página de activación
       setTimeout(() => {
-        navigate('/activate-account', { state: { email: formData.email } }); // Pasa el email a la página de activación
-      }, 1500); // Pequeño retraso para que el mensaje sea visible
+        // Importante: `formData.email` aquí aún tiene el valor del formulario antes de limpiarlo
+        navigate('/activate-account', { state: { email: dataToSend.email } }); 
+      }, 1500);
 
     } catch (err) {
-      console.error('Error al registrar usuario:', err);
+      console.error('Error al registrar usuario en el componente:', err);
 
+      // El error que viene del servicio ya tiene el `response.data` si es un error de la API
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);
       } else if (err.request) {
+        // Error de red o servidor no responde
         setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
       } else {
+        // Otro tipo de error (ej. en la lógica del frontend antes de la llamada)
         setError('Ocurrió un error inesperado. Inténtalo de nuevo.');
       }
     } finally {
@@ -103,7 +127,7 @@ function Register() {
     }
   };
 
-  // Variantes de animación
+  // Variantes de animación (sin cambios, ya están bien)
   const pageVariants = {
     hidden: { opacity: 0, scale: 0.98 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
@@ -131,9 +155,9 @@ function Register() {
       animate="visible"
       variants={pageVariants}
     >
-      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[700px]"> {/* Contenedor principal responsive */}
+      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[700px]">
 
-        {/* Columna de la Imagen (visible en md y superior) */}
+        {/* Columna de la Imagen */}
         <motion.div
           className="hidden md:block md:w-1/2 relative overflow-hidden"
           variants={imageVariants}
@@ -143,7 +167,6 @@ function Register() {
             alt="Fondo de registro de Odontologic"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Capa de degradado sobre la imagen para mejorar la legibilidad y estética */}
           <div className="absolute inset-0 bg-gradient-to-tr from-primary/70 to-secondary/70"></div>
           <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
             <div className="text-white z-10">
@@ -180,7 +203,7 @@ function Register() {
           <MessageBox type="error" message={error} />
           <MessageBox type="warning" message={passwordMismatchError} />
 
-          <form onSubmit={handleSubmit} className="space-y-5"> {/* Espaciado ajustado */}
+          <form onSubmit={handleSubmit} className="space-y-5">
             <Input
               label="Nombre Completo"
               id="name"
@@ -216,12 +239,11 @@ function Register() {
               placeholder="Ej. correo@example.com"
             />
 
-            {/* Campo de Contraseña con Toggle de Visibilidad */}
             <div className="relative">
               <Input
                 label="Contraseña"
                 id="password"
-                type={showPassword ? 'text' : 'password'} // Cambia el tipo según el estado
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -231,9 +253,9 @@ function Register() {
                 placeholder="Mínimo 6 caracteres"
               />
               <button
-                type="button" // Importante: tipo "button" para que no envíe el formulario
+                type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5" // Ajusta la posición del botón
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
                 aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               >
                 {showPassword ? (
@@ -244,12 +266,11 @@ function Register() {
               </button>
             </div>
 
-            {/* Campo de Confirmar Contraseña con Toggle de Visibilidad */}
             <div className="relative">
               <Input
                 label="Confirmar Contraseña"
                 id="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'} // Cambia el tipo según el estado
+                type={showConfirmPassword ? 'text' : 'password'}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
@@ -257,9 +278,9 @@ function Register() {
                 placeholder="Confirma tu contraseña"
               />
               <button
-                type="button" // Importante: tipo "button" para que no envíe el formulario
+                type="button"
                 onClick={toggleConfirmPasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5" // Ajusta la posición del botón
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
                 aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               >
                 {showConfirmPassword ? (
@@ -305,12 +326,12 @@ function Register() {
               required
             />
 
-            <Button loading={loading} className="py-3 mt-6"> {/* Mayor margen superior */}
+            <Button loading={loading} className="py-3 mt-6">
               Registrarse
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-text-dark text-sm"> {/* Tamaño de texto ajustado */}
+          <p className="mt-6 text-center text-text-dark text-sm">
             ¿Ya tienes una cuenta?{' '}
             <Link
               to="/login"

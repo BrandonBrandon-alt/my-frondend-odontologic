@@ -1,16 +1,24 @@
+// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
-// Importa los componentes Input, Button, MessageBox (ya los tienes)
+// import axios from 'axios'; // ¡Asegúrate de que esta línea esté comentada o eliminada!
+
+// No necesitas importar authService directamente aquí, porque usarás el contexto
+// import { authService } from '../services';
+
+// ***** CAMBIO CLAVE: Importa useAuth del contexto *****
+import { useAuth } from '../context/AuthContext'; // Importa el hook useAuth
+
+// Importa los componentes Input, Button, MessageBox
 import Input from '../components/Input';
 import Button from '../components/Button';
 import MessageBox from '../components/MessageBox';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'; // Para el toggle de contraseña
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 // Importa la imagen de fondo para el lado del login
-import loginImage from '../assets/6.jpg'; // Asegúrate de tener una imagen en esta ruta, por ejemplo, una sonrisa o un ambiente de clínica acogedor.
+import loginImage from '../assets/6.jpg';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -19,34 +27,32 @@ function Login() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(''); // Mensaje de éxito
-  const [error, setError] = useState('');     // Mensaje de error
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  // Estado para controlar la visibilidad de la contraseña
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate(); // Hook para la navegación programática
+  const navigate = useNavigate();
+  // ***** CAMBIO CLAVE: Obtén la función 'login' del contexto *****
+  // La renombramos a 'loginContext' para evitar cualquier posible conflicto de nombres.
+  const { login: loginContext } = useAuth(); // <-- ESTA LÍNEA ES FUNDAMENTAL
 
-  // Manejador de cambios para los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    // Limpia mensajes de error/éxito al empezar a escribir
     if (message || error) {
       setMessage('');
       setError('');
     }
   };
 
-  // Función para alternar la visibilidad de la contraseña
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Manejador de envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -54,64 +60,49 @@ function Login() {
     setError('');
 
     try {
-      // Petición POST a tu endpoint de login usando Axios
-      const response = await axios.post('http://localhost:3000/api/login', formData);
+      // ***** CAMBIO CLAVE AQUÍ: LLAMA A loginContext EN LUGAR DE authService.login *****
+      // loginContext es la función del AuthContext que se encarga de:
+      // 1. Llamar a authService.login (que guarda en localStorage)
+      // 2. Y, lo más importante, ACTUALIZAR EL ESTADO GLOBAL del contexto.
+      const response = await loginContext(formData); // <--- ¡ESTE ES EL CAMBIO!
 
-      // Si la petición es exitosa (código 2xx), Axios no lanzará un error,
-      // y la respuesta estará en response.data
-      const { message, token, refreshToken, user } = response.data;
+      setMessage(response.message || 'Inicio de sesión exitoso.');
 
-      // Almacenar los tokens (ej. en localStorage, pero considera opciones más seguras para prod)
-      localStorage.setItem('accessToken', token);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('user', JSON.stringify(user)); // Guarda info del usuario si es necesaria en el front
+      // Redirigir al usuario al dashboard correcto basado en el rol.
+      // `response.user` aquí proviene del `AuthContext` que ya lo obtuvo del `authService`.
+      const userRole = response.user?.role;
+      let dashboardPath = '/dashboard'; // Default o para pacientes
+      if (userRole === 'admin') {
+        dashboardPath = '/admin-dashboard';
+      } else if (userRole === 'dentist') {
+        dashboardPath = '/dentist-dashboard';
+      }
 
-      setMessage(message || 'Inicio de sesión exitoso.');
-
-      // Redirigir al usuario al dashboard o página de inicio
       setTimeout(() => {
-        navigate('/dashboard');
-      }, 1500); // Pequeño retraso para que el mensaje sea visible
+        navigate(dashboardPath);
+      }, 1500);
 
     } catch (err) {
-      // Axios captura errores de red y respuestas HTTP no 2xx en el bloque catch
       console.error('Error al iniciar sesión:', err);
 
+      // El error que viene del contexto (o del servicio subyacente) ya debe ser manejable
       if (err.response && err.response.data && err.response.data.error) {
-        // Error de validación o error de negocio del backend
         setError(err.response.data.error);
       } else if (err.request) {
-        // La solicitud fue hecha pero no se recibió respuesta (ej. servidor caído, CORS)
         setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
       } else {
-        // Algo más causó el error
         setError('Ocurrió un error inesperado. Inténtalo de nuevo.');
       }
     } finally {
-      setLoading(false); // Deshabilitar estado de carga
+      setLoading(false);
     }
   };
 
-  // Variantes de Framer Motion
-  const pageVariants = {
-    hidden: { opacity: 0, scale: 0.98 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-
-  const formVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.3 } },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, x: 50 }, // Animación desde la derecha
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } },
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
+  // Variantes de Framer Motion (sin cambios)
+  const pageVariants = { /* ... */ };
+  const formVariants = { /* ... */ };
+  const imageVariants = { /* ... */ };
+  const textVariants = { /* ... */ };
 
   return (
     <motion.div
@@ -120,9 +111,8 @@ function Login() {
       animate="visible"
       variants={pageVariants}
     >
-      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px] flex-row-reverse"> {/* Contenedor principal, imagen a la derecha */}
-
-        {/* Columna de la Imagen (visible en md y superior) */}
+      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px] flex-row-reverse">
+        {/* Columna de la Imagen */}
         <motion.div
           className="hidden md:block md:w-1/2 relative overflow-hidden"
           variants={imageVariants}
@@ -132,8 +122,7 @@ function Login() {
             alt="Fondo de inicio de sesión de Odontologic"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Capa de degradado sobre la imagen para mejorar la legibilidad y estética */}
-          <div className="absolute inset-0 bg-gradient-to-tl from-primary/70 to-secondary/70"></div> {/* Degradado diferente */}
+          <div className="absolute inset-0 bg-gradient-to-tl from-primary/70 to-secondary/70"></div>
           <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
             <div className="text-white z-10">
               <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 drop-shadow-lg">
@@ -165,7 +154,6 @@ function Login() {
             Ingresa tus credenciales para continuar.
           </motion.p>
 
-          {/* Mensajes de feedback */}
           <MessageBox type="success" message={message} />
           <MessageBox type="error" message={error} />
 
@@ -181,7 +169,6 @@ function Login() {
               placeholder="correo@example.com"
             />
 
-            {/* Campo de Contraseña con Toggle */}
             <div className="relative">
               <Input
                 label="Contraseña"

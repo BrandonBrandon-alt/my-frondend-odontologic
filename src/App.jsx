@@ -2,14 +2,26 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Importa tus componentes de página
+// Importa tus componentes de página principales
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Register from './pages/Register'; // <-- Importa el nuevo componente Register
+import Register from './pages/Register';
 import Login from './pages/Login';
-import ActivateAccount from './pages/ActivateAccount'; // <-- Importa el componente de activación de cuenta
+import ActivateAccount from './pages/ActivateAccount';
 
-// Puedes crear componentes de página simples para las otras rutas
+// Importa tu AuthProvider y el ProtectedRoute
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/layouts/ProtectedRoute';
+
+// Importa las páginas de Dashboard específicas por rol
+import AdminDashboard from './pages/dashboards/AdminDashboard';
+import DentistDashboard from './pages/dashboards/DentistDashboard';
+import PatientDashboard from './pages/dashboards/PatientDashboard';
+
+// Importa la página de Unauthorized
+import Unauthorized from './pages/Unauthorized'; // <-- ¡IMPORTANTE!
+
+// Componentes simples (dummies) para rutas que aún no tienes completas
 const About = () => (
   <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-background-light text-text-dark text-3xl font-bold">
     Página de Acerca de
@@ -21,42 +33,67 @@ const Contact = () => (
   </div>
 );
 
-// Componente dummy para dashboard
-const Dashboard = () => (
-  <div className="min-h-screen bg-background-light flex items-center justify-center p-4">
-    <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md text-center text-text-dark">
-      <h2 className="text-3xl font-bold mb-4">Bienvenido a tu Dashboard</h2>
-      <p>Contenido del perfil de usuario.</p>
-    </div>
-  </div>
-);
-
+// Asegúrate de que tengas tus componentes de dashboard reales en estas rutas:
+// src/pages/dashboards/AdminDashboard.jsx
+// src/pages/dashboards/DentistDashboard.jsx
+// src/pages/dashboards/PatientDashboard.jsx
+// Si aún no los tienes, puedes poner un dummy temporalmente, pero la idea es que sean específicos.
 
 function App() {
   return (
     <BrowserRouter>
-      {/* El Navbar se renderiza fuera de Routes, para que esté siempre presente */}
-      <Navbar />
+      {/* AuthProvider envuelve toda la aplicación para que todos los componentes hijos
+          tengan acceso al estado de autenticación. */}
+      <AuthProvider>
+        <Navbar />
 
-      <Routes>
-        {/* Define tus rutas aquí */}
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/register" element={<Register />} /> {/* <-- Nueva ruta para el registro */}
-        <Route path="/login" element={<Login />} />       {/* <-- Ruta para login (dummy por ahora) */}
-        <Route path="/dashboard" element={<Dashboard />} /> {/* <-- Ruta para dashboard (dummy por ahora) */}
-        <Route path="/activate-account" element={<ActivateAccount />} /> {/* Ruta para activar cuenta */}
+        {/* El `main` con `flex-grow` es una buena práctica para diseños "sticky footer" */}
+        <main className="flex-grow">
+          <Routes>
+            {/* Rutas Públicas (accesibles por todos, logeados o no) */}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/activate-account" element={<ActivateAccount />} />
+            <Route path="/unauthorized" element={<Unauthorized />} /> {/* <-- Ruta para acceso denegado */}
 
-        {/* Puedes agregar más rutas según sea necesario */}
+            {/*
+              Rutas Protegidas por Rol
+              La ruta padre `Route element={<ProtectedRoute allowedRoles={...} />}`
+              actúa como un "guardia" para todas sus rutas anidadas.
+            */}
 
-        {/* Ruta para 404 Not Found */}
-        <Route path="*" element={
-          <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-red-100 text-red-700 text-4xl font-bold">
-            404 - Página no encontrada
-          </div>
-        } />
-      </Routes>
+            {/* Dashboard del Paciente (rol: 'user', también accesible por 'admin' si es deseable) */}
+            <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>
+              <Route path="/patient-dashboard" element={<PatientDashboard />} />
+              <Route path="/dashboard" element={<PatientDashboard />} /> {/* Ruta general para dashboard */}
+            </Route>
+
+            {/* Dashboard del Dentista (rol: 'dentist', también accesible por 'admin') */}
+            <Route element={<ProtectedRoute allowedRoles={['dentist', 'admin']} />}>
+              <Route path="/dentist-dashboard" element={<DentistDashboard />} />
+            </Route>
+
+            {/* Dashboard del Administrador (rol: 'admin' - ¡el más restrictivo!) */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+              <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            </Route>
+
+            {/* Ruta Catch-all para 404 Not Found */}
+            <Route path="*" element={
+              <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-red-100 text-red-700 text-4xl font-bold">
+                404 - Página no encontrada
+              </div>
+            } />
+          </Routes>
+        </main>
+
+        {/* Si tienes un Footer, también puede ir aquí, dentro del AuthProvider */}
+        {/* <Footer /> */}
+
+      </AuthProvider>
     </BrowserRouter>
   );
 }
