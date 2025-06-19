@@ -1,28 +1,59 @@
 // src/components/Navbar.jsx
-import React, { useState } from 'react'; // Solo necesitas useState para isMenuOpen
+import React, { useState, useRef, useEffect } from 'react'; // Añadí useRef y useEffect
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-// ICONOS: Asegúrate de que estos iconos existan en Heroicons si decides volver a usarlos.
-// Por ahora, con los emojis en los dashboards, esto no causará un error aquí directamente,
-// pero si alguno no existe y lo usas en el JSX, te dará error.
-import { UserCircleIcon, ArrowRightEndOnRectangleIcon, Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, PhoneIcon } from '@heroicons/react/24/outline';
+import {
+  UserCircleIcon,
+  ArrowRightEndOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
+  HomeIcon,
+  InformationCircleIcon,
+  PhoneIcon,
+  ChevronDownIcon // Icono para el desplegable
+} from '@heroicons/react/24/outline';
 
-// ***** CAMBIO CLAVE: Importa useAuth *****
 import { useAuth } from '../context/AuthContext'; // Importa el hook useAuth
 
 function Navbar() {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado solo para el menú móvil
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Nuevo estado para el desplegable
 
-  // ***** CAMBIO CLAVE: Obtén el estado y las funciones del contexto *****
-  // Ya no necesitas useEffect ni useState para isLoggedIn, userRole, userName
-  const { isLoggedIn, user, logout: logoutContext, loading } = useAuth(); // Renombramos logout para no chocar si hubiera otra variable
+  // Referencia para detectar clics fuera del desplegable
+  const dropdownRef = useRef(null);
 
-  // user.name y user.role se obtendrán directamente del objeto 'user' del contexto
+  const { isLoggedIn, user, logout: logoutContext, loading } = useAuth();
   const userName = user?.name;
   const userRole = user?.role;
 
-  // Variantes de Framer Motion (sin cambios, asumiendo que ya las tienes o son estas)
+  // Efecto para cerrar el desplegable al hacer clic fuera
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+
+  // Mapeo de roles a emojis
+  const roleEmojis = {
+    'admin': '👑',    // Corona para administrador
+    'dentist': '🦷',  // Diente para dentista
+    'user': '👤',     // Persona para usuario (paciente)
+    'unknown': '❓'    // Para roles desconocidos
+  };
+
+  const getRoleEmoji = (role) => {
+    return roleEmojis[role] || roleEmojis['unknown'];
+  };
+
+  // Variantes de Framer Motion
   const navVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.1 } },
@@ -46,15 +77,22 @@ function Navbar() {
     exit: { x: "100%", transition: { type: "tween", duration: 0.3, ease: "easeIn" } },
   };
 
-  // Función para cerrar sesión (llama a la función del contexto)
+  // Variantes para el desplegable (Framer Motion)
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: -10, scale: 0.95, transition: { duration: 0.15 } },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.2 } },
+  };
+
+
   const handleLogout = async () => {
     try {
-      await logoutContext(); // Llama a la función de logout del contexto
+      await logoutContext();
       navigate('/login');
+      setIsDropdownOpen(false); // Cerrar desplegable al cerrar sesión
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      // Aún si hay error en el backend, limpia el estado local para consistencia
-      navigate('/login'); // Redirige de todas formas
+      navigate('/login');
+      setIsDropdownOpen(false); // Cerrar desplegable al cerrar sesión
     }
   };
 
@@ -70,46 +108,21 @@ function Navbar() {
     return baseClasses;
   };
 
-  // Función para determinar el enlace del dashboard según el rol
   const getDashboardPath = (role) => {
     switch (role) {
       case 'admin':
         return '/admin-dashboard';
       case 'dentist':
         return '/dentist-dashboard';
-      case 'user': // Paciente
+      case 'user':
       default:
-        return '/patient-dashboard'; // O simplemente '/dashboard'
+        return '/patient-dashboard';
     }
   };
 
-  // Función auxiliar para renderizar los enlaces del Dashboard y Perfil
-  const renderDashboardLinks = (role) => {
-    const dashboardPath = getDashboardPath(role);
-    return (
-      <>
-        <li>
-          <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-            <NavLink
-              to={dashboardPath}
-              className={getNavLinkClasses}
-            >
-              <UserCircleIcon className="h-5 w-5 mr-1" />
-              <span>{userName || 'Mi Perfil'}</span>
-            </NavLink>
-          </motion.div>
-        </li>
-      </>
-    );
-  };
-
-  // ***** CAMBIO CLAVE: Manejo de estado de carga inicial del contexto *****
-  // Esto es para evitar que el Navbar parpadee o muestre información incorrecta
-  // mientras el AuthContext está inicializando el estado desde localStorage.
+  // Renderizado condicional del Navbar mientras carga el estado de autenticación
   if (loading) {
-    // Puedes mostrar un spinner o un estado vacío temporal.
-    // Para el Navbar, simplemente no renderizar nada o un placeholder simple es común.
-    return null; // No muestra el Navbar hasta que el estado de autenticación se haya cargado.
+    return null;
   }
 
   return (
@@ -136,7 +149,7 @@ function Navbar() {
           <span className="leading-none">Odontologic</span>
         </NavLink>
 
-        {/* Botón de Menú Hamburguesa */}
+        {/* Botón de Menú Hamburguesa (para móvil) */}
         <div className="md:hidden">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-2 focus:outline-none">
             {isMenuOpen ? <XMarkIcon className="h-8 w-8" /> : <Bars3Icon className="h-8 w-8" />}
@@ -164,20 +177,51 @@ function Navbar() {
           {isLoggedIn ? (
             <>
               <li className="text-gray-400">|</li>
-              {renderDashboardLinks(userRole)}
-              <li className="text-white text-sm font-semibold mr-2 ml-4">
-                {userName ? `${userName}` : 'Cargando...'} ({userRole ? userRole.toUpperCase() : 'ROL'})
-              </li>
-              <li>
-                <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-                  <button
-                    onClick={handleLogout}
-                    className="bg-white text-primary font-semibold py-2 px-4 rounded-full shadow-md transition duration-300 hover:bg-gray-100 whitespace-nowrap flex items-center space-x-1"
-                  >
-                    <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-1" />
-                    <span>Cerrar Sesión</span>
-                  </button>
-                </motion.div>
+              {/* Desplegable de Perfil y Cerrar Sesión */}
+              <li className="relative" ref={dropdownRef}>
+                <motion.button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center text-white px-4 py-2 rounded-full hover:bg-white/10 transition duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <UserCircleIcon className="h-6 w-6 mr-2" />
+                  <span className="font-semibold text-lg">{userName || 'Mi Perfil'}</span>
+                  {userRole && ( // Solo muestra el rol si existe
+                    <span className="text-sm text-gray-300 ml-2">
+                      {getRoleEmoji(userRole)} {userRole.toUpperCase()} {/* Combina emoji y texto del rol */}
+                    </span>
+                  )}
+                  <ChevronDownIcon className={`h-5 w-5 ml-2 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </motion.button>
+
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <motion.div
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 overflow-hidden"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={dropdownVariants}
+                    >
+                      <NavLink
+                        to={getDashboardPath(userRole)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <UserCircleIcon className="h-5 w-5" />
+                        <span>Mi Perfil</span>
+                      </NavLink>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                      >
+                        <ArrowRightEndOnRectangleIcon className="h-5 w-5" />
+                        <span>Cerrar Sesión</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </li>
             </>
           ) : (
@@ -202,7 +246,7 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* Menú Móvil */}
+      {/* Menú Móvil (No cambia, sigue siendo una lista completa) */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -248,10 +292,10 @@ function Navbar() {
 
               {isLoggedIn ? (
                 <>
+                  {/* Aquí puedes decidir si también quieres un desplegable en móvil o simplemente los enlaces directos */}
                   <li className="text-white text-2xl font-semibold mb-4">
-                    {userName ? `${userName}` : 'Cargando...'} ({userRole ? userRole.toUpperCase() : 'ROL'})
+                    {userName ? `${userName}` : 'Cargando...'} ({userRole ? `${getRoleEmoji(userRole)} ${userRole.toUpperCase()}` : 'ROL'})
                   </li>
-                  {/* Enlaces del Dashboard/Perfil en móvil */}
                   <li>
                     <NavLink
                       to={getDashboardPath(userRole)}
