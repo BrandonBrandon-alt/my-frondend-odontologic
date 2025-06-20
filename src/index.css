@@ -2,12 +2,12 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #7C4DFF;         /* Violeta */
-  --color-primary-darker: #4A148C;  /* Violeta oscuro */
-  --color-secondary: #B388FF;       /* Lavanda claro */
-  --color-accent: #FF4081;          /* Rosa acento */
-  --color-background-light: #F3E5F5;/* Lila muy claro */
-  --color-text-dark: #311B92; 
+ --color-primary: #009688;         /* Verde azulado */
+  --color-primary-darker: #004D40;  /* Verde oscuro */
+  --color-secondary: #B2DFDB;       /* Verde agua claro */
+  --color-accent: #00B8D4;          /* Celeste acento */
+  --color-background-light: #F5F5F5;/* Gris muy claro */
+  --color-text-dark: #263238;       /* Gris azulado oscuro */
 }
 
 /* Tus animaciones personalizadas */
