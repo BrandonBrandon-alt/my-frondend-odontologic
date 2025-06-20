@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, KeyIcon } from '@heroicons/react/24/outline';
 
 // Importa los componentes Input, Button, Alert
 import { Input, Button, Alert } from '../components';
@@ -192,6 +193,7 @@ function ActivateAccount() {
               onChange={handleChange}
               required
               placeholder="tu_correo@example.com"
+              startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Input
@@ -203,9 +205,9 @@ function ActivateAccount() {
               onChange={handleChange}
               required
               placeholder="Ingresa tu código aquí"
-              // CÓDIGO CORREGIDO: El patrón ahora espera 16 caracteres hexadecimales (a-f, A-F, 0-9)
               pattern="^[0-9a-fA-F]{16}$"
               title="El código debe ser de 16 caracteres hexadecimales."
+              startIcon={<KeyIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">

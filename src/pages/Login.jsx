@@ -197,7 +197,7 @@ function Login() {
               onChange={handleChange}
               required
               placeholder="correo@example.com"
-              icon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} // Añade icono de sobre
+              startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} // Añade icono de sobre
             />
 
             {/* Input de Contraseña Simplificado */}
@@ -212,13 +212,21 @@ function Login() {
               minLength="6"
               maxLength="20"
               placeholder="Tu contraseña"
-              icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} // Añade icono de candado
-              actionIcon={ // Prop para el icono de acción (ojo)
-                showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
-                )
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} // Añade icono de candado
+              endIcon={
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
               }
             />
 

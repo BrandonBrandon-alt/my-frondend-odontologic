@@ -5,7 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService'; // Importa el servicio de autenticación
 
 import { Input, Button, Alert } from '../components';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, KeyIcon } from '@heroicons/react/24/outline';
 
 import resetImage from '../assets/6.jpg'; // Usar la misma imagen o una diferente si tienes
 
@@ -218,6 +218,7 @@ function CambiarPasswordReset() {
                 value={formData.email}
                 readOnly
                 className="bg-gray-100 cursor-not-allowed"
+                startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} 
               />
             )}
 
@@ -230,59 +231,64 @@ function CambiarPasswordReset() {
               onChange={handleChange}
               required
               placeholder="Ej. d5f7c3b1"
+              startIcon={<KeyIcon className="h-5 w-5 text-gray-400" />} 
             />
 
-            <div className="relative">
-              <Input
-                label="Nueva Contraseña"
-                id="newPassword"
-                type={showNewPassword ? 'text' : 'password'}
-                name="newPassword"
-                value={formData.newPassword}
-                onChange={handleChange}
-                required
-                minLength="6"
-                maxLength="20"
-                placeholder="Mínimo 6 caracteres"
-              />
-              <button
-                type="button"
-                onClick={toggleNewPasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
-                aria-label={showNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
-              >
-                {showNewPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                )}
-              </button>
-            </div>
+            <Input
+              label="Nueva Contraseña"
+              id="newPassword"
+              type={showNewPassword ? 'text' : 'password'}
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+              required
+              minLength="6"
+              maxLength="20"
+              placeholder="Mínimo 6 caracteres"
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              endIcon={
+                <button
+                  type="button"
+                  onClick={toggleNewPasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showNewPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              }
+            />
 
-            <div className="relative">
-              <Input
-                label="Confirmar Nueva Contraseña"
-                id="confirmNewPassword"
-                type={showConfirmNewPassword ? 'text' : 'password'}
-                name="confirmNewPassword"
-                value={formData.confirmNewPassword}
-                onChange={handleChange}
-                required
-                placeholder="Confirma tu nueva contraseña"
-              />
-              <button
-                type="button"
-                onClick={toggleConfirmNewPasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
-                aria-label={showConfirmNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
-              >
-                {showConfirmNewPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                )}
-              </button>
-            </div>
+            <Input
+              label="Confirmar Nueva Contraseña"
+              id="confirmNewPassword"
+              type={showConfirmNewPassword ? 'text' : 'password'}
+              name="confirmNewPassword"
+              value={formData.confirmNewPassword}
+              onChange={handleChange}
+              required
+              placeholder="Confirma tu nueva contraseña"
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              endIcon={
+                <button
+                  type="button"
+                  onClick={toggleConfirmNewPasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showConfirmNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showConfirmNewPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              }
+            />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">
               {loading ? 'Cambiando...' : 'Cambiar Contraseña'}

@@ -93,7 +93,7 @@ const Navbar = () => {
   const getNavLinkClasses = ({ isActive }) => {
     const baseClasses = "px-4 py-2 rounded-full text-sm font-semibold transition duration-300 flex items-center space-x-1 whitespace-nowrap";
     const inactiveClasses = "text-white hover:bg-white/10 hover:text-accent";
-    const activeClasses = "bg-white/20 text-accent shadow-md";
+    const activeClasses = "bg-[var(--color-primary-darker)] text-white shadow-lg border-2 border-white/20";
     return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
   };
 

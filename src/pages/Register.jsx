@@ -180,7 +180,7 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Ej. Juan Pérez"
-              icon={<UserIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<UserIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -194,7 +194,7 @@ function Register() {
               pattern="^[0-9]{8,10}$"
               title="Debe tener entre 8 y 10 dígitos numéricos"
               placeholder="Ej. 123456789"
-              icon={<IdentificationIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<IdentificationIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -206,7 +206,7 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Ej. correo@example.com"
-              icon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
+              startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
             />
 
             {/* Simplificado el Input de Contraseña */}
@@ -221,13 +221,21 @@ function Register() {
               minLength="6"
               maxLength="20"
               placeholder="Mínimo 6 caracteres"
-              icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
-              actionIcon={ // Icono de ojo clicable
-                showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
-                )
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              endIcon={
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
               }
             />
 
@@ -241,13 +249,21 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Confirma tu contraseña"
-              icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
-              actionIcon={ // Icono de ojo clicable
-                showConfirmPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={toggleConfirmPasswordVisibility} />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={toggleConfirmPasswordVisibility} />
-                )
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              endIcon={
+                <button
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showConfirmPassword ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showConfirmPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
               }
             />
 
@@ -262,7 +278,7 @@ function Register() {
               pattern="^[0-9]{10}$"
               title="Debe tener 10 dígitos numéricos"
               placeholder="Ej. 3001234567"
-              icon={<PhoneIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -275,7 +291,7 @@ function Register() {
               maxLength="255"
               required
               placeholder="Ej. Calle 123 #45-67"
-              icon={<MapPinIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<MapPinIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -286,7 +302,7 @@ function Register() {
               value={formData.birth_date}
               onChange={handleChange}
               required
-              icon={<CalendarIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<CalendarIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">

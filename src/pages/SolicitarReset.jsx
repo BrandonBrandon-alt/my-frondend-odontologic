@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService'; // Importa el servicio de autenticación
 import { Input, Button, Alert } from '../components';
-import { EnvelopeIcon } from '@heroicons/react/24/outline';
+import { EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon, KeyIcon } from '@heroicons/react/24/outline';
 
 import resetImage from '../assets/6.jpg'; // Usar la misma imagen o una diferente si tienes
 
@@ -132,6 +132,7 @@ function SolicitarReset() {
               onChange={(e) => { setEmail(e.target.value); setMessage(''); setError(''); }}
               required
               placeholder="tu@correo.com"
+              startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">
