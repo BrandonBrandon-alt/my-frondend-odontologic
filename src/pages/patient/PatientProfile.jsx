@@ -2,244 +2,148 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence para mensajes
 import { userService } from '../../services';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import MessageBox from '../../components/MessageBox';
+import { Button, Input, Alert, LoadingSpinner } from '../../components';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { UserCircleIcon, MapPinIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline'; // Nuevos iconos
+import { UserCircleIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, CalendarIcon, IdentificationIcon } from '@heroicons/react/24/outline'; // Nuevos iconos
 
 function PatientProfile() {
-  const { updateUserContext } = useAuth();
-  const [profileData, setProfileData] = useState({
-    name: '',
-    email: '',
-    address: '',
-    phone: '',
-    // Agrega cualquier otro campo de perfil inicial aquí para evitar 'undefined'
-  });
+  const { user, updateUserContext, loading: authLoading } = useAuth();
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setLoading(true);
-        setError('');
-        const response = await userService.getProfile();
-        const data = response.user || response;
-
-        setProfileData({
-          name: data.name || '',
-          email: data.email || '',
-          address: data.address || '',
-          phone: data.phone || '',
-          // Asegúrate de que todos los campos esperados del perfil estén aquí
-        });
-      } catch (err) {
-        console.error('Error al cargar el perfil del paciente:', err);
-        setError('No se pudo cargar tu perfil. Por favor, inténtalo de nuevo.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, []);
+    if (user) {
+      setLoading(true);
+      userService.getProfile(user.id)
+        .then(data => {
+          setUserData(data);
+          setError('');
+        })
+        .catch(err => {
+          setError('No se pudo cargar la información del perfil.');
+          console.error(err);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(authLoading);
+    }
+  }, [user, authLoading]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfileData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    // Limpia mensajes de éxito/error al empezar a editar
-    if (message) setMessage('');
-    if (error) setError('');
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSaving(true);
+    setLoading(true);
     setMessage('');
     setError('');
 
     try {
-      const dataToUpdate = {
-        name: profileData.name,
-        address: profileData.address,
-        phone: profileData.phone,
-        // Incluye otros campos editables que tu backend acepta
-      };
-      const response = await userService.updateProfile(dataToUpdate);
-      const updatedProfile = response.user || response;
-
-      setProfileData({
-        name: updatedProfile.name || '',
-        email: updatedProfile.email || '',
-        address: updatedProfile.address || '',
-        phone: updatedProfile.phone || '',
-        // Actualiza todos los campos aquí también
-      });
-      setMessage('¡Perfil actualizado exitosamente!');
-
-      // Actualiza el contexto de autenticación
-      updateUserContext({
-        id: updatedProfile.id,
-        name: updatedProfile.name,
-        email: updatedProfile.email,
-        address: updatedProfile.address,
-        phone: updatedProfile.phone,
-      });
-
-      // El mensaje de éxito se borrará después de 3 segundos
-      setTimeout(() => setMessage(''), 3000);
-
+      const updatedUser = await userService.updateProfile(user.id, userData);
+      updateUserContext(updatedUser);
+      setMessage('Perfil actualizado con éxito.');
     } catch (err) {
-      console.error('Error al actualizar el perfil:', err);
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error);
-      } else {
-        setError('Ocurrió un error al actualizar tu perfil. Inténtalo de nuevo.');
-      }
+      setError(err.message || 'Error al actualizar el perfil.');
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
   // Variantes de Framer Motion
   const pageVariants = {
-    hidden: { opacity: 0, scale: 0.98 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-  const formVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.3 } },
-  };
-  const textVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
-  // Manejo de estados de carga y error inicial
-  if (loading) {
+  if (loading && !userData) {
     return (
-      <div className="min-h-[calc(100vh-64px)] bg-background-light flex items-center justify-center p-4">
-        <p className="text-xl text-primary animate-pulse">Cargando tu perfil...</p>
-      </div>
-    );
-  }
-
-  // Si hay un error al cargar el perfil y no se pudo mostrar el formulario
-  if (error && !profileData.name) { // Si no hay datos de perfil para mostrar, solo mostrar el error
-    return (
-      <div className="min-h-[calc(100vh-64px)] bg-background-light flex items-center justify-center p-4">
-        <MessageBox type="error" message={error} />
+      <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
+        <LoadingSpinner />
       </div>
     );
   }
 
   return (
     <motion.div
-      className="min-h-[calc(100vh-64px)] bg-background-light flex items-center justify-center p-4 md:p-8"
+      className="container mx-auto p-4 sm:p-6 lg:p-8"
+      variants={pageVariants}
       initial="hidden"
       animate="visible"
-      variants={pageVariants}
     >
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl p-6 sm:p-10 lg:p-12"> {/* Aumenta el max-w */}
-        <motion.h2
-          className="text-3xl md:text-4xl font-extrabold text-primary text-center mb-6"
-          variants={textVariants}
-        >
-          Mi Perfil
-        </motion.h2>
+      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-8">
+        <div className="text-center mb-8">
+          <UserCircleIcon className="w-24 h-24 mx-auto text-gray-300" />
+          <h1 className="text-3xl font-bold text-gray-900 mt-4">{userData?.name || 'Mi Perfil'}</h1>
+          <p className="text-md text-gray-500">{userData?.email}</p>
+        </div>
 
         <AnimatePresence>
-          {message && <MessageBox type="success" message={message} key="success-msg" />}
-          {error && !message && <MessageBox type="error" message={error} key="error-msg" />} {/* Mostrar error si existe y no hay mensaje de éxito */}
+          {error && <Alert type="error" message={error} />}
         </AnimatePresence>
 
-        <motion.form onSubmit={handleSubmit} className="space-y-6" variants={formVariants}>
-          {/* Sección de Información Personal */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-xl font-bold text-text-dark mb-4 border-b pb-2">Información Personal</h3>
+        {userData && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Input
                 label="Nombre Completo"
                 id="name"
-                type="text"
                 name="name"
-                value={profileData.name}
-                onChange={handleChange}
-                required
-                icon={<UserCircleIcon className="h-5 w-5 text-gray-400" />} // Añade icono
-              />
-              <Input
-                label="Correo Electrónico"
-                id="email"
-                type="email"
-                name="email"
-                value={profileData.email}
-                readOnly
-                className="bg-gray-100 cursor-not-allowed mt-4" // Añade margen superior
-                icon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} // Añade icono
-              />
-            </div>
-
-            {/* Sección de Contacto */}
-            <div>
-              <h3 className="text-xl font-bold text-text-dark mb-4 border-b pb-2">Datos de Contacto</h3>
-              <Input
-                label="Dirección"
-                id="address"
                 type="text"
-                name="address"
-                value={profileData.address}
+                value={userData.name || ''}
                 onChange={handleChange}
-                placeholder="Tu dirección completa"
-                icon={<MapPinIcon className="h-5 w-5 text-gray-400" />} // Añade icono
+                startIcon={<UserCircleIcon className="h-5 w-5 text-gray-400" />}
+              />
+              <Input
+                label="Cédula de Ciudadanía"
+                id="cedula"
+                name="cedula"
+                type="text"
+                value={userData.cedula || ''}
+                onChange={handleChange}
+                startIcon={<IdentificationIcon className="h-5 w-5 text-gray-400" />}
+              />
+              <Input
+                label="Fecha de Nacimiento"
+                id="birthDate"
+                name="birthDate"
+                type="date"
+                value={userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : ''}
+                onChange={handleChange}
+                startIcon={<CalendarIcon className="h-5 w-5 text-gray-400" />}
               />
               <Input
                 label="Teléfono"
                 id="phone"
-                type="tel"
                 name="phone"
-                value={profileData.phone}
+                type="tel"
+                value={userData.phone || ''}
                 onChange={handleChange}
-                placeholder="Ej: +57 3XX XXX XXXX"
-                className="mt-4" // Añade margen superior
-                icon={<PhoneIcon className="h-5 w-5 text-gray-400" />} // Añade icono
+                startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />}
               />
             </div>
-          </div>
-          {/* Fin de secciones */}
 
-          <Button loading={saving} className="py-3 mt-8 w-full"> {/* Aumenta el margen superior */}
-            {saving ? 'Guardando...' : 'Actualizar Perfil'}
-          </Button>
-        </motion.form>
+            <div className="mt-6">
+              <AnimatePresence>
+                {message && <Alert type="success" message={message} key="success-msg" />}
+              </AnimatePresence>
+            </div>
 
-        <div className="mt-8 text-center">
-            <p className="text-text-dark text-sm mb-2">
-                ¿Necesitas cambiar tu contraseña?{' '}
-                <Link
-                    to="/change-password"
-                    className="font-semibold text-primary hover:text-secondary underline"
-                >
-                    Cambiar Contraseña
-                </Link>
-            </p>
-            <p className="text-text-dark text-sm">
-                <Link
-                    to="/patient-dashboard"
-                    className="font-semibold text-primary hover:text-secondary underline"
-                >
-                    Volver al Dashboard
-                </Link>
-            </p>
-        </div>
+            <div className="mt-8 flex justify-end space-x-4">
+              <Link to={user.role === 'admin' ? '/admin-dashboard' : user.role === 'dentist' ? '/dentist-dashboard' : '/patient-dashboard'}>
+                <Button variant="outline">
+                  Volver al Dashboard
+                </Button>
+              </Link>
+              <Button type="submit" loading={loading} disabled={loading}>
+                {loading ? 'Guardando...' : 'Guardar Cambios'}
+              </Button>
+            </div>
+          </form>
+        )}
       </div>
     </motion.div>
   );

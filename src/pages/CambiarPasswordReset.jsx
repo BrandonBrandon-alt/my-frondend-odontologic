@@ -1,12 +1,10 @@
 // src/pages/CambiarPasswordReset.jsx
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService'; // Importa el servicio de autenticación
 
-import Input from '../components/Input';
-import Button from '../components/Button';
-import MessageBox from '../components/MessageBox';
+import { Input, Button, Alert } from '../components';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 import resetImage from '../assets/6.jpg'; // Usar la misma imagen o una diferente si tienes
@@ -204,9 +202,11 @@ function CambiarPasswordReset() {
             Ingresa el código de recuperación y tu nueva contraseña.
           </motion.p>
 
-          <MessageBox type="success" message={message} />
-          <MessageBox type="error" message={error} />
-          <MessageBox type="warning" message={passwordMismatchError} />
+          <AnimatePresence>
+            <Alert type="success" message={message} />
+            <Alert type="error" message={error} />
+            <Alert type="warning" message={passwordMismatchError} />
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {initialEmail && (
@@ -284,8 +284,8 @@ function CambiarPasswordReset() {
               </button>
             </div>
 
-            <Button loading={loading} className="py-3 mt-6">
-              Restablecer Contraseña
+            <Button type="submit" loading={loading} className="py-3 mt-6">
+              {loading ? 'Cambiando...' : 'Cambiar Contraseña'}
             </Button>
           </form>
 

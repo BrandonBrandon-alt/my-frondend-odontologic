@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import MessageBox from '../components/MessageBox';
+import { Input, Button, Alert } from '../components';
 import { EyeIcon, EyeSlashIcon, UserIcon, IdentificationIcon, EnvelopeIcon, PhoneIcon, MapPinIcon, CalendarIcon, LockClosedIcon } from '@heroicons/react/24/outline'; // Importa más iconos
 import registerImage from '../assets/Registro.png'; // Asegúrate de tener una imagen en esta ruta.
 function Register() {
@@ -166,13 +164,13 @@ function Register() {
             Regístrate en pocos pasos y accede a tu perfil de paciente.
           </motion.p>
 
-          <AnimatePresence> {/* Envuelve los MessageBox con AnimatePresence */}
-            {message && <MessageBox type="success" message={message} key="msg-success" />}
-            {error && <MessageBox type="error" message={error} key="msg-error" />}
-            {passwordMismatchError && <MessageBox type="warning" message={passwordMismatchError} key="msg-mismatch" />}
+          <AnimatePresence> {/* Envuelve los Alert con AnimatePresence */}
+            {message && <Alert type="success" message={message} key="msg-success" />}
+            {error && <Alert type="error" message={error} key="msg-error" />}
+            {passwordMismatchError && <Alert type="warning" message={passwordMismatchError} key="msg-mismatch" />}
           </AnimatePresence>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               label="Nombre Completo"
               id="name"
@@ -291,8 +289,8 @@ function Register() {
               icon={<CalendarIcon className="h-5 w-5 text-gray-400" />} 
             />
 
-            <Button loading={loading} className="py-3 mt-6">
-              Registrarse
+            <Button type="submit" loading={loading} className="py-3 mt-6">
+              {loading ? 'Registrando...' : 'Registrarse'}
             </Button>
           </form>
 

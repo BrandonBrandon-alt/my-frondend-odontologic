@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Importa tus componentes de página principales
-import Navbar from './components/Navbar';
+import { Navbar } from './components';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -11,10 +11,9 @@ import ActivateAccount from './pages/ActivateAccount';
 import SolicitarReset from './pages/SolicitarReset';
 import CambiarPasswordReset from './pages/CambiarPasswordReset';
 
-
 // Importa tu AuthProvider y el ProtectedRoute
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/layouts/ProtectedRoute';
+import { ProtectedRoute } from './components';
 
 // Importa las páginas de Dashboard específicas por rol
 import AdminDashboard from './pages/dashboards/AdminDashboard';

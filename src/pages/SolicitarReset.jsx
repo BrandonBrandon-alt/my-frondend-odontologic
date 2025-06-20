@@ -1,12 +1,10 @@
 // src/pages/SolicitarReset.jsx
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService'; // Importa el servicio de autenticación
-
-import Input from '../components/Input';
-import Button from '../components/Button';
-import MessageBox from '../components/MessageBox';
+import { Input, Button, Alert } from '../components';
+import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
 import resetImage from '../assets/6.jpg'; // Usar la misma imagen o una diferente si tienes
 
@@ -118,8 +116,11 @@ function SolicitarReset() {
             Te enviaremos un código de recuperación a tu correo electrónico.
           </motion.p>
 
-          <MessageBox type="success" message={message} />
-          <MessageBox type="error" message={error} />
+          {/* Mensajes de feedback */}
+          <AnimatePresence>
+            <Alert type="success" message={message} />
+            <Alert type="error" message={error} />
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
@@ -133,8 +134,8 @@ function SolicitarReset() {
               placeholder="tu@correo.com"
             />
 
-            <Button loading={loading} className="py-3 mt-6">
-              Solicitar Código
+            <Button type="submit" loading={loading} className="py-3 mt-6">
+              {loading ? 'Enviando...' : 'Solicitar Reset'}
             </Button>
           </form>
 

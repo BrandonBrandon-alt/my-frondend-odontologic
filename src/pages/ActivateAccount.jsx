@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-// Importa los componentes Input, Button, MessageBox
-import Input from '../components/Input';
-import Button from '../components/Button';
-import MessageBox from '../components/MessageBox';
+// Importa los componentes Input, Button, Alert
+import { Input, Button, Alert } from '../components';
+import { authService } from '../services';
 
 // Nueva imagen para la página de activación (ajusta la ruta según tu proyecto)
 import activateImage from '../assets/6.jpg'; // Sugerencia: Busca una imagen que transmita logro, confirmación o éxito.
@@ -26,7 +25,7 @@ function ActivateAccount() {
   const [error, setError] = useState('');
   const [resendMessage, setResendMessage] = useState('');
   const [resendError, setResendError] = useState('');
-
+  const [showResendForm, setShowResendForm] = useState(false);
 
   useEffect(() => {
     if (message || error || resendMessage || resendError) {
@@ -105,7 +104,6 @@ function ActivateAccount() {
     }
   };
 
-
   const pageVariants = {
     hidden: { opacity: 0, scale: 0.98 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
@@ -177,10 +175,12 @@ function ActivateAccount() {
             Ingresa el código de activación enviado a tu correo electrónico.
           </motion.p>
 
-          <MessageBox type="success" message={message} />
-          <MessageBox type="error" message={error} />
-          <MessageBox type="success" message={resendMessage} />
-          <MessageBox type="error" message={resendError} />
+          <AnimatePresence>
+            <Alert type="success" message={message} />
+            <Alert type="error" message={error} />
+            <Alert type="success" message={resendMessage} />
+            <Alert type="error" message={resendError} />
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
@@ -208,8 +208,8 @@ function ActivateAccount() {
               title="El código debe ser de 16 caracteres hexadecimales."
             />
 
-            <Button loading={loading} className="py-3 mt-6">
-              Activar Cuenta
+            <Button type="submit" loading={loading} className="py-3 mt-6">
+              {loading ? 'Activando...' : 'Activar Cuenta'}
             </Button>
           </form>
 

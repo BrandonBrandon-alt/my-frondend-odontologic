@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Carousel from '../components/Carousel'; // Asumimos que este componente existe y es funcional
+import { Carousel, Card } from '../components'; // Asumimos que este componente existe y es funcional
+import { useAuth } from '../context/AuthContext';
 
 function Home() {
     // Variantes para animar la aparición de secciones completas

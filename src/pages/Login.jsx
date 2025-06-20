@@ -1,15 +1,11 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
-import { Link, useNavigate } from 'react-router-dom';
-
-// Importa el hook useAuth
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Importa los componentes Input, Button, MessageBox
-import Input from '../components/Input';
-import Button from '../components/Button';
-import MessageBox from '../components/MessageBox';
+// Importa los componentes Input, Button, Alert
+import { Input, Button, Alert } from '../components'; // Actualizado para usar Alert
 // Importa los iconos necesarios
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 
@@ -186,8 +182,9 @@ function Login() {
           </motion.p>
 
           <AnimatePresence>
-            {message && <MessageBox type="success" message={message} key="login-success" />}
-            {error && <MessageBox type="error" message={error} key="login-error" />}
+            {/* Mensajes de éxito o error */}
+            {message && <Alert type="success" message={message} key="login-success" />}
+            {error && <Alert type="error" message={error} key="login-error" />}
           </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -225,7 +222,7 @@ function Login() {
               }
             />
 
-            <Button loading={loading} className="py-3 mt-6">
+            <Button type="submit" loading={loading} className="py-3 mt-6">
               {loading ? 'Iniciando...' : 'Iniciar Sesión'}
             </Button>
           </form>

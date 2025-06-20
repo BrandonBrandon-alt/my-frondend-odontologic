@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { userService } from '../../services';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
-import MessageBox from '../../components/MessageBox';
+import { Input, Button, Alert } from '../../components';
 import { useAuth } from '../../context/AuthContext';
 import { EyeIcon, EyeSlashIcon, KeyIcon } from '@heroicons/react/24/outline';
 
@@ -148,10 +146,30 @@ function ChangePassword() {
           Cambiar Contraseña
         </motion.h2>
 
+        <div className="mt-8 text-center">
+          <p className="text-text-dark text-sm">
+            <button
+              onClick={() => {
+                let dashboardPath = '/patient-dashboard';
+                if (user && user.role) {
+                  switch (user.role) {
+                    case 'admin': dashboardPath = '/admin-dashboard'; break;
+                    case 'dentist': dashboardPath = '/dentist-dashboard'; break;
+                    default: dashboardPath = '/patient-dashboard'; break;
+                  }
+                }
+                navigate(dashboardPath);
+              }}
+              className="font-semibold text-primary hover:text-secondary underline"
+            >
+              Volver al Dashboard
+            </button>
+          </p>
+        </div>
+
         <AnimatePresence>
-          {message && <MessageBox type="success" message={message} key="success-msg" />}
-          {/* Solo muestra el error si no hay un mensaje de éxito para evitar solapamiento */}
-          {error && !message && <MessageBox type="error" message={error} key="error-msg" />}
+          {message && <Alert type="success" message={message} key="success-msg" />}
+          {error && !message && <Alert type="error" message={error} key="error-msg" />}
         </AnimatePresence>
 
         <motion.form onSubmit={handleSubmit} className="space-y-6" variants={formVariants}>
@@ -211,31 +229,10 @@ function ChangePassword() {
             }
           />
 
-          <Button loading={loading} className="py-3 mt-6 w-full">
+          <Button type="submit" loading={loading} className="py-3 mt-6 w-full">
             {loading ? 'Cambiando...' : 'Cambiar Contraseña'}
           </Button>
         </motion.form>
-
-        <div className="mt-8 text-center">
-          <p className="text-text-dark text-sm">
-            <button
-              onClick={() => {
-                let dashboardPath = '/patient-dashboard';
-                if (user && user.role) {
-                  switch (user.role) {
-                    case 'admin': dashboardPath = '/admin-dashboard'; break;
-                    case 'dentist': dashboardPath = '/dentist-dashboard'; break;
-                    default: dashboardPath = '/patient-dashboard'; break;
-                  }
-                }
-                navigate(dashboardPath);
-              }}
-              className="font-semibold text-primary hover:text-secondary underline"
-            >
-              Volver al Dashboard
-            </button>
-          </p>
-        </div>
       </div>
     </motion.div>
   );
