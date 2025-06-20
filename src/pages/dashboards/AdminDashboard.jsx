@@ -16,6 +16,7 @@ import {
   DocumentTextIcon,
   CalendarDaysIcon
 } from '@heroicons/react/24/outline';
+import ProfileCards from '../../components/features/ProfileCards';
 
 function AdminDashboard() {
   const currentUser = authService.getCurrentUser();
@@ -107,6 +108,9 @@ function AdminDashboard() {
           </motion.div>
           <motion.div variants={itemVariants}>
             <DashboardCard to="/admin/settings" icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>} title="Configuración" description="Ajusta los parámetros generales del sistema." />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <ProfileCards profilePath="/admin-profile" changePasswordPath="/change-password" />
           </motion.div>
         </motion.div>
 

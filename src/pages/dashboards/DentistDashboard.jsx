@@ -15,6 +15,7 @@ import {
   StarIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline';
+import ProfileCards from '../../components/features/ProfileCards';
 
 function DentistDashboard() {
   const currentUser = authService.getCurrentUser();
@@ -100,6 +101,9 @@ function DentistDashboard() {
           </motion.div>
           <motion.div variants={itemVariants}>
             <DashboardCard to="/dentist/availability" icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>} title="Mi Disponibilidad" description="Define tus horarios de atención y días libres." />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <ProfileCards profilePath="/dentist-profile" changePasswordPath="/change-password" />
           </motion.div>
         </motion.div>
 

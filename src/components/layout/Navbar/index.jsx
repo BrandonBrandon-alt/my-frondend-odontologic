@@ -192,7 +192,13 @@ const Navbar = () => {
                         Dashboard
                       </NavLink>
                       <NavLink
-                        to="/patient-profile"
+                        to={
+                          user?.role === 'admin'
+                            ? '/admin-profile'
+                            : user?.role === 'dentist'
+                            ? '/dentist-profile'
+                            : '/patient-profile'
+                        }
                         className="block px-5 py-3 text-base text-gray-700 hover:bg-accent/10 transition duration-150"
                         onClick={() => setIsDropdownOpen(false)}
                       >
@@ -305,7 +311,13 @@ const Navbar = () => {
                         Dashboard
                       </NavLink>
                       <NavLink
-                        to="/patient-profile"
+                        to={
+                          user?.role === 'admin'
+                            ? '/admin-profile'
+                            : user?.role === 'dentist'
+                            ? '/dentist-profile'
+                            : '/patient-profile'
+                        }
                         className="block py-2 text-gray-700 hover:text-accent transition duration-150"
                         onClick={() => setIsMenuOpen(false)}
                       >

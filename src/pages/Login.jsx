@@ -196,7 +196,7 @@ function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="correo@example.com"
+              helperText="Ejemplo: correo@example.com"
               startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} // Añade icono de sobre
             />
 
@@ -211,7 +211,7 @@ function Login() {
               required
               minLength="6"
               maxLength="20"
-              placeholder="Tu contraseña"
+              helperText="Mínimo 6 caracteres"
               startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} // Añade icono de candado
               endIcon={
                 <button
