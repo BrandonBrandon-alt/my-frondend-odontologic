@@ -42,8 +42,14 @@ function PatientProfile() {
     setMessage('');
     setError('');
 
+    // Solo enviar los campos permitidos por el backend
+    const allowedFields = ['name', 'email', 'phone', 'address'];
+    const dataToSend = Object.fromEntries(
+      Object.entries(userData).filter(([key]) => allowedFields.includes(key))
+    );
+
     try {
-      const updatedUser = await userService.updateProfile(user.id, userData);
+      const updatedUser = await userService.updateProfile(dataToSend);
       updateUserContext(updatedUser);
       setMessage('Perfil actualizado con éxito.');
     } catch (err) {
@@ -98,22 +104,13 @@ function PatientProfile() {
                 startIcon={<UserCircleIcon className="h-5 w-5 text-gray-400" />}
               />
               <Input
-                label="Cédula de Ciudadanía"
-                id="cedula"
-                name="cedula"
-                type="text"
-                value={userData.cedula || ''}
+                label="Correo Electrónico"
+                id="email"
+                name="email"
+                type="email"
+                value={userData.email || ''}
                 onChange={handleChange}
-                startIcon={<IdentificationIcon className="h-5 w-5 text-gray-400" />}
-              />
-              <Input
-                label="Fecha de Nacimiento"
-                id="birthDate"
-                name="birthDate"
-                type="date"
-                value={userData.birthDate ? new Date(userData.birthDate).toISOString().split('T')[0] : ''}
-                onChange={handleChange}
-                startIcon={<CalendarIcon className="h-5 w-5 text-gray-400" />}
+                startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
               />
               <Input
                 label="Teléfono"
@@ -123,6 +120,15 @@ function PatientProfile() {
                 value={userData.phone || ''}
                 onChange={handleChange}
                 startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />}
+              />
+              <Input
+                label="Dirección"
+                id="address"
+                name="address"
+                type="text"
+                value={userData.address || ''}
+                onChange={handleChange}
+                startIcon={<MapPinIcon className="h-5 w-5 text-gray-400" />}
               />
             </div>
 

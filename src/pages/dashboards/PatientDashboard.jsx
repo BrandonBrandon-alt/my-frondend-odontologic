@@ -116,7 +116,7 @@ function PatientDashboard() {
 
   return (
     <motion.div
-      className="min-h-screen bg-[var(--color-background-light)] p-6 md:p-10 lg:p-12" // Fondo general con tu color de fondo claro
+      className="min-h-screen bg-gradient-to-br from-[var(--color-background-light)] via-white to-[var(--color-secondary)] p-6 md:p-10 lg:p-12"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -124,32 +124,31 @@ function PatientDashboard() {
       <div className="max-w-7xl mx-auto py-8">
         {/* --- Sección de Bienvenida Personalizada y Moderna --- */}
         <motion.div
-          className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-6 border-[var(--color-primary)] overflow-hidden" // Borde superior usando primary
+          className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up"
           variants={itemVariants}
         >
           <motion.h1
-            className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-dark)] mb-3 leading-tight tracking-tight"
+            className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-dark)] mb-3 leading-tight tracking-tight drop-shadow-lg"
             variants={textFadeIn}
           >
-            ¡Bienvenido de Nuevo, <span className="text-[var(--color-primary)] drop-shadow-sm">{userProfile?.name || 'Paciente'}</span>! {/* Nombre en color primary */}
+            ¡Bienvenido de Nuevo, <span className="text-[var(--color-primary)] drop-shadow-md">{userProfile?.name || 'Paciente'}</span>!
           </motion.h1>
           <motion.p
             className="text-lg md:text-xl text-[var(--color-text-dark)] leading-relaxed max-w-2xl"
             variants={textFadeIn}
             transition={{ delay: 0.2 }}
           >
-            Tu portal de salud dental te espera. Aquí puedes gestionar todos los aspectos de tu atención odontológica de manera **fácil y segura**.
+            Tu portal de salud dental te espera. Aquí puedes gestionar todos los aspectos de tu atención odontológica de manera <span className="font-semibold text-[var(--color-accent)]">fácil y segura</span>.
           </motion.p>
           <motion.div className="mt-6 flex flex-wrap gap-4" variants={textFadeIn} transition={{ delay: 0.3 }}>
-            <Link to="/patient/my-appointments" className="text-[var(--color-secondary)] hover:text-[var(--color-primary-darker)] font-semibold flex items-center group"> {/* Links usando secondary */}
+            <Link to="/patient/my-appointments" className="text-[var(--color-secondary)] hover:text-[var(--color-primary-darker)] font-semibold flex items-center group transition-all duration-200">
               <CalendarDaysIcon className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" /> Ver mis citas
             </Link>
-            <Link to="/patient-profile" className="text-[var(--color-secondary)] hover:text-[var(--color-primary-darker)] font-semibold flex items-center group"> {/* Links usando secondary */}
+            <Link to="/patient-profile" className="text-[var(--color-secondary)] hover:text-[var(--color-primary-darker)] font-semibold flex items-center group transition-all duration-200">
               <UserCircleIcon className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" /> Editar perfil
             </Link>
           </motion.div>
         </motion.div>
-
 
         {/* --- Grid de Tarjetas de Funcionalidades --- */}
         <motion.div
@@ -160,7 +159,7 @@ function PatientDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard
               to="/patient/my-appointments"
-              icon={<CalendarDaysIcon className="w-16 h-16 text-[var(--color-primary)]" />} // Icono primary
+              icon={<CircleIconBg><CalendarDaysIcon className="w-8 h-8" /></CircleIconBg>}
               title="Mis Citas"
               description="Agenda, consulta y gestiona tus próximas citas."
             />
@@ -170,7 +169,7 @@ function PatientDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard
               to="/patient/medical-history"
-              icon={<DocumentTextIcon className="w-16 h-16 text-[var(--color-primary)]" />} // Icono primary
+              icon={<CircleIconBg><DocumentTextIcon className="w-8 h-8" /></CircleIconBg>}
               title="Historial Clínico"
               description="Accede a tu historial de tratamientos y diagnósticos."
             />
@@ -180,7 +179,7 @@ function PatientDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard
               to="/patient/billing"
-              icon={<CreditCardIcon className="w-16 h-16 text-[var(--color-primary)]" />} // Icono primary
+              icon={<CircleIconBg><CreditCardIcon className="w-8 h-8" /></CircleIconBg>}
               title="Mis Facturas"
               description="Revisa tus estados de cuenta y pagos pendientes."
             />
@@ -190,7 +189,7 @@ function PatientDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard
               to="/patient-profile"
-              icon={<UserCircleIcon className="w-16 h-16 text-[var(--color-primary)]" />} // Icono primary
+              icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>}
               title="Mi Perfil"
               description="Actualiza tu información personal y de contacto."
             />
@@ -200,7 +199,7 @@ function PatientDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard
               to="/change-password"
-              icon={<Cog6ToothIcon className="w-16 h-16 text-[var(--color-primary)]" />} // Icono primary
+              icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>}
               title="Cambiar Contraseña"
               description="Mantén tu cuenta segura actualizando tu contraseña."
             />
@@ -222,21 +221,22 @@ const DashboardCard = ({ to, icon, title, description }) => {
   return (
     <Link
       to={to}
-      className="bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl
-                 transition-all duration-300 transform hover:-translate-y-2
-                 flex flex-col items-center text-center
-                 border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] // Bordes de tarjeta con tus vars
-                 group"
+      className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up"
     >
-      <div className="mb-4 text-[var(--color-secondary)] group-hover:text-[var(--color-primary-darker)] transition-colors duration-300"> {/* Icono con primary y hover primary-darker */}
-        {icon}
-      </div>
-      <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-300"> {/* Título en hover con primary */}
+      <div className="mb-5">{icon}</div>
+      <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-300 drop-shadow-sm">
         {title}
       </h2>
-      <p className="text-[var(--color-text-dark)] text-center leading-relaxed"> {/* Texto de descripción con text-dark */}
+      <p className="text-[var(--color-text-dark)] text-center leading-relaxed text-base">
         {description}
       </p>
     </Link>
   );
 };
+
+// Componente para iconos con fondo circular y color de acento
+const CircleIconBg = ({ children }) => (
+  <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-primary)] text-white shadow-lg mb-2 group-hover:scale-110 transition-transform duration-300">
+    {children}
+  </span>
+);

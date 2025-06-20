@@ -27,7 +27,6 @@ export const userService = {
       throw error;
     }
   },
-
   // ======================= CAMBIO DE CONTRASEÑA (AUTENTICADO) =======================
   changePassword: async ({ currentPassword, newPassword }) => { // <-- ¡CAMBIO CLAVE AQUÍ! Ahora espera ambos campos
     try {

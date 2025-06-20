@@ -1,18 +1,18 @@
 import React, { forwardRef } from 'react';
 
 /**
- * Componente Input reutilizable con soporte para iconos y validación
- * @param {Object} props - Propiedades del componente
- * @param {string} props.label - Etiqueta del campo
- * @param {string} props.id - ID del campo
- * @param {React.ReactNode} props.startIcon - Icono al inicio del campo
- * @param {React.ReactNode} props.endIcon - Icono al final del campo
- * @param {string} props.error - Mensaje de error
- * @param {string} props.helperText - Texto de ayuda
- * @param {string} props.size - Tamaño del input ('sm', 'md', 'lg')
- * @param {string} props.variant - Variante del input ('default', 'filled')
- * @param {string} props.className - Clases CSS adicionales
- * @param {Object} props.rest - Resto de propiedades HTML del input
+ * Componente Input profesional y atractivo
+ * @param {Object} props
+ * @param {string} props.label
+ * @param {string} props.id
+ * @param {React.ReactNode} props.startIcon
+ * @param {React.ReactNode} props.endIcon
+ * @param {string} props.error
+ * @param {string} props.helperText
+ * @param {string} props.size
+ * @param {string} props.variant
+ * @param {string} props.className
+ * @param {Object} props.rest
  */
 const Input = forwardRef(({ 
   label, 
@@ -27,30 +27,30 @@ const Input = forwardRef(({
   ...rest 
 }, ref) => {
   // Clases base
-  const baseClasses = 'block w-full border rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-0';
+  const baseClasses = 'block w-full rounded-xl shadow-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-accent/30 focus:border-accent';
   
   // Tamaños
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-3 py-2 text-base',
-    lg: 'px-4 py-3 text-lg'
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-5 py-2.5 text-base',
+    lg: 'px-7 py-3 text-lg'
   };
   
   // Variantes
   const variants = {
-    default: 'border-gray-300 focus:border-accent focus:ring-accent',
-    filled: 'border-gray-300 bg-gray-50 focus:border-accent focus:ring-accent focus:bg-white'
+    default: 'border border-gray-300 bg-white',
+    filled: 'border border-gray-200 bg-gray-50 focus:bg-white'
   };
   
   // Estados
   const stateClasses = error 
-    ? 'border-red-300 focus:border-red-500 focus:ring-red-500' 
+    ? 'border-red-400 focus:border-red-500 focus:ring-red-200' 
     : variants[variant];
   
   // Padding para iconos
   const paddingClasses = [
-    startIcon ? 'pl-10' : '',
-    endIcon ? 'pr-10' : ''
+    startIcon ? 'pl-12' : '',
+    endIcon ? 'pr-12' : ''
   ].filter(Boolean).join(' ');
   
   const inputClasses = [
@@ -66,7 +66,7 @@ const Input = forwardRef(({
       {label && (
         <label 
           htmlFor={id} 
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-sm font-semibold text-gray-700 mb-1 tracking-wide"
         >
           {label}
         </label>
@@ -74,8 +74,8 @@ const Input = forwardRef(({
       
       <div className="relative">
         {startIcon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <div className="text-gray-400">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <div className="text-accent text-lg">
               {startIcon}
             </div>
           </div>
@@ -85,12 +85,13 @@ const Input = forwardRef(({
           ref={ref}
           id={id}
           className={inputClasses}
+          placeholder={rest.placeholder ? rest.placeholder : ''}
           {...rest}
         />
         
         {endIcon && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <div className="text-gray-400">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+            <div className="text-accent text-lg">
               {endIcon}
             </div>
           </div>
@@ -100,10 +101,10 @@ const Input = forwardRef(({
       {(error || helperText) && (
         <div className="mt-1">
           {error && (
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-sm text-red-600 font-semibold animate-pulse">{error}</p>
           )}
           {helperText && !error && (
-            <p className="text-sm text-gray-500">{helperText}</p>
+            <p className="text-sm text-gray-500 italic">{helperText}</p>
           )}
         </div>
       )}

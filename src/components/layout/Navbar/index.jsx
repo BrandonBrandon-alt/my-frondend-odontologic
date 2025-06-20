@@ -15,7 +15,7 @@ import {
 import { useAuth } from '../../../context/AuthContext';
 
 /**
- * Componente Navbar principal de la aplicación
+ * Componente Navbar profesional y atractivo
  */
 const Navbar = () => {
   const navigate = useNavigate();
@@ -53,8 +53,8 @@ const Navbar = () => {
   };
 
   const linkVariants = {
-    hover: { scale: 1.05, color: '#60A5FA' },
-    tap: { scale: 0.95 },
+    hover: { scale: 1.08, backgroundColor: 'rgba(255,255,255,0.12)' },
+    tap: { scale: 0.97 },
   };
 
   const mobileMenuVariants = {
@@ -92,8 +92,8 @@ const Navbar = () => {
 
   const getNavLinkClasses = ({ isActive }) => {
     const baseClasses = "px-4 py-2 rounded-full text-sm font-semibold transition duration-300 flex items-center space-x-1 whitespace-nowrap";
-    const inactiveClasses = "text-white hover:text-secondary";
-    const activeClasses = "bg-secondary text-primary shadow-md";
+    const inactiveClasses = "text-white hover:bg-white/10 hover:text-accent";
+    const activeClasses = "bg-white/20 text-accent shadow-md";
     return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
   };
 
@@ -104,15 +104,16 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      className="bg-primary p-4 shadow-lg sticky top-0 z-50"
+      className="bg-gradient-to-r from-primary via-accent to-secondary shadow-xl sticky top-0 z-50 animate-fade-in-up"
       initial="hidden"
       animate="visible"
       variants={navVariants}
     >
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center py-3 px-2 md:px-0">
         {/* Logo */}
-        <NavLink to="/" className="text-white text-2xl font-bold hover:text-secondary transition duration-300 flex items-center space-x-2">
-          <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <NavLink to="/" className="text-white text-2xl font-bold hover:text-accent transition duration-300 flex items-center space-x-2">
+          <svg width="36" height="36" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="30" cy="30" r="28" fill="#fff" fillOpacity="0.08" />
             <path d="M30 0C19.39 0 10.74 8.65 10.74 19.26C10.74 34.39 30 59.97 30 59.97C30 59.97 49.26 34.39 49.26 19.26C49.26 8.65 40.61 0 30 0Z" fill="#007bff" />
             <path d="M30 0C25.5 0 21.61 1.79 19.01 4.5C18.66 4.88 18.06 4.91 17.67 4.56L14.7 1.83C14.31 1.48 14.28 0.88 14.63 0.49C18.3 0.11 23.01 0 30 0Z" fill="white" fillOpacity="0.8" />
             <path d="M49.26 19.26C49.26 14.51 47.74 10.05 44.97 6.42L42.5 9.07C44.75 11.96 46.26 15.52 46.26 19.26C46.26 21.43 45.7 23.51 44.66 25.43L48.24 23.36C49.07 21.84 49.26 20.59 49.26 19.26Z" fill="white" fillOpacity="0.3" />
@@ -123,58 +124,51 @@ const Navbar = () => {
             <circle className="sparkle-4" cx="30" cy="5" r="1.8" fill="white" />
             <circle className="sparkle-5" cx="15" cy="25" r="1.0" fill="white" />
           </svg>
-          <span className="leading-none">Odontologic</span>
+          <span className="leading-none drop-shadow-lg">Odontologic</span>
         </NavLink>
 
-        {/* Menú hamburguesa móvil */}
+        {/* Botón de Menú Hamburguesa (para móvil) */}
         <div className="md:hidden">
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="text-white p-2 focus:outline-none"
-          >
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-white p-2 focus:outline-none hover:bg-white/10 rounded-full transition">
             {isMenuOpen ? <XMarkIcon className="h-8 w-8" /> : <Bars3Icon className="h-8 w-8" />}
           </button>
         </div>
 
-        {/* Navegación desktop */}
+        {/* Lista de enlaces de navegación (Desktop) */}
         <ul className="hidden md:flex items-center space-x-6">
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-              <NavLink to="/" className={getNavLinkClasses} end>
-                <HomeIcon className="h-5 w-5 mr-1" />Home
-              </NavLink>
+              <NavLink to="/" className={getNavLinkClasses} end><HomeIcon className="h-5 w-5 mr-1" />Home</NavLink>
             </motion.div>
           </li>
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-              <NavLink to="/about" className={getNavLinkClasses}>
-                <InformationCircleIcon className="h-5 w-5 mr-1" />Acerca de
-              </NavLink>
+              <NavLink to="/about" className={getNavLinkClasses}><InformationCircleIcon className="h-5 w-5 mr-1" />Acerca de</NavLink>
             </motion.div>
           </li>
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-              <NavLink to="/contact" className={getNavLinkClasses}>
-                <PhoneIcon className="h-5 w-5 mr-1" />Contacto
-              </NavLink>
+              <NavLink to="/contact" className={getNavLinkClasses}><PhoneIcon className="h-5 w-5 mr-1" />Contacto</NavLink>
             </motion.div>
           </li>
 
           {isLoggedIn ? (
             <>
-              <li className="text-gray-400">|</li>
+              <li className="text-white/40">|</li>
               {/* Dropdown de usuario */}
               <li className="relative" ref={dropdownRef}>
                 <motion.button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center text-white px-4 py-2 rounded-full hover:bg-white/10 transition duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
-                  whileHover={{ scale: 1.02 }}
+                  className="flex items-center text-white px-4 py-2 rounded-full hover:bg-white/10 transition duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-md"
+                  whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <UserCircleIcon className="h-6 w-6 mr-2" />
-                  <span className="font-semibold text-lg">{user?.name || 'Mi Perfil'}</span>
+                  <span className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center mr-2 border-2 border-white/30">
+                    <UserCircleIcon className="h-7 w-7 text-white" />
+                  </span>
+                  <span className="font-semibold text-lg drop-shadow-sm">{user?.name || 'Mi Perfil'}</span>
                   {user?.role && (
-                    <span className="text-sm text-gray-300 ml-2">
+                    <span className="text-sm text-white/80 ml-2">
                       {getRoleInfo(user.role).emoji} {getRoleInfo(user.role).label}
                     </span>
                   )}
@@ -184,7 +178,7 @@ const Navbar = () => {
                 <AnimatePresence>
                   {isDropdownOpen && (
                     <motion.div
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 overflow-hidden"
+                      className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-10 overflow-hidden border border-gray-100 animate-fade-in-up"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
@@ -192,23 +186,23 @@ const Navbar = () => {
                     >
                       <NavLink
                         to={getDashboardPath(user?.role)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150"
+                        className="block px-5 py-3 text-base text-gray-700 hover:bg-accent/10 transition duration-150"
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         Dashboard
                       </NavLink>
                       <NavLink
                         to="/patient-profile"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150"
+                        className="block px-5 py-3 text-base text-gray-700 hover:bg-accent/10 transition duration-150"
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         Mi Perfil
                       </NavLink>
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 flex items-center"
+                        className="block w-full text-left px-5 py-3 text-base text-gray-700 hover:bg-accent/10 transition duration-150 flex items-center"
                       >
-                        <ArrowRightEndOnRectangleIcon className="h-4 w-4 mr-2" />
+                        <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" />
                         Cerrar Sesión
                       </button>
                     </motion.div>
@@ -218,7 +212,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <li className="text-gray-400">|</li>
+              <li className="text-white/40">|</li>
               <li>
                 <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
                   <NavLink to="/login" className={getNavLinkClasses}>
@@ -234,7 +228,7 @@ const Navbar = () => {
                 >
                   <NavLink
                     to="/register"
-                    className="px-6 py-2 bg-secondary text-primary rounded-full text-sm font-semibold hover:bg-white transition duration-300 flex items-center space-x-1"
+                    className="px-6 py-2 bg-white/90 text-accent rounded-full text-sm font-semibold hover:bg-white transition duration-300 flex items-center space-x-1 shadow-md"
                   >
                     Registrarse
                   </NavLink>

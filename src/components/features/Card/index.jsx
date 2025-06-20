@@ -1,15 +1,15 @@
 import React from 'react';
 
 /**
- * Componente Card reutilizable para mostrar información
- * @param {Object} props - Propiedades del componente
- * @param {React.ReactNode} props.children - Contenido de la tarjeta
- * @param {string} props.title - Título de la tarjeta
- * @param {string} props.subtitle - Subtítulo de la tarjeta
- * @param {React.ReactNode} props.icon - Icono de la tarjeta
- * @param {string} props.variant - Variante de la tarjeta ('default', 'elevated', 'outlined')
- * @param {string} props.className - Clases CSS adicionales
- * @param {Function} props.onClick - Función llamada al hacer clic en la tarjeta
+ * Componente Card profesional y atractivo
+ * @param {Object} props
+ * @param {React.ReactNode} props.children
+ * @param {string} props.title
+ * @param {string} props.subtitle
+ * @param {React.ReactNode} props.icon
+ * @param {string} props.variant
+ * @param {string} props.className
+ * @param {Function} props.onClick
  */
 const Card = ({ 
   children, 
@@ -23,13 +23,17 @@ const Card = ({
 }) => {
   // Variantes de estilo
   const variants = {
-    default: 'bg-white border border-gray-200 shadow-sm',
-    elevated: 'bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300',
-    outlined: 'bg-white border-2 border-gray-200'
+    default: 'bg-white border border-gray-200 shadow-md',
+    elevated: 'bg-white border border-gray-200 shadow-xl hover:shadow-2xl transition-shadow duration-300',
+    outlined: 'bg-white border-2 border-accent'
   };
 
   const cardClasses = [
-    'rounded-lg p-6',
+    'rounded-2xl',
+    'p-8',
+    'transition-all',
+    'duration-300',
+    'animate-fade-in-up',
     variants[variant],
     onClick ? 'cursor-pointer' : '',
     className
@@ -42,27 +46,27 @@ const Card = ({
       {...rest}
     >
       {(title || subtitle || icon) && (
-        <div className="flex items-start space-x-3 mb-4">
+        <div className="flex items-center gap-4 mb-6 border-b pb-4">
           {icon && (
-            <div className="flex-shrink-0 text-accent">
+            <div className="flex-shrink-0 text-accent text-3xl">
               {icon}
             </div>
           )}
           <div className="flex-1 min-w-0">
             {title && (
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">
+              <h3 className="text-2xl font-bold text-gray-900 mb-1">
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p className="text-sm text-gray-500">
+              <p className="text-base text-gray-500">
                 {subtitle}
               </p>
             )}
           </div>
         </div>
       )}
-      <div className="text-gray-700">
+      <div className="text-gray-700 text-base">
         {children}
       </div>
     </div>
