@@ -1,14 +1,16 @@
+// src/services/userService.js
 import axiosInstance from '../utils/axiosInstance'; // Importa la instancia de Axios configurada
-import { jwtDecode } from 'jwt-decode';
 
-const USER_BASE_PATH = ''; // Si tus rutas de usuario no tienen un prefijo extra después de /api
+// CAMBIO AQUÍ: Ahora el prefijo es 'user'
+const USER_BASE_PATH = 'user'; // <--- ¡CAMBIADO A 'user'!
 
 export const userService = {
   // ======================= OBTENER PERFIL DE USUARIO =======================
   getProfile: async () => {
     try {
+      // Con USER_BASE_PATH = 'user', esto ahora se resolverá a '/api/user/perfil'
       const response = await axiosInstance.get(`${USER_BASE_PATH}/perfil`);
-      return response.data.user; // El backend devuelve { user: {...} }
+      return response.data.user;
     } catch (error) {
       console.error('Error en userService.getProfile:', error.response?.data || error.message);
       throw error;
@@ -27,13 +29,16 @@ export const userService = {
   },
 
   // ======================= CAMBIO DE CONTRASEÑA (AUTENTICADO) =======================
-  changePassword: async (newPassword) => {
+  changePassword: async ({ currentPassword, newPassword }) => { // <-- ¡CAMBIO CLAVE AQUÍ! Ahora espera ambos campos
     try {
-      const response = await axiosInstance.post(`${USER_BASE_PATH}/cambiar-password`, { newPassword });
+      // Envía un objeto que contiene ambas propiedades al backend
+      const response = await axiosInstance.post(`${USER_BASE_PATH}/cambiar-password`, { currentPassword, newPassword });
       return response.data;
     } catch (error) {
       console.error('Error en userService.changePassword:', error.response?.data || error.message);
       throw error;
     }
   },
+
+
 };

@@ -19,13 +19,12 @@ function Navbar() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Nuevo estado para el desplegable
-
-  // Referencia para detectar clics fuera del desplegable
-  const dropdownRef = useRef(null);
-
   const { isLoggedIn, user, logout: logoutContext, loading } = useAuth();
   const userName = user?.name;
   const userRole = user?.role;
+
+  // Referencia para detectar clics fuera del desplegable
+  const dropdownRef = useRef(null);
 
   // Efecto para cerrar el desplegable al hacer clic fuera
   useEffect(() => {
@@ -39,7 +38,6 @@ function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
-
 
   // Mapeo de roles a emojis
   const roleEmojis = {
@@ -82,7 +80,6 @@ function Navbar() {
     hidden: { opacity: 0, y: -10, scale: 0.95, transition: { duration: 0.15 } },
     visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.2 } },
   };
-
 
   const handleLogout = async () => {
     try {
@@ -186,7 +183,7 @@ function Navbar() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <UserCircleIcon className="h-6 w-6 mr-2" />
-                  <span className="font-semibold text-lg">{userName || 'Mi Perfil'}</span>
+                  <span className="font-semibold text-lg">{user?.name || 'Mi Perfil'}</span> {/* Usar user?.name */}
                   {userRole && ( // Solo muestra el rol si existe
                     <span className="text-sm text-gray-300 ml-2">
                       {getRoleEmoji(userRole)} {userRole.toUpperCase()} {/* Combina emoji y texto del rol */}
@@ -294,7 +291,7 @@ function Navbar() {
                 <>
                   {/* Aquí puedes decidir si también quieres un desplegable en móvil o simplemente los enlaces directos */}
                   <li className="text-white text-2xl font-semibold mb-4">
-                    {userName ? `${userName}` : 'Cargando...'} ({userRole ? `${getRoleEmoji(userRole)} ${userRole.toUpperCase()}` : 'ROL'})
+                    {user ? `${user.name}` : 'Cargando...'} ({userRole ? `${getRoleEmoji(userRole)} ${userRole.toUpperCase()}` : 'ROL'})
                   </li>
                   <li>
                     <NavLink

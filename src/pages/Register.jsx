@@ -1,27 +1,17 @@
-
+// src/pages/Register.jsx
 import React, { useState } from 'react';
-
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate } from 'react-router-dom';
-// import axios from 'axios'; // ¡ELIMINA ESTA LÍNEA! Ya no la necesitas.
-
-// Importa el servicio de autenticación
-import { authService } from '../services/';
-
-// Importa los nuevos subcomponentes
+import { authService } from '../services';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import MessageBox from '../components/MessageBox';
-// Asegúrate de que estos iconos estén instalados: npm install @heroicons/react
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'; 
-
-// Importa la imagen de fondo para el lado de la imagen (asegúrate de que esta ruta sea correcta)
+import { EyeIcon, EyeSlashIcon, UserIcon, IdentificationIcon, EnvelopeIcon, PhoneIcon, MapPinIcon, CalendarIcon, LockClosedIcon } from '@heroicons/react/24/outline'; // Importa más iconos
 import registerImage from '../assets/Registro.png'; // Asegúrate de tener una imagen en esta ruta.
-
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
-    idNumber: '', // Asegúrate de que el nombre de la clave coincida con el DTO del backend
+    idNumber: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -46,7 +36,6 @@ function Register() {
       ...prevData,
       [name]: value,
     }));
-    // Limpiar mensajes al cambiar los campos
     if (message || error || passwordMismatchError) {
       setMessage('');
       setError('');
@@ -54,13 +43,9 @@ function Register() {
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword((prev) => !prev);
-  };
+  // Estas funciones se mantendrán para los onClick de los iconos.
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,51 +60,36 @@ function Register() {
       return;
     }
 
-    // Prepara los datos para enviar.
-    // El backend espera 'id_number' y 'birth_date' si son opcionales y no se envían.
-    // Aunque tu DTO en el backend usa `idNumber` (camelCase) y `birth_date` (snake_case),
-    // el código actual de tu DTO es `idNumber`, por lo que lo mantengo así para el frontend.
-    // Si tu DTO real en el backend espera `id_number`, deberías ajustar `idNumber` aquí a `id_number`.
     const dataToSend = {
       name: formData.name,
-      idNumber: formData.idNumber, // Asegúrate de que este nombre coincida con tu DTO de backend (registroDTO.js)
+      idNumber: formData.idNumber,
       email: formData.email,
       password: formData.password,
       phone: formData.phone,
       address: formData.address,
       birth_date: formData.birth_date,
     };
-    // No necesitamos `delete dataToSend.confirmPassword;` si construimos `dataToSend` explícitamente.
 
     try {
-      // ***** CAMBIO CLAVE AQUÍ: Usamos el servicio en lugar de axios directo *****
       const response = await authService.register(dataToSend);
-
       setMessage(response.message || 'Registro exitoso. Revisa tu correo para activar tu cuenta.');
-      
-      // Limpiar el formulario
+
       setFormData({
         name: '', idNumber: '', email: '', password: '', confirmPassword: '',
         phone: '', address: '', birth_date: ''
       });
 
-      // Redirigir a la página de activación
       setTimeout(() => {
-        // Importante: `formData.email` aquí aún tiene el valor del formulario antes de limpiarlo
-        navigate('/activate-account', { state: { email: dataToSend.email } }); 
+        navigate('/activate-account', { state: { email: dataToSend.email } });
       }, 1500);
 
     } catch (err) {
       console.error('Error al registrar usuario en el componente:', err);
-
-      // El error que viene del servicio ya tiene el `response.data` si es un error de la API
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);
       } else if (err.request) {
-        // Error de red o servidor no responde
         setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
       } else {
-        // Otro tipo de error (ej. en la lógica del frontend antes de la llamada)
         setError('Ocurrió un error inesperado. Inténtalo de nuevo.');
       }
     } finally {
@@ -127,22 +97,19 @@ function Register() {
     }
   };
 
-  // Variantes de animación (sin cambios, ya están bien)
+  // Variantes de animación (sin cambios)
   const pageVariants = {
     hidden: { opacity: 0, scale: 0.98 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
   };
-
   const formVariants = {
     hidden: { opacity: 0, y: 50, scale: 0.95 },
     visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.3 } },
   };
-
   const imageVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } },
   };
-
   const textVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -199,9 +166,11 @@ function Register() {
             Regístrate en pocos pasos y accede a tu perfil de paciente.
           </motion.p>
 
-          <MessageBox type="success" message={message} />
-          <MessageBox type="error" message={error} />
-          <MessageBox type="warning" message={passwordMismatchError} />
+          <AnimatePresence> {/* Envuelve los MessageBox con AnimatePresence */}
+            {message && <MessageBox type="success" message={message} key="msg-success" />}
+            {error && <MessageBox type="error" message={error} key="msg-error" />}
+            {passwordMismatchError && <MessageBox type="warning" message={passwordMismatchError} key="msg-mismatch" />}
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <Input
@@ -213,6 +182,7 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Ej. Juan Pérez"
+              icon={<UserIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -226,6 +196,7 @@ function Register() {
               pattern="^[0-9]{8,10}$"
               title="Debe tener entre 8 y 10 dígitos numéricos"
               placeholder="Ej. 123456789"
+              icon={<IdentificationIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -237,59 +208,50 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Ej. correo@example.com"
+              icon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
             />
 
-            <div className="relative">
-              <Input
-                label="Contraseña"
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                minLength="6"
-                maxLength="20"
-                placeholder="Mínimo 6 caracteres"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
-                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-              >
-                {showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+            {/* Simplificado el Input de Contraseña */}
+            <Input
+              label="Contraseña"
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              minLength="6"
+              maxLength="20"
+              placeholder="Mínimo 6 caracteres"
+              icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              actionIcon={ // Icono de ojo clicable
+                showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
                 ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                )}
-              </button>
-            </div>
+                  <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
+                )
+              }
+            />
 
-            <div className="relative">
-              <Input
-                label="Confirmar Contraseña"
-                id="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                placeholder="Confirma tu contraseña"
-              />
-              <button
-                type="button"
-                onClick={toggleConfirmPasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
-                aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-              >
-                {showConfirmPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+            {/* Simplificado el Input de Confirmar Contraseña */}
+            <Input
+              label="Confirmar Contraseña"
+              id="confirmPassword"
+              type={showConfirmPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              placeholder="Confirma tu contraseña"
+              icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              actionIcon={ // Icono de ojo clicable
+                showConfirmPassword ? (
+                  <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={toggleConfirmPasswordVisibility} />
                 ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                )}
-              </button>
-            </div>
+                  <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={toggleConfirmPasswordVisibility} />
+                )
+              }
+            />
 
             <Input
               label="Teléfono"
@@ -302,6 +264,7 @@ function Register() {
               pattern="^[0-9]{10}$"
               title="Debe tener 10 dígitos numéricos"
               placeholder="Ej. 3001234567"
+              icon={<PhoneIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -314,6 +277,7 @@ function Register() {
               maxLength="255"
               required
               placeholder="Ej. Calle 123 #45-67"
+              icon={<MapPinIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Input
@@ -324,6 +288,7 @@ function Register() {
               value={formData.birth_date}
               onChange={handleChange}
               required
+              icon={<CalendarIcon className="h-5 w-5 text-gray-400" />} 
             />
 
             <Button loading={loading} className="py-3 mt-6">

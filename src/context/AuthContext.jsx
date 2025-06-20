@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { authService } from '../services'; // Importa tu servicio de autenticación
 
@@ -78,6 +77,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // --- NUEVA FUNCIÓN: `updateUserContext` ---
+  // Permite que otros componentes actualicen el objeto 'user' en el contexto
+  const updateUserContext = (updatedUserData) => {
+    // Actualiza el estado local 'user' en el contexto, fusionando la data existente con la nueva
+    setUser(prevUser => ({ ...prevUser, ...updatedUserData }));
+
+    // También actualiza localStorage para mantener la consistencia y para la sincronización entre pestañas
+    const currentUserInStorage = authService.getCurrentUser();
+    if (currentUserInStorage) {
+      localStorage.setItem('currentUser', JSON.stringify({ ...currentUserInStorage, ...updatedUserData }));
+    }
+  };
+
   // Valor que será proporcionado a los componentes consumidores
   const authContextValue = {
     isLoggedIn,
@@ -85,6 +97,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login: loginContext, // Proporciona la función de login
     logout: logoutContext, // Proporciona la función de logout
+    updateUserContext, // <-- ¡Añade esta nueva función aquí!
   };
 
   return (

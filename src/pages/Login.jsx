@@ -1,19 +1,17 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate } from 'react-router-dom';
 
-// No necesitas importar authService directamente aquí, porque usarás el contexto
-// import { authService } from '../services';
-
-// ***** CAMBIO CLAVE: Importa useAuth del contexto *****
-import { useAuth } from '../context/AuthContext'; // Importa el hook useAuth
+// Importa el hook useAuth
+import { useAuth } from '../context/AuthContext';
 
 // Importa los componentes Input, Button, MessageBox
 import Input from '../components/Input';
 import Button from '../components/Button';
 import MessageBox from '../components/MessageBox';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+// Importa los iconos necesarios
+import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 
 // Importa la imagen de fondo para el lado del login
 import loginImage from '../assets/Login.png';
@@ -28,12 +26,12 @@ function Login() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
+  // Estados para la visibilidad de la contraseña
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-  // ***** CAMBIO CLAVE: Obtén la función 'login' del contexto *****
-  // La renombramos a 'loginContext' para evitar cualquier posible conflicto de nombres.
-  const { login: loginContext } = useAuth(); // <-- ESTA LÍNEA ES FUNDAMENTAL
+  // Obtén la función 'login' del contexto
+  const { login: loginContext } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,14 +39,17 @@ function Login() {
       ...prevData,
       [name]: value,
     }));
+    // Limpia los mensajes/errores al empezar a escribir
     if (message || error) {
       setMessage('');
       setError('');
     }
   };
 
+  // Función para alternar la visibilidad de la contraseña
+  // Esta se pasará directamente al `onClick` del icono en el `Input`.
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prev) => !prev);
   };
 
   const handleSubmit = async (e) => {
@@ -58,18 +59,16 @@ function Login() {
     setError('');
 
     try {
-      // ***** CAMBIO CLAVE AQUÍ: LLAMA A loginContext EN LUGAR DE authService.login *****
-      // loginContext es la función del AuthContext que se encarga de:
-      // 1. Llamar a authService.login (que guarda en localStorage)
-      // 2. Y, lo más importante, ACTUALIZAR EL ESTADO GLOBAL del contexto.
-      const response = await loginContext(formData); // <--- ¡ESTE ES EL CAMBIO!
+      const response = await loginContext(formData);
 
       setMessage(response.message || 'Inicio de sesión exitoso.');
 
+      // Limpia el mensaje de éxito después de unos segundos
+      setTimeout(() => setMessage(''), 3000);
+
       // Redirigir al usuario al dashboard correcto basado en el rol.
-      // `response.user` aquí proviene del `AuthContext` que ya lo obtuvo del `authService`.
       const userRole = response.user?.role;
-      let dashboardPath = '/dashboard'; // Default o para pacientes
+      let dashboardPath = '/patient-dashboard'; // Default o para pacientes
       if (userRole === 'admin') {
         dashboardPath = '/admin-dashboard';
       } else if (userRole === 'dentist') {
@@ -83,35 +82,50 @@ function Login() {
     } catch (err) {
       console.error('Error al iniciar sesión:', err);
 
-      // El error que viene del contexto (o del servicio subyacente) ya debe ser manejable
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error);
+      // Manejo de errores más claro
+      let errorMessage = 'Ocurrió un error inesperado al iniciar sesión. Inténtalo de nuevo.';
+      if (err.response) {
+        if (err.response.data && err.response.data.error) {
+          errorMessage = err.response.data.error;
+          // Si el backend envía un mensaje específico para cuentas inactivas
+          if (errorMessage.includes("no está activa") || errorMessage.includes("inactiva") || errorMessage.includes("inactive")) {
+            errorMessage = (
+              <>
+                Tu cuenta no ha sido activada. Por favor, revisa tu correo para el enlace de activación o{' '}
+                <Link to="/resend-activation" className="font-semibold text-primary hover:text-secondary underline">
+                  Reenviar Código de Activación
+                </Link>.
+              </>
+            );
+          }
+        } else if (err.response.status === 401) { // Por ejemplo, para credenciales incorrectas
+          errorMessage = 'Correo electrónico o contraseña incorrectos.';
+        } else {
+          errorMessage = `Error del servidor: ${err.response.status}. Inténtalo de nuevo.`;
+        }
       } else if (err.request) {
-        setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
-      } else {
-        setError('Ocurrió un error inesperado. Inténtalo de nuevo.');
+        errorMessage = 'No se pudo conectar con el servidor. Por favor, revisa tu conexión a internet.';
       }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  // Variantes de Framer Motion (COPIADAS DIRECTAMENTE DESDE EL COMPONENTE REGISTER)
+  // Variantes de Framer Motion (sin cambios)
   const pageVariants = {
     hidden: { opacity: 0, scale: 0.98 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
   };
-
   const formVariants = {
     hidden: { opacity: 0, y: 50, scale: 0.95 },
     visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 100, damping: 10, delay: 0.3 } },
   };
-
   const imageVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } },
   };
-
   const textVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -128,8 +142,8 @@ function Login() {
         {/* Columna de la Imagen */}
         <motion.div
           className="hidden md:block md:w-1/2 relative overflow-hidden"
-          initial="hidden" // Añadir initial aquí
-          animate="visible" // Añadir animate aquí
+          // initial="hidden" // No es necesario si ya se define en el padre
+          // animate="visible" // No es necesario si ya se define en el padre
           variants={imageVariants}
         >
           <img
@@ -153,8 +167,8 @@ function Login() {
         {/* Columna del Formulario */}
         <motion.div
           className="w-full md:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
-          initial="hidden" // Añadir initial aquí
-          animate="visible" // Añadir animate aquí
+          // initial="hidden" // No es necesario si ya se define en el padre
+          // animate="visible" // No es necesario si ya se define en el padre
           variants={formVariants}
         >
           <motion.h2
@@ -171,8 +185,10 @@ function Login() {
             Ingresa tus credenciales para continuar.
           </motion.p>
 
-          <MessageBox type="success" message={message} />
-          <MessageBox type="error" message={error} />
+          <AnimatePresence>
+            {message && <MessageBox type="success" message={message} key="login-success" />}
+            {error && <MessageBox type="error" message={error} key="login-error" />}
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
@@ -184,37 +200,33 @@ function Login() {
               onChange={handleChange}
               required
               placeholder="correo@example.com"
+              icon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} // Añade icono de sobre
             />
 
-            <div className="relative">
-              <Input
-                label="Contraseña"
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                minLength="6"
-                maxLength="20"
-                placeholder="Tu contraseña"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 top-5"
-                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-              >
-                {showPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
+            {/* Input de Contraseña Simplificado */}
+            <Input
+              label="Contraseña"
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              minLength="6"
+              maxLength="20"
+              placeholder="Tu contraseña"
+              icon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} // Añade icono de candado
+              actionIcon={ // Prop para el icono de acción (ojo)
+                showPassword ? (
+                  <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
                 ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500 hover:text-primary" />
-                )}
-              </button>
-            </div>
+                  <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={togglePasswordVisibility} />
+                )
+              }
+            />
 
             <Button loading={loading} className="py-3 mt-6">
-              Iniciar Sesión
+              {loading ? 'Iniciando...' : 'Iniciar Sesión'}
             </Button>
           </form>
 

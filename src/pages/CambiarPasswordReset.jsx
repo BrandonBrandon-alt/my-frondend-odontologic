@@ -19,13 +19,14 @@ function CambiarPasswordReset() {
   const initialEmail = location.state?.email || '';
 
   const [formData, setFormData] = useState({
-    email: initialEmail, // Mantener email si lo pasas, aunque el backend no lo use en cambiar-password-reset
+    email: initialEmail,
     code: '',
     newPassword: '',
     confirmNewPassword: '',
   });
 
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false); 
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [passwordMismatchError, setPasswordMismatchError] = useState('');
@@ -33,17 +34,12 @@ function CambiarPasswordReset() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
-  // Opcional: Si quieres asegurar que el usuario tenga un email al llegar aquí
   useEffect(() => {
-    // Si la ruta `cambiar-password-reset` se accede directamente sin un email en el estado
-    // y quieres que el email sea un prerrequisito, podrías redirigir.
-    // Comenta o remueve esta sección si no es un requisito estricto
-    /*
     if (!initialEmail) {
       console.warn("Accediendo a CambiarPasswordReset sin email en el estado de la ruta. Considera redirigir a solicitar-reset.");
+      // Opcional: Si es mandatorio tener el email, podrías redirigir:
       // navigate('/solicitar-reset', { replace: true }); 
     }
-    */
   }, [initialEmail, navigate]);
 
   const handleChange = (e) => {
@@ -81,19 +77,17 @@ function CambiarPasswordReset() {
     }
 
     try {
-      // CAMBIO AQUÍ: Se mantiene authService.resetPassword (que coincide con tu backend)
       const response = await authService.resetPassword(
         formData.code,
-        formData.newPassword
+        formData.newPassword,
+        formData.confirmNewPassword
       );
       setMessage(response.message || 'Contraseña restablecida exitosamente. Ahora puedes iniciar sesión.');
       
-      // Limpiar el formulario
       setFormData({
         email: '', code: '', newPassword: '', confirmNewPassword: ''
       });
 
-      // Redirigir al login después de un mensaje de éxito
       setTimeout(() => {
         navigate('/login');
       }, 2000);
@@ -112,7 +106,33 @@ function CambiarPasswordReset() {
     }
   };
 
-  // Variantes de Framer Motion (puedes copiarlas de Login/Register)
+  const handleResendCode = async () => {
+    if (!formData.email) {
+      setError('Por favor, ingresa tu correo electrónico para reenviar el código.');
+      return;
+    }
+
+    setResendLoading(true);
+    setMessage('');
+    setError('');
+
+    try {
+      const response = await authService.resendPasswordResetCode(formData.email);
+      setMessage(response.message || 'Se ha reenviado un nuevo código a tu correo.');
+    } catch (err) {
+      console.error('Error al reenviar código:', err);
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error);
+      } else if (err.request) {
+        setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
+      } else {
+        setError('Ocurrió un error inesperado al reenviar el código.');
+      }
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
   const pageVariants = {
     hidden: { opacity: 0, scale: 0.98 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
@@ -189,7 +209,6 @@ function CambiarPasswordReset() {
           <MessageBox type="warning" message={passwordMismatchError} />
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Si quieres mostrar el email, aunque el backend no lo use directamente */}
             {initialEmail && (
               <Input
                 label="Correo Electrónico (No editable)"
@@ -197,8 +216,8 @@ function CambiarPasswordReset() {
                 type="email"
                 name="email"
                 value={formData.email}
-                readOnly // Para que el usuario no pueda cambiarlo
-                className="bg-gray-100 cursor-not-allowed" // Estilo para indicar que es solo lectura
+                readOnly
+                className="bg-gray-100 cursor-not-allowed"
               />
             )}
 
@@ -269,6 +288,22 @@ function CambiarPasswordReset() {
               Restablecer Contraseña
             </Button>
           </form>
+
+          {/* Hipervínculo para Reenviar Código */}
+          <p className="mt-4 text-center text-text-dark text-sm">
+            ¿No recibiste el código?{' '}
+            <button
+              type="button" // Importante: type="button" para no enviar el formulario
+              onClick={handleResendCode}
+              disabled={resendLoading || !formData.email} // Deshabilitar si está cargando o no hay email
+              className={`
+                font-semibold text-primary hover:text-secondary underline
+                ${resendLoading || !formData.email ? 'opacity-50 cursor-not-allowed' : ''}
+              `}
+            >
+              {resendLoading ? 'Reenviando...' : 'Reenviar Código'}
+            </button>
+          </p>
 
           <p className="mt-6 text-center text-text-dark text-sm">
             <Link
