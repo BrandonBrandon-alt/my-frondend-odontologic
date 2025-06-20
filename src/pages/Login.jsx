@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Importa los componentes Input, Button, Alert
 import { Input, Button, Alert } from '../components'; // Actualizado para usar Alert
@@ -26,11 +26,12 @@ function Login() {
   // Estados para la visibilidad de la contraseña
   const [showPassword, setShowPassword] = useState(false);
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const navigate = useNavigate();
   // Obtén la función 'login' del contexto
   const { login: loginContext } = useAuth();
+
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,25 +52,23 @@ function Login() {
     setShowPassword((prev) => !prev);
   };
 
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
     setError('');
 
-    if (!executeRecaptcha) {
-      setError('No se pudo inicializar el captcha. Intenta de nuevo.');
+    if (!captchaToken) {
+      setError('Por favor completa el captcha.');
       setLoading(false);
       return;
     }
 
     try {
-      const captchaToken = await executeRecaptcha('login');
-      if (!captchaToken) {
-        setError('No se pudo validar el captcha. Intenta de nuevo.');
-        setLoading(false);
-        return;
-      }
       const response = await loginContext({ ...formData, captchaToken });
 
       setMessage(response.message || 'Inicio de sesión exitoso.');
@@ -243,6 +242,11 @@ function Login() {
                   )}
                 </button>
               }
+            />
+
+            <ReCAPTCHA
+              sitekey="6LcH_2crAAAAAIdUCguL_3Yd8gpuumCShBddb_f7"
+              onChange={handleCaptchaChange}
             />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">
