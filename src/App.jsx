@@ -27,6 +27,10 @@ import ChangePassword from './pages/patient/ChangePassword';
 import Unauthorized from './pages/Unauthorized';
 import ResendActivation from './pages/ResendActivation';
 
+// Importa los nuevos componentes DentistProfile y AdminProfile
+import DentistProfile from './pages/dentist/DentistProfile';
+import AdminProfile from './pages/admin/AdminProfile';
+
 // Componentes simples (dummies) para rutas que aún no tienes completas
 const About = () => (
   <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-background-light text-text-dark text-3xl font-bold">
@@ -73,16 +77,17 @@ function AppRoutes() {
             <Route path="/patient-dashboard" element={<PatientDashboard />} />
             <Route path="/dashboard" element={<PatientDashboard />} />
             <Route path="/patient-profile" element={<PatientProfile />} />
-            <Route path="/change-password" element={<ChangePassword />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={['dentist', 'admin']} />}>
             <Route path="/dentist-dashboard" element={<DentistDashboard />} />
-            <Route path="/patient-profile" element={<PatientProfile />} />
-            <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/dentist-profile" element={<DentistProfile />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/patient-profile" element={<PatientProfile />} />
+            <Route path="/admin-profile" element={<AdminProfile />} />
+          </Route>
+          {/* Ruta de cambio de contraseña accesible para todos los roles */}
+          <Route element={<ProtectedRoute allowedRoles={['user', 'dentist', 'admin']} />}>
             <Route path="/change-password" element={<ChangePassword />} />
           </Route>
 
@@ -101,11 +106,12 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </BrowserRouter>
+ 
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
   );
 }
 

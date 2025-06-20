@@ -6,6 +6,8 @@ import { authService } from '../services';
 import { Input, Button, Alert } from '../components';
 import { EyeIcon, EyeSlashIcon, UserIcon, IdentificationIcon, EnvelopeIcon, PhoneIcon, MapPinIcon, CalendarIcon, LockClosedIcon } from '@heroicons/react/24/outline'; // Importa más iconos
 import registerImage from '../assets/Registro.png'; // Asegúrate de tener una imagen en esta ruta.
+import ReCAPTCHA from "react-google-recaptcha";
+
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
@@ -27,6 +29,7 @@ function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +48,10 @@ function Register() {
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword((prev) => !prev);
 
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -58,14 +65,15 @@ function Register() {
       return;
     }
 
+    if (!captchaToken) {
+      setError('Por favor completa el captcha.');
+      setLoading(false);
+      return;
+    }
+
     const dataToSend = {
-      name: formData.name,
-      idNumber: formData.idNumber,
-      email: formData.email,
-      password: formData.password,
-      phone: formData.phone,
-      address: formData.address,
-      birth_date: formData.birth_date,
+      ...formData,
+      captchaToken,
     };
 
     try {
@@ -180,7 +188,7 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Ej. Juan Pérez"
-              startIcon={<UserIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<UserIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Input
@@ -194,7 +202,7 @@ function Register() {
               pattern="^[0-9]{8,10}$"
               title="Debe tener entre 8 y 10 dígitos numéricos"
               placeholder="Ej. 123456789"
-              startIcon={<IdentificationIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<IdentificationIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Input
@@ -221,7 +229,7 @@ function Register() {
               minLength="6"
               maxLength="20"
               placeholder="Mínimo 6 caracteres"
-              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />}
               endIcon={
                 <button
                   type="button"
@@ -249,7 +257,7 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="Confirma tu contraseña"
-              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />}
               endIcon={
                 <button
                   type="button"
@@ -278,7 +286,7 @@ function Register() {
               pattern="^[0-9]{10}$"
               title="Debe tener 10 dígitos numéricos"
               placeholder="Ej. 3001234567"
-              startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Input
@@ -291,7 +299,7 @@ function Register() {
               maxLength="255"
               required
               placeholder="Ej. Calle 123 #45-67"
-              startIcon={<MapPinIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<MapPinIcon className="h-5 w-5 text-gray-400" />}
             />
 
             <Input
@@ -302,7 +310,12 @@ function Register() {
               value={formData.birth_date}
               onChange={handleChange}
               required
-              startIcon={<CalendarIcon className="h-5 w-5 text-gray-400" />} 
+              startIcon={<CalendarIcon className="h-5 w-5 text-gray-400" />}
+            />
+
+            <ReCAPTCHA
+              sitekey="6LcH_2crAAAAAIdUCguL_3Yd8gpuumCShBddb_f7"
+              onChange={handleCaptchaChange}
             />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">

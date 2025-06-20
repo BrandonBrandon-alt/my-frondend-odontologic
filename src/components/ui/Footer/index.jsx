@@ -9,18 +9,18 @@ const socialLinks = [
     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.25.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
   ) },
   { href: "https://wa.me/573001234567", label: "WhatsApp", icon: (
-    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.98L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.19-1.24-6.19-3.48-8.52zM12 22c-1.85 0-3.66-.5-5.22-1.44l-.37-.22-3.67.96.98-3.58-.24-.37A9.94 9.94 0 0 1 2 12C2 6.48 6.48 2 12 2c2.4 0 4.68.84 6.48 2.36A9.94 9.94 0 0 1 22 12c0 5.52-4.48 10-10 10zm5.2-7.6c-.28-.14-1.65-.81-1.9-.9-.25-.09-.43-.14-.61.14-.18.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.17.18-.29.28-.48.09-.19.05-.36-.02-.5-.07-.14-.61-1.47-.84-2.01-.22-.54-.45-.47-.62-.48-.16-.01-.36-.01-.56-.01-.19 0-.5.07-.76.34-.26.27-1 1-1 2.44 0 1.44 1.03 2.84 1.18 3.04.15.2 2.03 3.1 4.92 4.23.69.3 1.23.48 1.65.61.69.22 1.32.19 1.81.12.55-.08 1.65-.67 1.89-1.32.23-.65.23-1.2.16-1.32-.07-.12-.25-.19-.53-.33z"/></svg>
+    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.52 3.48A11.93 11.93 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.16 1.6 5.98L0 24l6.18-1.62A11.93 11.93 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.19-1.24-6.19-3.48-8.52zM12 22c-1.85 0-3.66-.5-5.22-1.44l-.37-.22-3.67.96.98-3.58-.24-.37A9.94 9.94 0 0 1 2 12C2 6.48 6.48 2 12 2c2.4 0 4.68.84 6.48 2.36A9.94 9.94 0 0 1 22 12c0 5.52-4.48 10-10 10zm5.2-7.6c-.28-.14-1.65-.81-1.9-.9-.25-.09-.43-.14-.61.14-.18.28-.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.17.18-.29.28-.48.09-.19.05-.36-.02-.5-.07-.14-.61-1.47-.84-2.01-.22-.54-.45-.47-.62-.48-.16-.01-.36-.01-.56-.01-.19 0-.5.07-.76.34-.26.27-1 1-1 2.44 0 1.44 1.03 2.84 1.18 3.04.15.2 2.03 3.1 4.92 4.23.69.3 1.23.48 1.65.61.69.22 1.32.19 1.81.12.55-.08 1.65-.67 1.89-1.32.23-.65.23-1.2.16-1.32-.07-.12-.25-.19-.53-.33z"/></svg>
   ) },
 ];
 
 const Footer = ({ children }) => {
   return (
-    <footer className="bg-primary text-white py-10 shadow-inner mt-12">
+    <footer className="bg-[var(--color-primary)] text-white border-t-2 border-[var(--color-accent)] py-10 shadow-inner mt-12">
       <div className="container mx-auto px-4 flex flex-col md:flex-row md:justify-between gap-8 items-center md:items-start text-center md:text-left">
         {/* Sección de contacto */}
         <div className="flex-1 mb-6 md:mb-0">
           <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-            <svg className="w-6 h-6 inline-block text-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11c0 5.25 7.02 10.45 8.09 11.22.34.24.81.24 1.15 0C13.98 21.45 21 16.25 21 11c0-4.97-4.03-9-9-9zm0 17.88C10.14 18.09 5 14.13 5 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 3.13-5.14 7.09-7 8.88z"/><circle cx="12" cy="11" r="3"/></svg>
+            <svg className="w-6 h-6 inline-block text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11c0 5.25 7.02 10.45 8.09 11.22.34.24.81.24 1.15 0C13.98 21.45 21 16.25 21 11c0-4.97-4.03-9-9-9zm0 17.88C10.14 18.09 5 14.13 5 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 3.13-5.14 7.09-7 8.88z"/><circle cx="12" cy="11" r="3"/></svg>
             Contáctanos
           </h3>
           <p className="text-sm opacity-90 mb-1">Teléfono: <a href="tel:+573001234567" className="hover:underline">+57 300 123 4567</a></p>
@@ -38,7 +38,7 @@ const Footer = ({ children }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="bg-white/10 hover:bg-accent text-white hover:text-white rounded-full p-3 transition-colors duration-200 shadow-md"
+                className="bg-white/10 hover:bg-[var(--color-accent)] text-white hover:text-white rounded-full p-3 transition-colors duration-200 shadow-md"
               >
                 {icon}
               </a>
@@ -49,8 +49,8 @@ const Footer = ({ children }) => {
         <div className="flex-1 flex flex-col items-center md:items-end">
           <h3 className="text-xl font-bold mb-2">Legal</h3>
           <div className="flex flex-col space-y-1 text-sm opacity-90">
-            <Link to="/privacy" className="hover:underline">Política de Privacidad</Link>
-            <Link to="/terms" className="hover:underline">Términos de Servicio</Link>
+            <Link to="/privacy" className="hover:underline hover:text-[var(--color-accent)]">Política de Privacidad</Link>
+            <Link to="/terms" className="hover:underline hover:text-[var(--color-accent)]">Términos de Servicio</Link>
           </div>
         </div>
       </div>

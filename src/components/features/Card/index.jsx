@@ -23,9 +23,9 @@ const Card = ({
 }) => {
   // Variantes de estilo
   const variants = {
-    default: 'bg-white border border-gray-200 shadow-md',
-    elevated: 'bg-white border border-gray-200 shadow-xl hover:shadow-2xl transition-shadow duration-300',
-    outlined: 'bg-white border-2 border-accent'
+    default: 'bg-[var(--color-background-light)] border border-[var(--color-secondary)] shadow-md',
+    elevated: 'bg-[var(--color-background-light)] border border-[var(--color-secondary)] shadow-xl hover:shadow-2xl transition-shadow duration-300',
+    outlined: 'bg-[var(--color-background-light)] border-2 border-[var(--color-accent)]'
   };
 
   const cardClasses = [
@@ -48,25 +48,25 @@ const Card = ({
       {(title || subtitle || icon) && (
         <div className="flex items-center gap-4 mb-6 border-b pb-4">
           {icon && (
-            <div className="flex-shrink-0 text-accent text-3xl">
+            <div className="flex-shrink-0 text-[var(--color-accent)] text-3xl">
               {icon}
             </div>
           )}
           <div className="flex-1 min-w-0">
             {title && (
-              <h3 className="text-2xl font-bold text-gray-900 mb-1">
+              <h3 className="text-2xl font-bold text-[var(--color-text-dark)] mb-1">
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p className="text-base text-gray-500">
+              <p className="text-base text-[var(--color-secondary)]">
                 {subtitle}
               </p>
             )}
           </div>
         </div>
       )}
-      <div className="text-gray-700 text-base">
+      <div className="text-[var(--color-text-dark)] text-base">
         {children}
       </div>
     </div>

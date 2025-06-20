@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Importa los componentes Input, Button, Alert
 import { Input, Button, Alert } from '../components'; // Actualizado para usar Alert
@@ -25,9 +26,12 @@ function Login() {
   // Estados para la visibilidad de la contraseña
   const [showPassword, setShowPassword] = useState(false);
 
+
   const navigate = useNavigate();
   // Obtén la función 'login' del contexto
   const { login: loginContext } = useAuth();
+
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,14 +52,24 @@ function Login() {
     setShowPassword((prev) => !prev);
   };
 
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
     setError('');
 
+    if (!captchaToken) {
+      setError('Por favor completa el captcha.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await loginContext(formData);
+      const response = await loginContext({ ...formData, captchaToken });
 
       setMessage(response.message || 'Inicio de sesión exitoso.');
 
@@ -196,7 +210,7 @@ function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="correo@example.com"
+              helperText="Ejemplo: correo@example.com"
               startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} // Añade icono de sobre
             />
 
@@ -211,7 +225,7 @@ function Login() {
               required
               minLength="6"
               maxLength="20"
-              placeholder="Tu contraseña"
+              helperText="Mínimo 6 caracteres"
               startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} // Añade icono de candado
               endIcon={
                 <button
@@ -228,6 +242,11 @@ function Login() {
                   )}
                 </button>
               }
+            />
+
+            <ReCAPTCHA
+              sitekey="6LcH_2crAAAAAIdUCguL_3Yd8gpuumCShBddb_f7"
+              onChange={handleCaptchaChange}
             />
 
             <Button type="submit" loading={loading} className="py-3 mt-6">

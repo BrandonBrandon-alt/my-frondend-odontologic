@@ -16,6 +16,7 @@ import {
   DocumentTextIcon,
   CalendarDaysIcon
 } from '@heroicons/react/24/outline';
+import ProfileCards from '../../components/features/ProfileCards';
 
 function AdminDashboard() {
   const currentUser = authService.getCurrentUser();
@@ -51,19 +52,19 @@ function AdminDashboard() {
       <div className="max-w-7xl mx-auto py-8">
         {/* Estadísticas ficticias */}
         <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12" variants={containerVariants}>
-          <StatCard icon={<UserGroupIcon className="w-10 h-10 text-accent" />} label="Usuarios Registrados" value="1,245" description="¡La comunidad crece!" color="from-accent to-primary" />
-          <StatCard icon={<ChartBarIcon className="w-10 h-10 text-secondary" />} label="Citas del Mes" value="320" description="¡Mes récord de atención!" color="from-secondary to-primary" />
-          <StatCard icon={<CheckBadgeIcon className="w-10 h-10 text-primary" />} label="Satisfacción" value="98%" description="¡Pacientes felices!" color="from-primary to-accent" />
-          <StatCard icon={<TrophyIcon className="w-10 h-10 text-primary" />} label="Reconocimientos" value="7" description="¡La clínica es referente!" color="from-primary to-secondary" />
+          <StatCard icon={<UserGroupIcon className="w-10 h-10 text-[var(--color-accent)]" />} label="Usuarios Registrados" value="1,245" description="¡La comunidad crece!" color="from-[var(--color-accent)] to-[var(--color-primary)]" />
+          <StatCard icon={<ChartBarIcon className="w-10 h-10 text-[var(--color-secondary)]" />} label="Citas del Mes" value="320" description="¡Mes récord de atención!" color="from-[var(--color-secondary)] to-[var(--color-primary)]" />
+          <StatCard icon={<CheckBadgeIcon className="w-10 h-10 text-[var(--color-primary)]" />} label="Satisfacción" value="98%" description="¡Pacientes felices!" color="from-[var(--color-primary)] to-[var(--color-accent)]" />
+          <StatCard icon={<TrophyIcon className="w-10 h-10 text-[var(--color-primary)]" />} label="Reconocimientos" value="7" description="¡La clínica es referente!" color="from-[var(--color-primary)] to-[var(--color-secondary)]" />
         </motion.div>
 
         {/* Gráfico animado ficticio */}
-        <motion.div className="bg-white rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}>
+        <motion.div className="bg-[var(--color-background-light)] rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}>
           <div className="flex-1 flex flex-col items-center md:items-start">
             <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-2 flex items-center gap-2">
-              <ChartBarIcon className="w-7 h-7 text-accent" /> Estadísticas Generales
+              <ChartBarIcon className="w-7 h-7 text-[var(--color-accent)]" /> Estadísticas Generales
             </h3>
-            <p className="text-gray-700 mb-4 max-w-md">¡La clínica ha crecido un <span className="text-accent font-bold">+22%</span> este año! Sigue liderando la excelencia en salud.</p>
+            <p className="text-[var(--color-text-dark)] mb-4 max-w-md">¡La clínica ha crecido un <span className="text-[var(--color-accent)] font-bold">+22%</span> este año! Sigue liderando la excelencia en salud.</p>
             <div className="flex gap-3 mt-2">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-semibold"><StarIcon className="w-4 h-4 mr-1" /> Nivel Diamante</span>
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-semibold"><TrophyIcon className="w-4 h-4 mr-1" /> 7 Logros</span>
@@ -76,13 +77,13 @@ function AdminDashboard() {
 
         {/* Logros */}
         <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" variants={containerVariants}>
-          <AchievementCard icon={<TrophyIcon className="w-8 h-8 text-accent" />} title="Clínica Destacada" description="Reconocida por excelencia en atención y gestión." color="from-accent to-primary" />
-          <AchievementCard icon={<StarIcon className="w-8 h-8 text-secondary" />} title="Liderazgo" description="Has liderado el crecimiento y la innovación." color="from-secondary to-primary" />
-          <AchievementCard icon={<CheckBadgeIcon className="w-8 h-8 text-primary" />} title="Cero Sanciones" description="Gestión impecable y cumplimiento normativo." color="from-primary to-accent" />
+          <AchievementCard icon={<TrophyIcon className="w-8 h-8 text-[var(--color-accent)]" />} title="Clínica Destacada" description="Reconocida por excelencia en atención y gestión." color="from-[var(--color-accent)] to-[var(--color-primary)]" />
+          <AchievementCard icon={<StarIcon className="w-8 h-8 text-[var(--color-secondary)]" />} title="Liderazgo" description="Has liderado el crecimiento y la innovación." color="from-[var(--color-secondary)] to-[var(--color-primary)]" />
+          <AchievementCard icon={<CheckBadgeIcon className="w-8 h-8 text-[var(--color-primary)]" />} title="Cero Sanciones" description="Gestión impecable y cumplimiento normativo." color="from-[var(--color-primary)] to-[var(--color-accent)]" />
         </motion.div>
 
         {/* Bienvenida y perfil rápido */}
-        <motion.div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up" variants={itemVariants}>
+        <motion.div className="bg-[var(--color-background-light)] rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up" variants={itemVariants}>
           <motion.h1 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-dark)] mb-3 leading-tight tracking-tight drop-shadow-lg" variants={textFadeIn}>
             ¡Bienvenido, <span className="text-[var(--color-primary)] drop-shadow-md">{currentUser?.name || 'Administrador'}</span>!
           </motion.h1>
@@ -107,6 +108,9 @@ function AdminDashboard() {
           </motion.div>
           <motion.div variants={itemVariants}>
             <DashboardCard to="/admin/settings" icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>} title="Configuración" description="Ajusta los parámetros generales del sistema." />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <ProfileCards profilePath="/admin-profile" changePasswordPath="/change-password" />
           </motion.div>
         </motion.div>
 
@@ -150,7 +154,7 @@ const AchievementCard = ({ icon, title, description, color }) => (
 
 // Card funcional
 const DashboardCard = ({ to, icon, title, description }) => (
-  <Link to={to} className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up">
+  <Link to={to} className="bg-[var(--color-background-light)] p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up">
     <div className="mb-5">{icon}</div>
     <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-300 drop-shadow-sm">{title}</h2>
     <p className="text-[var(--color-text-dark)] text-center leading-relaxed text-base">{description}</p>
@@ -165,10 +169,10 @@ const CircleIconBg = ({ children }) => (
 // Gráfico animado ficticio
 const AnimatedBarChart = () => (
   <svg viewBox="0 0 120 60" className="w-full h-24">
-    <rect x="10" y="30" width="15" height="20" rx="3" fill="#D72F8B" className="animate-pulse" />
-    <rect x="35" y="20" width="15" height="30" rx="3" fill="#4AA8E2" className="animate-bounce" />
-    <rect x="60" y="10" width="15" height="40" rx="3" fill="#256E8F" className="animate-pulse" />
-    <rect x="85" y="25" width="15" height="25" rx="3" fill="#20c997" className="animate-bounce" />
+    <rect x="10" y="30" width="15" height="20" rx="3" fill="var(--color-accent)" className="animate-pulse" />
+    <rect x="35" y="20" width="15" height="30" rx="3" fill="var(--color-secondary)" className="animate-bounce" />
+    <rect x="60" y="10" width="15" height="40" rx="3" fill="var(--color-primary-darker)" className="animate-pulse" />
+    <rect x="85" y="25" width="15" height="25" rx="3" fill="var(--color-primary)" className="animate-bounce" />
   </svg>
 );
 

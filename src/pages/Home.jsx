@@ -48,10 +48,10 @@ function Home() {
 
     return (
         // Contenedor principal de la página con estilos globales
-        <div className="bg-background-light min-h-screen text-text-dark font-inter">
+        <div className="bg-[var(--color-background-light)] min-h-screen text-[var(--color-text-dark)] font-inter">
             {/* Hero Section - Más impactante y moderno */}
             <motion.section
-                className="relative bg-gradient-to-br from-primary via-accent to-secondary text-white py-36 md:py-56 flex items-center justify-center overflow-hidden shadow-2xl"
+                className="relative bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] text-white py-36 md:py-56 flex items-center justify-center overflow-hidden shadow-2xl"
                 style={{ minHeight: 'calc(100vh - 64px)' }} // Ajusta la altura para que ocupe casi toda la pantalla
                 initial="hidden"
                 animate="visible"
@@ -64,7 +64,7 @@ function Home() {
                 {/* Esta imagen debe ser visualmente atractiva y relevante para una clínica dental */}
                 <div className="absolute top-0 left-0 w-full h-full object-cover bg-no-repeat bg-center" style={{ backgroundImage: 'url(/images/hero-bg.jpg)' }}></div>
                 {/* Overlay de color primario sutil para integrar la imagen con el diseño y mejorar la legibilidad del texto */}
-                <div className="absolute inset-0 bg-primary bg-opacity-30"></div>
+                <div className="absolute inset-0 bg-[var(--color-primary)] bg-opacity-30"></div>
 
                 <div className="relative z-10 container mx-auto text-center px-6">
                     <motion.h1
@@ -85,8 +85,8 @@ function Home() {
                         whileTap="tap"
                     >
                         <Link
-                            to="/appointment" // Cambiado a una ruta más específica para agendar citas
-                            className="inline-block bg-accent text-white font-extrabold py-5 px-12 rounded-full shadow-2xl hover:bg-primary-darker transition duration-300 ease-in-out text-xl transform hover:-translate-y-1 border-2 border-white/20 hover:border-accent" // Pequeño levantamiento al pasar el ratón
+                            to="/appointment"
+                            className="inline-block bg-accent text-white font-extrabold py-5 px-12 rounded-full shadow-2xl hover:bg-[var(--color-accent)] hover:text-white transition duration-300 ease-in-out text-xl transform hover:-translate-y-1 border-2 border-white/20 hover:border-[var(--color-accent)]"
                         >
                             ¡Reserva tu Consulta Gratuita!
                         </Link>
@@ -95,10 +95,10 @@ function Home() {
             </motion.section>
 
             {/* Sección del Carrusel - Integración con el diseño */}
-            <section className="py-24 bg-background-light"> {/* Fondo ligero para el carrusel */}
+            <section className="py-24 bg-[var(--color-background-light)]"> {/* Fondo ligero para el carrusel */}
                 <div className="container mx-auto px-6 text-center">
                     <motion.h2
-                        className="text-3xl md:text-4xl font-extrabold text-primary mb-12 drop-shadow-md"
+                        className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] mb-12 drop-shadow-md"
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.3 }} // Anima cuando el 30% de la sección está visible
@@ -118,7 +118,7 @@ function Home() {
             </section>
 
             {/* Servicios Destacados Section - Mejorado con cards y animación */}
-            <section className="py-24 bg-gradient-to-b from-background-light to-secondary/10"> {/* Degradado sutil */}
+            <section className="py-24 bg-gradient-to-b from-[var(--color-background-light)] to-[var(--color-secondary)]/10"> {/* Degradado sutil */}
                 <motion.div
                     className="container mx-auto px-6 text-center"
                     initial="hidden"
@@ -127,7 +127,7 @@ function Home() {
                     variants={containerVariants}
                 >
                     <motion.h2
-                        className="text-3xl md:text-4xl font-extrabold text-primary mb-16 drop-shadow-md"
+                        className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] mb-16 drop-shadow-md"
                         variants={itemVariants}
                     >
                         Nuestros Servicios Especializados
@@ -135,46 +135,46 @@ function Home() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"> {/* Más espacio entre tarjetas */}
                         {/* Tarjeta de Servicio 1 */}
                         <motion.div
-                            className="bg-white p-10 rounded-2xl shadow-xl border-b-4 border-primary hover:shadow-2xl transition duration-300 animate-fade-in-up"
+                            className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-xl border-b-4 border-[var(--color-primary)] hover:shadow-2xl transition duration-300 animate-fade-in-up"
                             variants={cardVariants}
                             whileHover="hover"
                         >
-                            <div className="text-primary text-6xl mb-4 drop-shadow-lg">🦷</div> {/* Icono con color primario */}
-                            <h3 className="text-text-dark text-2xl font-bold mb-3">Odontología General y Preventiva</h3>
-                            <p className="text-gray-700 leading-relaxed text-base mb-2">
+                            <div className="text-[var(--color-primary)] text-6xl mb-4 drop-shadow-lg">🦷</div> {/* Icono con color primario */}
+                            <h3 className="text-[var(--color-text-dark)] text-2xl font-bold mb-3">Odontología General y Preventiva</h3>
+                            <p className="text-[var(--color-text-dark)] leading-relaxed text-base mb-2">
                                 Chequeos regulares, limpiezas profundas, tratamientos de caries y más para mantener tu salud bucal.
                             </p>
-                            <Link to="/services#general" className="mt-4 text-accent hover:text-primary-darker transition duration-200 font-semibold">
+                            <Link to="/services#general" className="mt-4 text-[var(--color-accent)] hover:text-[var(--color-primary-darker)] transition duration-200 font-semibold">
                                 Saber más
                             </Link>
                         </motion.div>
                         {/* Tarjeta de Servicio 2 */}
                         <motion.div
-                            className="bg-white p-10 rounded-2xl shadow-xl border-b-4 border-secondary hover:shadow-2xl transition duration-300 animate-fade-in-up"
+                            className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-xl border-b-4 border-[var(--color-secondary)] hover:shadow-2xl transition duration-300 animate-fade-in-up"
                             variants={cardVariants}
                             whileHover="hover"
                         >
-                            <div className="text-secondary text-6xl mb-4 drop-shadow-lg">✨</div> {/* Icono con color secundario */}
-                            <h3 className="text-text-dark text-2xl font-bold mb-3">Estética Dental y Blanqueamiento</h3>
-                            <p className="text-gray-700 leading-relaxed text-base mb-2">
+                            <div className="text-[var(--color-secondary)] text-6xl mb-4 drop-shadow-lg">✨</div> {/* Icono con color secundario */}
+                            <h3 className="text-[var(--color-text-dark)] text-2xl font-bold mb-3">Estética Dental y Blanqueamiento</h3>
+                            <p className="text-[var(--color-text-dark)] leading-relaxed text-base mb-2">
                                 Transforma tu sonrisa con blanqueamiento dental profesional, carillas de porcelana y diseño de sonrisa.
                             </p>
-                            <Link to="/services#estetica" className="mt-4 text-accent hover:text-primary-darker transition duration-200 font-semibold">
+                            <Link to="/services#estetica" className="mt-4 text-[var(--color-accent)] hover:text-[var(--color-primary-darker)] transition duration-200 font-semibold">
                                 Saber más
                             </Link>
                         </motion.div>
                         {/* Tarjeta de Servicio 3 */}
                         <motion.div
-                            className="bg-white p-10 rounded-2xl shadow-xl border-b-4 border-accent hover:shadow-2xl transition duration-300 animate-fade-in-up"
+                            className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-xl border-b-4 border-[var(--color-accent)] hover:shadow-2xl transition duration-300 animate-fade-in-up"
                             variants={cardVariants}
                             whileHover="hover"
                         >
-                            <div className="text-accent text-6xl mb-4 drop-shadow-lg">🦷</div> {/* Icono con color accent */}
-                            <h3 className="text-text-dark text-2xl font-bold mb-3">Implantes Dentales y Rehabilitación Oral</h3>
-                            <p className="text-gray-700 leading-relaxed text-base mb-2">
-                                Soluciones duraderas para la pérdida de dientes con implantes de alta calidad y prótesis personalizadas.
+                            <div className="text-[var(--color-accent)] text-6xl mb-4 drop-shadow-lg">🪥</div> {/* Icono con color accent */}
+                            <h3 className="text-[var(--color-text-dark)] text-2xl font-bold mb-3">Ortodoncia y Rehabilitación</h3>
+                            <p className="text-[var(--color-text-dark)] leading-relaxed text-base mb-2">
+                                Soluciones modernas para alinear tus dientes y restaurar tu sonrisa con tecnología de punta.
                             </p>
-                            <Link to="/services#implantes" className="mt-4 text-accent hover:text-primary-darker transition duration-200 font-semibold">
+                            <Link to="/services#ortodoncia" className="mt-4 text-[var(--color-accent)] hover:text-[var(--color-primary-darker)] transition duration-200 font-semibold">
                                 Saber más
                             </Link>
                         </motion.div>
@@ -183,7 +183,7 @@ function Home() {
                     <motion.div className="mt-12" variants={buttonVariants} whileHover="hover" whileTap="tap">
                         <Link
                             to="/services"
-                            className="inline-block bg-primary hover:bg-primary-darker text-white font-extrabold py-4 px-10 rounded-full shadow-xl transition duration-300 ease-in-out text-xl border-2 border-white/20 hover:border-primary"
+                            className="inline-block bg-[var(--color-primary)] hover:bg-[var(--color-accent)] hover:text-white text-white font-extrabold py-4 px-10 rounded-full shadow-xl transition duration-300 ease-in-out text-xl border-2 border-white/20 hover:border-[var(--color-accent)]"
                         >
                             Ver Todos Nuestros Servicios
                         </Link>
@@ -192,7 +192,7 @@ function Home() {
             </section>
 
             {/* ¿Por Qué Elegirnos? Section - Estilo de tarjeta más atractivo */}
-            <section className="py-24 bg-background-light">
+            <section className="py-24 bg-[var(--color-background-light)]">
                 <motion.div
                     className="container mx-auto px-6 text-center"
                     initial="hidden"
@@ -201,39 +201,39 @@ function Home() {
                     variants={containerVariants}
                 >
                     <motion.h2
-                        className="text-3xl md:text-4xl font-extrabold text-primary mb-16 drop-shadow-md"
+                        className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] mb-16 drop-shadow-md"
                         variants={itemVariants}
                     >
                         ¿Por Qué Confiar en Odontologic?
                     </motion.h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10"> {/* Más espacio entre tarjetas */}
                         {/* Cards de razones */}
-                        <motion.div className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                            <div className="text-primary text-6xl mb-4 drop-shadow-lg">👨‍⚕️</div>
-                            <h3 className="text-text-dark text-xl font-bold mb-2">Equipo Profesional y Dedicado</h3>
-                            <p className="text-gray-700 text-base leading-relaxed">Dentistas expertos con años de experiencia comprometidos con tu bienestar.</p>
+                        <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
+                            <div className="text-[var(--color-primary)] text-6xl mb-4 drop-shadow-lg">👨‍⚕️</div>
+                            <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Equipo Profesional y Dedicado</h3>
+                            <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Dentistas expertos con años de experiencia comprometidos con tu bienestar.</p>
                         </motion.div>
-                        <motion.div className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                            <div className="text-secondary text-6xl mb-4 drop-shadow-lg">💡</div>
-                            <h3 className="text-text-dark text-xl font-bold mb-2">Tecnología de Última Generación</h3>
-                            <p className="text-gray-700 text-base leading-relaxed">Equipos avanzados para diagnósticos precisos y tratamientos eficientes.</p>
+                        <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
+                            <div className="text-[var(--color-secondary)] text-6xl mb-4 drop-shadow-lg">💡</div>
+                            <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Tecnología de Última Generación</h3>
+                            <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Equipos avanzados para diagnósticos precisos y tratamientos eficientes.</p>
                         </motion.div>
-                        <motion.div className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                            <div className="text-accent text-6xl mb-4 drop-shadow-lg">😊</div>
-                            <h3 className="text-text-dark text-xl font-bold mb-2">Atención Personalizada y Cálida</h3>
-                            <p className="text-gray-700 text-base leading-relaxed">Planes de tratamiento diseñados a tu medida en un ambiente cómodo y amigable.</p>
+                        <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
+                            <div className="text-[var(--color-accent)] text-6xl mb-4 drop-shadow-lg">😊</div>
+                            <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Atención Personalizada y Cálida</h3>
+                            <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Planes de tratamiento diseñados a tu medida en un ambiente cómodo y amigable.</p>
                         </motion.div>
-                        <motion.div className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                            <div className="text-primary text-6xl mb-4 drop-shadow-lg">📍</div>
-                            <h3 className="text-text-dark text-xl font-bold mb-2">Ubicación Céntrica en Armenia</h3>
-                            <p className="text-gray-700 text-base leading-relaxed">Encuéntranos fácilmente en una zona accesible de Armenia, Quindío.</p>
+                        <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
+                            <div className="text-[var(--color-primary)] text-6xl mb-4 drop-shadow-lg">📍</div>
+                            <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Ubicación Céntrica en Armenia</h3>
+                            <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Encuéntranos fácilmente en una zona accesible de Armenia, Quindío.</p>
                         </motion.div>
                     </div>
                 </motion.div>
             </section>
 
             {/* Call to Action Section (CTA) - Un cierre fuerte y motivador */}
-            <section className="py-24 bg-gradient-to-r from-secondary to-primary text-white text-center shadow-2xl">
+            <section className="py-24 bg-gradient-to-r from-[var(--color-secondary)] to-[var(--color-primary)] text-white text-center shadow-2xl">
                 <motion.div
                     className="container mx-auto px-6"
                     initial="hidden"
@@ -254,7 +254,7 @@ function Home() {
                     >
                         <Link
                             to="/contact"
-                            className="inline-block bg-accent hover:bg-primary-darker text-white font-extrabold py-5 px-12 rounded-full shadow-2xl transition duration-300 ease-in-out text-xl border-2 border-white/20 hover:border-accent"
+                            className="inline-block bg-[var(--color-accent)] hover:bg-[var(--color-primary)] hover:text-white text-white font-extrabold py-5 px-12 rounded-full shadow-2xl transition duration-300 ease-in-out text-xl border-2 border-white/20 hover:border-[var(--color-accent)]"
                         >
                             ¡Contáctanos Ahora!
                         </Link>
@@ -263,7 +263,7 @@ function Home() {
             </section>
 
             {/* Footer - Información básica y enlaces de utilidad */}
-            <footer className="bg-primary text-white py-8 shadow-inner">
+            <footer className="bg-[var(--color-primary)] text-white py-8 shadow-inner">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-sm opacity-80 mb-2">&copy; {new Date().getFullYear()} Odontologic - Tu Clínica Dental en Armenia, Quindío.</p>
                     <div className="flex justify-center space-x-4 text-sm opacity-80">

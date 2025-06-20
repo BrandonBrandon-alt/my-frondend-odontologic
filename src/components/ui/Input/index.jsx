@@ -38,8 +38,8 @@ const Input = forwardRef(({
   
   // Variantes
   const variants = {
-    default: 'border border-gray-300 bg-white',
-    filled: 'border border-gray-200 bg-gray-50 focus:bg-white'
+    default: 'border border-[var(--color-secondary)] bg-[var(--color-background-light)]',
+    filled: 'border border-[var(--color-secondary)] bg-[var(--color-secondary)]/20 focus:bg-[var(--color-background-light)]'
   };
   
   // Estados
@@ -66,7 +66,7 @@ const Input = forwardRef(({
       {label && (
         <label 
           htmlFor={id} 
-          className="block text-sm font-semibold text-gray-700 mb-1 tracking-wide"
+          className="block text-sm font-semibold text-[var(--color-text-dark)] mb-1 tracking-wide"
         >
           {label}
         </label>
@@ -75,7 +75,7 @@ const Input = forwardRef(({
       <div className="relative">
         {startIcon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <div className="text-accent text-lg">
+            <div className="text-[var(--color-accent)] text-lg">
               {startIcon}
             </div>
           </div>
@@ -91,7 +91,7 @@ const Input = forwardRef(({
         
         {endIcon && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-            <div className="text-accent text-lg">
+            <div className="text-[var(--color-accent)] text-lg">
               {endIcon}
             </div>
           </div>
@@ -101,10 +101,10 @@ const Input = forwardRef(({
       {(error || helperText) && (
         <div className="mt-1">
           {error && (
-            <p className="text-sm text-red-600 font-semibold animate-pulse">{error}</p>
+            <p className="text-sm text-[var(--color-accent)] font-semibold animate-pulse">{error}</p>
           )}
           {helperText && !error && (
-            <p className="text-sm text-gray-500 italic">{helperText}</p>
+            <p className="text-sm text-[var(--color-secondary)] italic">{helperText}</p>
           )}
         </div>
       )}

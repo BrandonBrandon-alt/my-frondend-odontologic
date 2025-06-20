@@ -91,9 +91,9 @@ const Navbar = () => {
   };
 
   const getNavLinkClasses = ({ isActive }) => {
-    const baseClasses = "px-4 py-2 rounded-full text-sm font-semibold transition duration-300 flex items-center space-x-1 whitespace-nowrap";
-    const inactiveClasses = "text-white hover:bg-white/10 hover:text-accent";
-    const activeClasses = "bg-[var(--color-primary-darker)] text-white shadow-lg border-2 border-white/20";
+    const baseClasses = "px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center space-x-1 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-2";
+    const inactiveClasses = "text-white hover:bg-white/10 hover:text-accent bg-transparent";
+    const activeClasses = "bg-[var(--color-accent)] text-white shadow-lg border-2 border-white/20 relative after:content-[''] after:block after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:w-6 after:h-1 after:rounded-full after:bg-white after:animate-navbar-indicator";
     return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
   };
 
@@ -104,25 +104,62 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      className="bg-gradient-to-r from-primary via-accent to-secondary shadow-xl sticky top-0 z-50 animate-fade-in-up"
+      className="bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] shadow-2xl border-b border-white/20 sticky top-0 z-50 animate-fade-in-up backdrop-blur-md"
       initial="hidden"
       animate="visible"
       variants={navVariants}
     >
       <div className="container mx-auto flex justify-between items-center py-3 px-2 md:px-0">
         {/* Logo */}
-        <NavLink to="/" className="text-white text-2xl font-bold hover:text-accent transition duration-300 flex items-center space-x-2">
-          <svg width="36" height="36" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="30" cy="30" r="28" fill="#fff" fillOpacity="0.08" />
-            <path d="M30 0C19.39 0 10.74 8.65 10.74 19.26C10.74 34.39 30 59.97 30 59.97C30 59.97 49.26 34.39 49.26 19.26C49.26 8.65 40.61 0 30 0Z" fill="#007bff" />
-            <path d="M30 0C25.5 0 21.61 1.79 19.01 4.5C18.66 4.88 18.06 4.91 17.67 4.56L14.7 1.83C14.31 1.48 14.28 0.88 14.63 0.49C18.3 0.11 23.01 0 30 0Z" fill="white" fillOpacity="0.8" />
-            <path d="M49.26 19.26C49.26 14.51 47.74 10.05 44.97 6.42L42.5 9.07C44.75 11.96 46.26 15.52 46.26 19.26C46.26 21.43 45.7 23.51 44.66 25.43L48.24 23.36C49.07 21.84 49.26 20.59 49.26 19.26Z" fill="white" fillOpacity="0.3" />
-            <path d="M30 4.5C23.01 4.5 17.06 9.87 15.82 16.5C15.71 17.04 15.93 17.61 16.42 17.87L18.73 19.16C19.22 19.42 19.82 19.21 20.03 18.68C20.91 16.42 22.84 14.5 25.17 13.06C26.79 12.06 28.37 11.75 30 11.75C31.63 11.75 33.21 12.06 34.83 13.06C37.16 14.5 39.09 16.42 39.97 18.68C40.18 19.21 40.78 19.42 41.27 19.16L43.58 17.87C44.07 17.61 44.29 17.04 44.18 16.5C42.94 9.87 36.99 4.5 30 4.5Z" fill="#20c997" />
-            <circle className="sparkle-1" cx="38" cy="10" r="1.5" fill="white" />
-            <circle className="sparkle-2" cx="45" cy="22" r="1.2" fill="white" />
-            <circle className="sparkle-3" cx="22" cy="15" r="1.3" fill="white" />
-            <circle className="sparkle-4" cx="30" cy="5" r="1.8" fill="white" />
-            <circle className="sparkle-5" cx="15" cy="25" r="1.0" fill="white" />
+        <NavLink to="/" className="text-white text-2xl font-bold hover:text-[var(--color-accent)] transition duration-300 flex items-center space-x-3">
+          <style>{`
+            .sparkle {
+              transform-origin: center;
+              animation: sparkle-blink 2.2s infinite ease-in-out;
+            }
+            .sparkle2 {
+              animation-delay: 0.7s;
+              animation: sparkle-scale 2.5s infinite alternate;
+            }
+            .sparkle3 {
+              animation-delay: 1.2s;
+              animation: sparkle-rotate 3s infinite linear;
+            }
+            @keyframes sparkle-blink {
+              0%, 100% { opacity: 0.8; }
+              50% { opacity: 0.2; }
+            }
+            @keyframes sparkle-scale {
+              0%, 100% { transform: scale(1); }
+              50% { transform: scale(1.4); }
+            }
+            @keyframes sparkle-rotate {
+              0% { transform: rotate(0deg) scale(1); }
+              100% { transform: rotate(360deg) scale(1.2); }
+            }
+          `}</style>
+          <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tooth-cool" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--color-primary)" />
+                <stop offset="100%" stopColor="var(--color-accent)" />
+              </linearGradient>
+              <radialGradient id="shine" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#fff" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="transparent" />
+              </radialGradient>
+            </defs>
+            {/* Diente bold y curvo */}
+            <path d="M32 12C22 12 14 26 20 48C23 60 29 60 32 50C35 60 41 60 44 48C50 26 42 12 32 12Z" fill="url(#tooth-cool)" stroke="white" strokeWidth="3.5"/>
+            {/* Sombra interior */}
+            <ellipse cx="32" cy="38" rx="10" ry="4" fill="url(#shine)" opacity="0.5"/>
+            {/* Brillos tipo sparkle animados */}
+            <g>
+              <polygon className="sparkle" points="50,20 52,24 56,24 53,27 54,31 50,29 46,31 47,27 44,24 48,24" fill="#fff" opacity="0.85"/>
+              <circle className="sparkle2" cx="40" cy="18" r="2" fill="#fff" opacity="0.8"/>
+              <rect className="sparkle3" x="38" y="14" width="1" height="5" rx="0.5" fill="#fff" opacity="0.7"/>
+              <polygon points="24,36 25,38 27,38 25.5,39.5 26,42 24,41 22,42 22.5,39.5 21,38 23,38" fill="#fff" opacity="0.6"/>
+            </g>
           </svg>
           <span className="leading-none drop-shadow-lg">Odontologic</span>
         </NavLink>
@@ -138,17 +175,17 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center space-x-6">
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-              <NavLink to="/" className={getNavLinkClasses} end><HomeIcon className="h-5 w-5 mr-1" />Home</NavLink>
+              <NavLink to="/" className={getNavLinkClasses} end><HomeIcon className="h-5 w-5 mr-1 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />Home</NavLink>
             </motion.div>
           </li>
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-              <NavLink to="/about" className={getNavLinkClasses}><InformationCircleIcon className="h-5 w-5 mr-1" />Acerca de</NavLink>
+              <NavLink to="/about" className={getNavLinkClasses}><InformationCircleIcon className="h-5 w-5 mr-1 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />Acerca de</NavLink>
             </motion.div>
           </li>
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
-              <NavLink to="/contact" className={getNavLinkClasses}><PhoneIcon className="h-5 w-5 mr-1" />Contacto</NavLink>
+              <NavLink to="/contact" className={getNavLinkClasses}><PhoneIcon className="h-5 w-5 mr-1 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />Contacto</NavLink>
             </motion.div>
           </li>
 
@@ -163,8 +200,12 @@ const Navbar = () => {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center mr-2 border-2 border-white/30">
-                    <UserCircleIcon className="h-7 w-7 text-white" />
+                  <span className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center mr-2 border-2 border-white/30 overflow-hidden">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
+                    ) : (
+                      <UserCircleIcon className="h-7 w-7 text-white" />
+                    )}
                   </span>
                   <span className="font-semibold text-lg drop-shadow-sm">{user?.name || 'Mi Perfil'}</span>
                   {user?.role && (
@@ -192,7 +233,13 @@ const Navbar = () => {
                         Dashboard
                       </NavLink>
                       <NavLink
-                        to="/patient-profile"
+                        to={
+                          user?.role === 'admin'
+                            ? '/admin-profile'
+                            : user?.role === 'dentist'
+                              ? '/dentist-profile'
+                              : '/patient-profile'
+                        }
                         className="block px-5 py-3 text-base text-gray-700 hover:bg-accent/10 transition duration-150"
                         onClick={() => setIsDropdownOpen(false)}
                       >
@@ -243,20 +290,33 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsMenuOpen(false)}
           >
             <motion.div
-              className="absolute right-0 top-0 h-full w-64 bg-white shadow-xl"
+              className="absolute right-0 top-0 h-full w-64 bg-white/90 shadow-xl"
               variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
               onClick={(e) => e.stopPropagation()}
             >
+              <div className="flex items-center space-x-2 mb-6">
+                {/* Logo animado */}
+                <svg width="36" height="36" viewBox="0 0 64 64" fill="none" className="animate-spin-slow" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="tooth-cool" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--color-primary)" />
+                      <stop offset="100%" stopColor="var(--color-accent)" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M32 12C22 12 14 26 20 48C23 60 29 60 32 50C35 60 41 60 44 48C50 26 42 12 32 12Z" fill="url(#tooth-cool)" stroke="white" strokeWidth="3.5"/>
+                </svg>
+                <span className="text-xl font-bold text-accent">Odontologic</span>
+              </div>
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-xl font-bold text-gray-800">Menú</h2>
@@ -274,7 +334,7 @@ const Navbar = () => {
                     className="block py-2 text-gray-700 hover:text-accent transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <HomeIcon className="h-5 w-5 inline mr-2" />
+                    <HomeIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
                     Home
                   </NavLink>
                   <NavLink
@@ -282,7 +342,7 @@ const Navbar = () => {
                     className="block py-2 text-gray-700 hover:text-accent transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <InformationCircleIcon className="h-5 w-5 inline mr-2" />
+                    <InformationCircleIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
                     Acerca de
                   </NavLink>
                   <NavLink
@@ -290,7 +350,7 @@ const Navbar = () => {
                     className="block py-2 text-gray-700 hover:text-accent transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <PhoneIcon className="h-5 w-5 inline mr-2" />
+                    <PhoneIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
                     Contacto
                   </NavLink>
 
@@ -305,7 +365,13 @@ const Navbar = () => {
                         Dashboard
                       </NavLink>
                       <NavLink
-                        to="/patient-profile"
+                        to={
+                          user?.role === 'admin'
+                            ? '/admin-profile'
+                            : user?.role === 'dentist'
+                              ? '/dentist-profile'
+                              : '/patient-profile'
+                        }
                         className="block py-2 text-gray-700 hover:text-accent transition duration-150"
                         onClick={() => setIsMenuOpen(false)}
                       >

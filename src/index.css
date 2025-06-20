@@ -1,14 +1,16 @@
 /* src/index.css */
 @import "tailwindcss";
 
-@theme {
-  /* Define tus colores como variables CSS */
-  --color-primary: #005F9E;        
-  --color-secondary: #4AA8E2;     
-  --color-accent: #D72F8B;        
-  --color-text-dark: #333333;     
-  --color-background-light: #F8F8F8; 
-   --color-primary-darker: #256E8F; 
+:root {
+  --color-primary: #009688;         /* Verde azulado */
+  --color-primary-darker: #004D40;  /* Verde oscuro */
+  --color-secondary: #B2DFDB;       /* Verde agua claro */
+  --color-accent: #00B8D4;          /* Celeste acento */
+  --color-background-light: #F5F5F5;/* Gris muy claro */
+  --color-background-dark: #e8ddea; /* Fondo alternativo suave */
+  --color-text-dark: #004D40;       /* Gris azulado oscuro */
+  --color-success: #4caf50;         /* Verde éxito */
+  --color-error: #e53935;           /* Rojo error */
 }
 
 /* Tus animaciones personalizadas */
