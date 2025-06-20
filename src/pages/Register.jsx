@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Input, Button, Alert } from '../components';
 import { EyeIcon, EyeSlashIcon, UserIcon, IdentificationIcon, EnvelopeIcon, PhoneIcon, MapPinIcon, CalendarIcon, LockClosedIcon } from '@heroicons/react/24/outline'; // Importa más iconos
 import registerImage from '../assets/Registro.png'; // Asegúrate de tener una imagen en esta ruta.
@@ -27,6 +28,7 @@ function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,17 +60,23 @@ function Register() {
       return;
     }
 
-    const dataToSend = {
-      name: formData.name,
-      idNumber: formData.idNumber,
-      email: formData.email,
-      password: formData.password,
-      phone: formData.phone,
-      address: formData.address,
-      birth_date: formData.birth_date,
-    };
+    if (!executeRecaptcha) {
+      setError('No se pudo inicializar el captcha. Intenta de nuevo.');
+      setLoading(false);
+      return;
+    }
 
     try {
+      const captchaToken = await executeRecaptcha('register');
+      if (!captchaToken) {
+        setError('No se pudo validar el captcha. Intenta de nuevo.');
+        setLoading(false);
+        return;
+      }
+      const dataToSend = {
+        ...formData,
+        captchaToken,
+      };
       const response = await authService.register(dataToSend);
       setMessage(response.message || 'Registro exitoso. Revisa tu correo para activar tu cuenta.');
 

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 // Importa los componentes Input, Button, Alert
 import { Input, Button, Alert } from '../components'; // Actualizado para usar Alert
@@ -24,6 +25,8 @@ function Login() {
 
   // Estados para la visibilidad de la contraseña
   const [showPassword, setShowPassword] = useState(false);
+
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const navigate = useNavigate();
   // Obtén la función 'login' del contexto
@@ -54,8 +57,20 @@ function Login() {
     setMessage('');
     setError('');
 
+    if (!executeRecaptcha) {
+      setError('No se pudo inicializar el captcha. Intenta de nuevo.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await loginContext(formData);
+      const captchaToken = await executeRecaptcha('login');
+      if (!captchaToken) {
+        setError('No se pudo validar el captcha. Intenta de nuevo.');
+        setLoading(false);
+        return;
+      }
+      const response = await loginContext({ ...formData, captchaToken });
 
       setMessage(response.message || 'Inicio de sesión exitoso.');
 

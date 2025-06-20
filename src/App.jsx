@@ -1,6 +1,7 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 // Importa tus componentes de página principales
 import { Navbar } from './components';
@@ -106,11 +107,13 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </BrowserRouter>
+    <GoogleReCaptchaProvider reCaptchaKey="6LdW4mcrAAAAAC9sk9VBvPegcralRA6ur9jJFvpx">
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
+    </GoogleReCaptchaProvider>
   );
 }
 
