@@ -23,9 +23,9 @@ const Alert = ({
   // Configuración por tipo
   const alertConfig = {
     success: {
-      bg: 'from-[var(--color-accent)]/10 to-[var(--color-accent)]/5',
-      border: 'border-[var(--color-accent)]',
-      text: 'text-[var(--color-accent)]',
+      bg: 'from-[var(--color-success)]/10 to-[var(--color-success)]/5',
+      border: 'border-[var(--color-success)]',
+      text: 'text-[var(--color-success)]',
       icon: (
         <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -33,9 +33,9 @@ const Alert = ({
       )
     },
     error: {
-      bg: 'from-[var(--color-accent)]/10 to-[var(--color-accent)]/5',
-      border: 'border-[var(--color-accent)]',
-      text: 'text-[var(--color-accent)]',
+      bg: 'from-[var(--color-error)]/10 to-[var(--color-error)]/5',
+      border: 'border-[var(--color-error)]',
+      text: 'text-[var(--color-error)]',
       icon: (
         <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
