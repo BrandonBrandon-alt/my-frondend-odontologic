@@ -27,10 +27,10 @@ const Button = ({
   
   // Variantes
   const variants = {
-    primary: 'bg-accent hover:bg-primary text-white focus:ring-accent',
-    secondary: 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500',
-    outline: 'border-2 border-accent text-accent bg-white hover:bg-accent hover:text-white focus:ring-accent',
-    ghost: 'text-accent hover:bg-accent/10 focus:ring-accent bg-transparent'
+    primary: 'bg-[var(--color-accent)] hover:bg-[var(--color-primary)] text-white focus:ring-[var(--color-accent)]',
+    secondary: 'bg-[var(--color-primary-darker)] hover:bg-[var(--color-primary)] text-white focus:ring-[var(--color-primary)]',
+    outline: 'border-2 border-[var(--color-accent)] text-[var(--color-accent)] bg-[var(--color-background-light)] hover:bg-[var(--color-accent)] hover:text-white focus:ring-[var(--color-accent)]',
+    ghost: 'text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 focus:ring-[var(--color-accent)] bg-transparent'
   };
   
   // Tamaños

@@ -21,9 +21,9 @@ const LoadingSpinner = ({
   
   // Colores
   const colors = {
-    primary: 'text-accent',
+    primary: 'text-[var(--color-accent)]',
     white: 'text-white',
-    gray: 'text-gray-400'
+    gray: 'text-[var(--color-secondary)]'
   };
   
   const spinnerClasses = [

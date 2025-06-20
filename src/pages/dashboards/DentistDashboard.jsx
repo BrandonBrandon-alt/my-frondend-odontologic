@@ -51,19 +51,19 @@ function DentistDashboard() {
       <div className="max-w-7xl mx-auto py-8">
         {/* Estadísticas ficticias */}
         <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12" variants={containerVariants}>
-          <StatCard icon={<ChartBarIcon className="w-10 h-10 text-accent" />} label="Pacientes Atendidos" value="112" description="¡Gran impacto en la salud!" color="from-accent to-primary" />
-          <StatCard icon={<HeartIcon className="w-10 h-10 text-secondary" />} label="Días sin Ausencias" value="180" description="¡Compromiso ejemplar!" color="from-secondary to-primary" />
-          <StatCard icon={<CheckBadgeIcon className="w-10 h-10 text-primary" />} label="Tratamientos Exitosos" value="89" description="¡Tus pacientes te recomiendan!" color="from-primary to-accent" />
-          <StatCard icon={<UserGroupIcon className="w-10 h-10 text-primary" />} label="Nuevos Pacientes" value="14" description="¡La clínica sigue creciendo!" color="from-primary to-secondary" />
+          <StatCard icon={<ChartBarIcon className="w-10 h-10 text-[var(--color-accent)]" />} label="Pacientes Atendidos" value="112" description="¡Gran impacto en la salud!" color="from-[var(--color-accent)] to-[var(--color-primary)]" />
+          <StatCard icon={<HeartIcon className="w-10 h-10 text-[var(--color-secondary)]" />} label="Días sin Ausencias" value="180" description="¡Compromiso ejemplar!" color="from-[var(--color-secondary)] to-[var(--color-primary)]" />
+          <StatCard icon={<CheckBadgeIcon className="w-10 h-10 text-[var(--color-primary)]" />} label="Tratamientos Exitosos" value="89" description="¡Tus pacientes te recomiendan!" color="from-[var(--color-primary)] to-[var(--color-accent)]" />
+          <StatCard icon={<UserGroupIcon className="w-10 h-10 text-[var(--color-primary)]" />} label="Nuevos Pacientes" value="14" description="¡La clínica sigue creciendo!" color="from-[var(--color-primary)] to-[var(--color-secondary)]" />
         </motion.div>
 
         {/* Gráfico animado ficticio */}
-        <motion.div className="bg-white rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}>
+        <motion.div className="bg-[var(--color-background-light)] rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}>
           <div className="flex-1 flex flex-col items-center md:items-start">
             <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-2 flex items-center gap-2">
-              <ChartBarIcon className="w-7 h-7 text-accent" /> Progreso Profesional
+              <ChartBarIcon className="w-7 h-7 text-[var(--color-accent)]" /> Progreso Profesional
             </h3>
-            <p className="text-gray-700 mb-4 max-w-md">¡Has mejorado tu eficiencia un <span className="text-accent font-bold">+12%</span> este semestre! Sigue capacitándote y creciendo como profesional.</p>
+            <p className="text-[var(--color-text-dark)] mb-4 max-w-md">¡Has mejorado tu eficiencia un <span className="text-[var(--color-accent)] font-bold">+12%</span> este semestre! Sigue capacitándote y creciendo como profesional.</p>
             <div className="flex gap-3 mt-2">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-semibold"><StarIcon className="w-4 h-4 mr-1" /> Nivel Platino</span>
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-semibold"><TrophyIcon className="w-4 h-4 mr-1" /> 5 Logros</span>
@@ -76,13 +76,13 @@ function DentistDashboard() {
 
         {/* Logros */}
         <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" variants={containerVariants}>
-          <AchievementCard icon={<TrophyIcon className="w-8 h-8 text-accent" />} title="100% Asistencia" description="No faltaste ni un solo día en 6 meses." color="from-accent to-primary" />
-          <AchievementCard icon={<StarIcon className="w-8 h-8 text-secondary" />} title="Dentista Destacado" description="Tus pacientes te califican con 5 estrellas." color="from-secondary to-primary" />
-          <AchievementCard icon={<CheckBadgeIcon className="w-8 h-8 text-primary" />} title="Cero Complicaciones" description="Todos tus tratamientos fueron exitosos." color="from-primary to-accent" />
+          <AchievementCard icon={<TrophyIcon className="w-8 h-8 text-[var(--color-accent)]" />} title="100% Asistencia" description="No faltaste ni un solo día en 6 meses." color="from-[var(--color-accent)] to-[var(--color-primary)]" />
+          <AchievementCard icon={<StarIcon className="w-8 h-8 text-[var(--color-secondary)]" />} title="Dentista Destacado" description="Tus pacientes te califican con 5 estrellas." color="from-[var(--color-secondary)] to-[var(--color-primary)]" />
+          <AchievementCard icon={<CheckBadgeIcon className="w-8 h-8 text-[var(--color-primary)]" />} title="Cero Complicaciones" description="Todos tus tratamientos fueron exitosos." color="from-[var(--color-primary)] to-[var(--color-accent)]" />
         </motion.div>
 
         {/* Bienvenida y perfil rápido */}
-        <motion.div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up" variants={itemVariants}>
+        <motion.div className="bg-[var(--color-background-light)] rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up" variants={itemVariants}>
           <motion.h1 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-dark)] mb-3 leading-tight tracking-tight drop-shadow-lg" variants={textFadeIn}>
             ¡Bienvenido(a), <span className="text-[var(--color-primary)] drop-shadow-md">{currentUser?.name || 'Odontólogo/a'}</span>!
           </motion.h1>
@@ -162,10 +162,10 @@ const CircleIconBg = ({ children }) => (
 // Gráfico animado ficticio
 const AnimatedBarChart = () => (
   <svg viewBox="0 0 120 60" className="w-full h-24">
-    <rect x="10" y="30" width="15" height="20" rx="3" fill="#D72F8B" className="animate-pulse" />
-    <rect x="35" y="20" width="15" height="30" rx="3" fill="#4AA8E2" className="animate-bounce" />
-    <rect x="60" y="10" width="15" height="40" rx="3" fill="#256E8F" className="animate-pulse" />
-    <rect x="85" y="25" width="15" height="25" rx="3" fill="#20c997" className="animate-bounce" />
+    <rect x="10" y="30" width="15" height="20" rx="3" fill="var(--color-accent)" className="animate-pulse" />
+    <rect x="35" y="20" width="15" height="30" rx="3" fill="var(--color-secondary)" className="animate-bounce" />
+    <rect x="60" y="10" width="15" height="40" rx="3" fill="var(--color-primary-darker)" className="animate-pulse" />
+    <rect x="85" y="25" width="15" height="25" rx="3" fill="var(--color-primary)" className="animate-bounce" />
   </svg>
 );
 

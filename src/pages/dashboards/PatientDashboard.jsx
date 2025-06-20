@@ -135,47 +135,47 @@ function PatientDashboard() {
           variants={containerVariants}
         >
           <StatCard
-            icon={<ChartBarIcon className="w-10 h-10 text-accent" />}
+            icon={<ChartBarIcon className="w-10 h-10 text-[var(--color-accent)]" />}
             label="Citas Realizadas"
             value="27"
             description="¡Vas por un récord de salud!"
-            color="from-accent to-primary"
+            color="from-[var(--color-accent)] to-[var(--color-primary)]"
           />
           <StatCard
-            icon={<HeartIcon className="w-10 h-10 text-secondary" />}
+            icon={<HeartIcon className="w-10 h-10 text-[var(--color-secondary)]" />}
             label="Días sin Caries"
             value="365"
             description="¡Un año completo cuidando tu sonrisa!"
-            color="from-secondary to-primary"
+            color="from-[var(--color-secondary)] to-[var(--color-primary)]"
           />
           <StatCard
-            icon={<CheckBadgeIcon className="w-10 h-10 text-primary" />}
+            icon={<CheckBadgeIcon className="w-10 h-10 text-[var(--color-primary)]" />}
             label="Tratamientos Completados"
             value="5"
             description="¡Felicidades por tu constancia!"
-            color="from-primary to-accent"
+            color="from-[var(--color-primary)] to-[var(--color-accent)]"
           />
           <StatCard
-            icon={<UserGroupIcon className="w-10 h-10 text-primary" />}
+            icon={<UserGroupIcon className="w-10 h-10 text-[var(--color-primary)]" />}
             label="Recomendaciones"
             value="3"
             description="¡Tus amigos también confían en Odontologic!"
-            color="from-primary to-secondary"
+            color="from-[var(--color-primary)] to-[var(--color-secondary)]"
           />
         </motion.div>
 
         {/* --- Gráfico Animado Ficticio --- */}
         <motion.div
-          className="bg-white rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up"
+          className="bg-[var(--color-background-light)] rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}
         >
           <div className="flex-1 flex flex-col items-center md:items-start">
             <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-2 flex items-center gap-2">
-              <ChartBarIcon className="w-7 h-7 text-accent" /> Progreso de Salud Bucal
+              <ChartBarIcon className="w-7 h-7 text-[var(--color-accent)]" /> Progreso de Salud Bucal
             </h3>
-            <p className="text-gray-700 mb-4 max-w-md">¡Tu salud bucal ha mejorado un <span className="text-accent font-bold">+18%</span> este año! Sigue así para alcanzar nuevos logros y mantener tu sonrisa radiante.</p>
+            <p className="text-[var(--color-text-dark)] mb-4 max-w-md">¡Tu salud bucal ha mejorado un <span className="text-[var(--color-accent)] font-bold">+18%</span> este año! Sigue así para alcanzar nuevos logros y mantener tu sonrisa radiante.</p>
             <div className="flex gap-3 mt-2">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-semibold"><StarIcon className="w-4 h-4 mr-1" /> Nivel Oro</span>
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-semibold"><TrophyIcon className="w-4 h-4 mr-1" /> 3 Logros</span>
@@ -189,7 +189,7 @@ function PatientDashboard() {
 
         {/* --- Sección de Bienvenida Personalizada y Moderna --- */}
         <motion.div
-          className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up"
+          className="bg-[var(--color-background-light)] rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up"
           variants={itemVariants}
         >
           <motion.h1
@@ -221,22 +221,22 @@ function PatientDashboard() {
           variants={containerVariants}
         >
           <AchievementCard
-            icon={<TrophyIcon className="w-8 h-8 text-accent" />}
+            icon={<TrophyIcon className="w-8 h-8 text-[var(--color-accent)]" />}
             title="¡Sin caries en 1 año!"
             description="Has mantenido una higiene bucal ejemplar durante 12 meses."
-            color="from-accent to-primary"
+            color="from-[var(--color-accent)] to-[var(--color-primary)]"
           />
           <AchievementCard
-            icon={<StarIcon className="w-8 h-8 text-secondary" />}
+            icon={<StarIcon className="w-8 h-8 text-[var(--color-secondary)]" />}
             title="Paciente Destacado"
             description="Tu asistencia y compromiso te han hecho merecedor de este reconocimiento."
-            color="from-secondary to-primary"
+            color="from-[var(--color-secondary)] to-[var(--color-primary)]"
           />
           <AchievementCard
-            icon={<CheckBadgeIcon className="w-8 h-8 text-primary" />}
+            icon={<CheckBadgeIcon className="w-8 h-8 text-[var(--color-primary)]" />}
             title="Tratamientos al Día"
             description="No tienes tratamientos pendientes. ¡Sigue así!"
-            color="from-primary to-accent"
+            color="from-[var(--color-primary)] to-[var(--color-accent)]"
           />
         </motion.div>
 
@@ -351,10 +351,10 @@ const StatCard = ({ icon, label, value, description, color }) => (
 // Gráfico animado ficticio
 const AnimatedBarChart = () => (
   <svg viewBox="0 0 120 60" className="w-full h-24">
-    <rect x="10" y="30" width="15" height="20" rx="3" fill="#D72F8B" className="animate-pulse" />
-    <rect x="35" y="20" width="15" height="30" rx="3" fill="#4AA8E2" className="animate-bounce" />
-    <rect x="60" y="10" width="15" height="40" rx="3" fill="#256E8F" className="animate-pulse" />
-    <rect x="85" y="25" width="15" height="25" rx="3" fill="#20c997" className="animate-bounce" />
+    <rect x="10" y="30" width="15" height="20" rx="3" fill="var(--color-accent)" className="animate-pulse" />
+    <rect x="35" y="20" width="15" height="30" rx="3" fill="var(--color-secondary)" className="animate-bounce" />
+    <rect x="60" y="10" width="15" height="40" rx="3" fill="var(--color-primary-darker)" className="animate-pulse" />
+    <rect x="85" y="25" width="15" height="25" rx="3" fill="var(--color-primary)" className="animate-bounce" />
   </svg>
 );
 

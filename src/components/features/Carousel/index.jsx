@@ -79,7 +79,7 @@ const Carousel = () => {
 
   return (
     <motion.div
-      className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-3xl shadow-2xl bg-gray-900 animate-fade-in-up"
+      className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-3xl shadow-2xl bg-[var(--color-primary-darker)] animate-fade-in-up"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, type: 'spring', stiffness: 80 }}
@@ -127,7 +127,7 @@ const Carousel = () => {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               {/* Overlay oscuro para mejor contraste */}
-              <div className="absolute inset-0 bg-black/40 rounded-3xl"></div>
+              <div className="absolute inset-0 bg-[var(--color-primary-darker)]/80 rounded-3xl"></div>
               {/* Overlay de texto animado */}
               <motion.div
                 className="relative z-10 flex flex-col items-center justify-center text-center px-4"
@@ -150,14 +150,14 @@ const Carousel = () => {
       {/* Botones de navegación */}
       <button
         onClick={goToPrev}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/30 backdrop-blur-md text-white p-4 rounded-full shadow-xl hover:bg-accent/80 hover:text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75 z-20"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/30 backdrop-blur-md text-white p-4 rounded-full shadow-xl hover:bg-[var(--color-accent)]/80 hover:text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75 z-20"
         aria-label="Anterior"
       >
         <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
       </button>
       <button
         onClick={goToNext}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/30 backdrop-blur-md text-white p-4 rounded-full shadow-xl hover:bg-accent/80 hover:text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75 z-20"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/30 backdrop-blur-md text-white p-4 rounded-full shadow-xl hover:bg-[var(--color-accent)]/80 hover:text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-75 z-20"
         aria-label="Siguiente"
       >
         <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
@@ -171,8 +171,8 @@ const Carousel = () => {
             onClick={() => goToSlide(index)}
             className={`w-4 h-4 rounded-full border-2 border-white shadow-lg transition-all duration-300 ease-in-out focus:outline-none ${
               index === currentIndex
-                ? 'bg-accent scale-125 shadow-accent/40'
-                : 'bg-white/40 hover:bg-accent/60'
+                ? 'bg-[var(--color-accent)] scale-125 shadow-[var(--color-accent)]/40'
+                : 'bg-[var(--color-secondary)]/40 hover:bg-[var(--color-accent)]/60'
             }`}
             aria-label={`Ir al slide ${index + 1}`}
             animate={index === currentIndex ? { scale: 1.25 } : { scale: 1 }}

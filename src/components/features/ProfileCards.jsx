@@ -6,7 +6,7 @@ import { UserCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 const DashboardCard = ({ to, icon, title, description }) => (
   <Link
     to={to}
-    className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up"
+    className="bg-[var(--color-background-light)] p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up"
   >
     <div className="mb-5">{icon}</div>
     <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-300 drop-shadow-sm">

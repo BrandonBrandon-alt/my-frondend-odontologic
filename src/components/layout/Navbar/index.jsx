@@ -104,14 +104,14 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      className="bg-gradient-to-r from-primary via-primary to-accent shadow-2xl border-b border-white/20 sticky top-0 z-50 animate-fade-in-up backdrop-blur-md"
+      className="bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] shadow-2xl border-b border-white/20 sticky top-0 z-50 animate-fade-in-up backdrop-blur-md"
       initial="hidden"
       animate="visible"
       variants={navVariants}
     >
       <div className="container mx-auto flex justify-between items-center py-3 px-2 md:px-0">
         {/* Logo */}
-        <NavLink to="/" className="text-white text-2xl font-bold hover:text-accent transition duration-300 flex items-center space-x-3">
+        <NavLink to="/" className="text-white text-2xl font-bold hover:text-[var(--color-accent)] transition duration-300 flex items-center space-x-3">
           <style>{`
             .sparkle {
               transform-origin: center;
