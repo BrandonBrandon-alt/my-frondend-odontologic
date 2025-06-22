@@ -21,10 +21,10 @@ const ResendActivation = () => {
     setError('');
 
     try {
-      const response = await authService.resendActivationEmail({ email });
+      const response = await authService.resendActivationCode(email);
       setMessage(response.message || 'Se ha reenviado el correo de activación. Por favor, revisa tu bandeja de entrada.');
       setError(''); // Limpia cualquier error previo
-      setTimeout(() => navigate('/login'), 5000); // Redirige a login después de 5 segundos
+      setTimeout(() => navigate('/activate-account', { state: { email: email } }), 2000); // Redirige a activación después de 2 segundos
     } catch (err) {
       setError(err.message || 'Hubo un error al reenviar el correo. Por favor, inténtalo de nuevo.');
       setMessage(''); // Limpia cualquier mensaje de éxito previo
