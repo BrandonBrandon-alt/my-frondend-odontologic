@@ -8,4 +8,7 @@ export * from './forms';
 export * from './layout';
 
 // Exportar componentes de features
-export * from './features'; 
+export * from './features';
+
+// Exportar componentes de citas
+export * from './appointment'; 
