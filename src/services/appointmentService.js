@@ -65,39 +65,28 @@ export const appointmentService = {
     }
   },
 
-  // ======================= CREAR CITA COMO INVITADO =======================
-  createGuestAppointment: async (datosCita) => {
+  // ======================= CREAR CITA COMO INVITADO (UNIFICADO) =======================
+  createGuestAppointment: async (appointmentData) => {
     try {
-      // Extraer fecha y hora de la disponibilidad
-      const disponibilidad = datosCita.disponibilidad;
-      const preferred_date = disponibilidad?.date;
-      
-      // Formatear la hora a HH:MM (sin segundos) - usar la hora de inicio
-      let preferred_time = disponibilidad?.start_time;
-      if (preferred_time && preferred_time.includes(':')) {
-        const timeParts = preferred_time.split(':');
-        preferred_time = `${timeParts[0].padStart(2, '0')}:${timeParts[1].padStart(2, '0')}`; // Asegurar formato HH:MM
-      }
-      
-      console.log('Disponibilidad completa:', disponibilidad);
-      console.log('Hora formateada:', preferred_time);
-      
       const payload = {
-        guest_patient_id: datosCita.guest_patient_id,
-        disponibilidad_id: datosCita.disponibilidad_id,
-        service_type_id: datosCita.service_type_id,
-        preferred_date: preferred_date,
-        preferred_time: preferred_time,
-        notes: datosCita.notes || ""
+        guest_patient: {
+          name: appointmentData.datosPaciente.name,
+          email: appointmentData.datosPaciente.email,
+          phone: appointmentData.datosPaciente.phone,
+        },
+        disponibilidad_id: appointmentData.disponibilidadId,
+        service_type_id: appointmentData.serviceTypeId,
+        preferred_date: appointmentData.preferredDate,
+        notes: appointmentData.notes || null,
       };
-      
-      console.log('Payload de cita enviado al backend:', payload);
-      
+
+      console.log('Payload unificado enviado al backend:', payload);
+
       const response = await axiosInstance.post(`${APPOINTMENT_BASE_PATH}/guest`, payload);
-      console.log('Respuesta del backend (cita):', response.data);
+      console.log('Respuesta del backend (cita unificada):', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error completo en createGuestAppointment:', error);
+      console.error('Error en createGuestAppointment (unificado):', error);
       console.error('Datos del error:', error.response?.data);
       throw error;
     }

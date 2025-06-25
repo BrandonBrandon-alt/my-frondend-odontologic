@@ -35,14 +35,26 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
   };
 
   const groupByDate = (disponibilidades) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Establecer a medianoche para comparar solo fechas
+
+    // Filtrar para obtener solo disponibilidades de hoy en adelante
+    const futureDisponibilidades = disponibilidades.filter(disp => {
+      // Importante: Añadir 'T00:00:00' para evitar problemas de zona horaria
+      // donde 'YYYY-MM-DD' se interpreta como medianoche UTC, que podría ser el día anterior.
+      const dispDate = new Date(`${disp.date}T00:00:00`);
+      return dispDate >= today;
+    });
+
     const grouped = {};
-    disponibilidades.forEach(disp => {
+    futureDisponibilidades.forEach(disp => {
       const date = disp.date;
       if (!grouped[date]) {
         grouped[date] = [];
       }
       grouped[date].push(disp);
     });
+    
     // Ordenar las fechas y luego los horarios dentro de cada fecha
     return Object.keys(grouped).sort().reduce((obj, key) => {
       obj[key] = grouped[key].sort((a, b) => a.start_time.localeCompare(b.start_time));
