@@ -5,19 +5,20 @@ import {
   UserIcon, 
   CalendarIcon, 
   ClockIcon, 
-  CurrencyDollarIcon,
-  MapPinIcon,
+  MapPinIcon, // Asegúrate de que este ícono sea útil o elimínalo si no se usa
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
+// CurrencyDollarIcon eliminado, ya no se usa.
 
 function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposServicio, disponibilidades }) {
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
+  // formatPrice eliminado, ya no se usa.
+  // const formatPrice = (price) => {
+  //   return new Intl.NumberFormat('es-CO', {
+  //     style: 'currency',
+  //     currency: 'COP',
+  //     minimumFractionDigits: 0,
+  //   }).format(price);
+  // };
 
   const formatTime = (time) => {
     return new Date(`2000-01-01T${time}`).toLocaleTimeString('es-CO', {
@@ -46,6 +47,7 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
   };
 
   // Obtener datos de las selecciones
+  // Ahora usaremos `isActive` en especialidad y `is_active` en disponibilidad y tipo de servicio si viene del DTO
   const especialidadSeleccionada = especialidades.find(esp => esp.id === selecciones.especialidadId);
   const tipoServicioSeleccionado = tiposServicio.find(ts => ts.id === selecciones.tipoServicioId);
   const disponibilidadSeleccionada = disponibilidades.find(disp => disp.id === selecciones.disponibilidadId);
@@ -68,7 +70,8 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
         { label: 'Especialidad', value: especialidadSeleccionada?.name },
         { label: 'Tipo de Servicio', value: tipoServicioSeleccionado?.name },
         { label: 'Duración', value: tipoServicioSeleccionado ? formatDuration(tipoServicioSeleccionado.duration) : '' },
-        { label: 'Precio', value: tipoServicioSeleccionado ? formatPrice(tipoServicioSeleccionado.price) : '' },
+        // Línea de Precio eliminada
+        // { label: 'Precio', value: tipoServicioSeleccionado ? formatPrice(tipoServicioSeleccionado.price) : '' },
       ]
     },
     {
@@ -77,7 +80,7 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
       items: [
         { label: 'Fecha', value: disponibilidadSeleccionada ? formatDate(disponibilidadSeleccionada.date) : '' },
         { label: 'Hora', value: disponibilidadSeleccionada ? `${formatTime(disponibilidadSeleccionada.start_time)} - ${formatTime(disponibilidadSeleccionada.end_time)}` : '' },
-        { label: 'Dentista', value: disponibilidadSeleccionada?.dentist.name },
+        { label: 'Dentista', value: disponibilidadSeleccionada?.dentist?.name || 'No especificado' }, // Uso de optional chaining para dentist.name
       ]
     }
   ];
@@ -106,25 +109,25 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
             key={seccion.titulo}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="bg-white border border-gray-200 rounded-lg p-6"
+            transition={{ delay: index * 0.1, duration: 0.4 }} // Duración ligeramente ajustada
+            className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200" // rounded-xl y sombras
           >
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                <seccion.icono className="w-5 h-5 text-primary" />
+              <div className="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0"> {/* Icono más grande y color más definido */}
+                <seccion.icono className="w-6 h-6 text-primary-600" /> {/* Icono más grande y color primario oscuro */}
               </div>
               <h3 className="text-lg font-semibold text-gray-900">
                 {seccion.titulo}
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4"> {/* Más espacio entre columnas y filas */}
               {seccion.items.map((item, itemIndex) => (
-                <div key={itemIndex} className="space-y-1">
-                  <dt className="text-sm font-medium text-gray-600">
+                <div key={itemIndex} className="flex flex-col"> {/* Asegura que label y value estén en columna */}
+                  <dt className="text-sm font-medium text-gray-500 mb-0.5"> {/* Color más tenue y margen */}
                     {item.label}
                   </dt>
-                  <dd className="text-sm text-gray-900 font-medium">
+                  <dd className="text-base text-gray-800 font-semibold"> {/* Más grande y negrita para el valor */}
                     {item.value || 'No especificado'}
                   </dd>
                 </div>
@@ -138,18 +141,18 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-white border border-gray-200 rounded-lg p-6"
+            transition={{ delay: 0.4, duration: 0.4 }}
+            className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
           >
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <DocumentTextIcon className="w-5 h-5 text-blue-600" />
+              <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <DocumentTextIcon className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900">
                 Notas Adicionales
               </h3>
             </div>
-            <p className="text-gray-700 text-sm leading-relaxed">
+            <p className="text-gray-700 text-base leading-relaxed"> {/* Ajuste de tamaño de texto */}
               {datosPaciente.notes}
             </p>
           </motion.div>
@@ -159,32 +162,32 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-blue-50 border border-blue-200 rounded-lg p-6"
+          transition={{ delay: 0.5, duration: 0.4 }}
+          className="bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm" // rounded-xl y sombra ligera
         >
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0">
-              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <CheckCircleIcon className="w-4 h-4 text-blue-600" />
+          <div className="flex items-start space-x-4"> {/* Aumento de espacio */}
+            <div className="flex-shrink-0 mt-0.5"> {/* Alineación del icono */}
+              <div className="w-7 h-7 bg-blue-200 rounded-full flex items-center justify-center"> {/* Icono más grande y fondo más visible */}
+                <CheckCircleIcon className="w-5 h-5 text-blue-700" /> {/* Icono más grande y color más oscuro */}
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-medium text-blue-900 mb-2">
+              <h4 className="text-md font-semibold text-blue-900 mb-2"> {/* Título un poco más grande y negrita */}
                 Información Importante
               </h4>
-              <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Recibirás confirmación por correo electrónico</li>
-                <li>• Llega 10 minutos antes de tu cita</li>
-                <li>• Trae tu documento de identidad</li>
-                <li>• Si tienes estudios previos, tráelos</li>
-                <li>• En caso de cancelación, hazlo con 24h de anticipación</li>
+              <ul className="text-sm text-blue-800 space-y-1.5"> {/* Espaciado un poco mayor entre ítems */}
+                <li>• Recibirás confirmación por correo electrónico.</li>
+                <li>• Llega 10 minutos antes de tu cita.</li>
+                <li>• Trae tu documento de identidad.</li>
+                <li>• Si tienes estudios previos, tráelos.</li>
+                <li>• En caso de cancelación, hazlo con 24h de anticipación.</li>
               </ul>
             </div>
           </div>
         </motion.div>
 
-        {/* Resumen de precio */}
-        {tipoServicioSeleccionado && (
+        {/* Resumen de precio: ESTE BLOQUE HA SIDO ELIMINADO COMPLETAMENTE */}
+        {/* {tipoServicioSeleccionado && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -210,10 +213,10 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
               </div>
             </div>
           </motion.div>
-        )}
+        )} */}
       </motion.div>
     </div>
   );
 }
 
-export default ConfirmacionCita; 
+export default ConfirmacionCita;
