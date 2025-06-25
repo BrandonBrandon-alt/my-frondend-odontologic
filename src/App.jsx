@@ -31,6 +31,9 @@ import ResendActivation from './pages/ResendActivation';
 import DentistProfile from './pages/dentist/DentistProfile';
 import AdminProfile from './pages/admin/AdminProfile';
 
+// Importa la página de GuestAppointment
+import GuestAppointment from './pages/GuestAppointment';
+
 // Componentes simples (dummies) para rutas que aún no tienes completas
 const About = () => (
   <div className="flex items-center justify-center min-h-[calc(100vh-64px)] bg-background-light text-text-dark text-3xl font-bold">
@@ -71,6 +74,7 @@ function AppRoutes() {
           <Route path="/solicitar-reset" element={<SolicitarReset />} />
           <Route path="/cambiar-password-reset" element={<CambiarPasswordReset />} />
           <Route path="/resend-activation" element={<ResendActivation />} />
+          <Route path="/guest-appointment" element={<GuestAppointment />} />
 
           {/* Rutas Protegidas por Rol */}
           <Route element={<ProtectedRoute allowedRoles={['user', 'admin']} />}>

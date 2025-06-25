@@ -54,9 +54,9 @@ function ActivateAccount() {
     setResendError('');
 
     try {
-      const response = await axios.post('http://localhost:3000/api/activar', formData);
+      const response = await authService.activateAccount(formData.email, formData.code);
 
-      setMessage(response.data.message || 'Cuenta activada correctamente. ¡Bienvenido a Odontologic!');
+      setMessage(response.message || 'Cuenta activada correctamente. ¡Bienvenido a Odontologic!');
 
       setTimeout(() => {
         navigate('/login');
@@ -89,8 +89,8 @@ function ActivateAccount() {
         setResendLoading(false);
         return;
       }
-      const response = await axios.post('http://localhost:3000/api/reenviar-activacion', { email: formData.email });
-      setResendMessage(response.data.message || 'Código de activación reenviado. Revisa tu correo.');
+      const response = await authService.resendActivationCode(formData.email);
+      setResendMessage(response.message || 'Código de activación reenviado. Revisa tu correo.');
     } catch (err) {
       console.error('Error al reenviar código:', err);
       if (err.response && err.response.data && err.response.data.error) {

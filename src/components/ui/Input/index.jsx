@@ -12,6 +12,7 @@ import React, { forwardRef } from 'react';
  * @param {string} props.size
  * @param {string} props.variant
  * @param {string} props.className
+ * @param {string} props.type - 'input' o 'textarea'
  * @param {Object} props.rest
  */
 const Input = forwardRef(({ 
@@ -24,6 +25,8 @@ const Input = forwardRef(({
   size = 'md',
   variant = 'default',
   className = '', 
+  type = 'input',
+  rows = 4,
   ...rest 
 }, ref) => {
   // Clases base
@@ -61,6 +64,31 @@ const Input = forwardRef(({
     className
   ].filter(Boolean).join(' ');
 
+  const renderInput = () => {
+    if (type === 'textarea') {
+      return (
+        <textarea
+          ref={ref}
+          id={id}
+          className={inputClasses}
+          placeholder={rest.placeholder ? rest.placeholder : ''}
+          rows={rows}
+          {...rest}
+        />
+      );
+    }
+    
+    return (
+      <input
+        ref={ref}
+        id={id}
+        className={inputClasses}
+        placeholder={rest.placeholder ? rest.placeholder : ''}
+        {...rest}
+      />
+    );
+  };
+
   return (
     <div className="w-full">
       {label && (
@@ -81,13 +109,7 @@ const Input = forwardRef(({
           </div>
         )}
         
-        <input
-          ref={ref}
-          id={id}
-          className={inputClasses}
-          placeholder={rest.placeholder ? rest.placeholder : ''}
-          {...rest}
-        />
+        {renderInput()}
         
         {endIcon && (
           <div className="absolute inset-y-0 right-0 flex items-center pr-4">
