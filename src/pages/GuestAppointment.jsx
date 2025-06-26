@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { appointmentService } from '../services';
 import { Button, Alert } from '../components';
+import ReCAPTCHA from "react-google-recaptcha";
 import { 
   UserIcon, 
   CalendarIcon, 
@@ -72,6 +73,7 @@ function GuestAppointment() {
     selecciones,
     datosPaciente,
   } = state;
+  const [captchaToken, setCaptchaToken] = React.useState('');
 
   useEffect(() => {
     cargarEspecialidades();
@@ -196,23 +198,23 @@ function GuestAppointment() {
 
       case 5:
         // --- Validaciones Finales ---
+        if (!captchaToken) {
+          dispatch({ type: 'SET_ERROR', payload: 'Por favor completa el reCAPTCHA.' });
+          return;
+        }
         const disponibilidadSeleccionada = disponibilidades.find(disp => disp.id === selecciones.disponibilidadId);
         const tipoServicioSeleccionado = tiposServicio.find(serv => serv.id === selecciones.tipoServicioId);
-
         if (!disponibilidadSeleccionada || !tipoServicioSeleccionado || !validarDatosPaciente()) {
             dispatch({ type: 'SET_ERROR', payload: 'Faltan datos o hay un error. Por favor, revisa los pasos anteriores.' });
             return;
         }
-
         const startTime = new Date(`1970-01-01T${disponibilidadSeleccionada.start_time}`);
         const endTime = new Date(`1970-01-01T${disponibilidadSeleccionada.end_time}`);
         const slotDurationInMinutes = (endTime - startTime) / (1000 * 60);
-
         if (tipoServicioSeleccionado.duration > slotDurationInMinutes) {
             dispatch({ type: 'SET_ERROR', payload: `El servicio (${tipoServicioSeleccionado.name}) requiere ${tipoServicioSeleccionado.duration} min, pero el horario solo tiene ${slotDurationInMinutes} min.` });
             return;
         }
-
         // --- Creación Unificada (Paciente + Cita) ---
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
@@ -220,22 +222,19 @@ function GuestAppointment() {
           const date = new Date(disponibilidadSeleccionada.date);
           const userTimezoneOffset = date.getTimezoneOffset() * 60000;
           const correctedDate = new Date(date.getTime() + userTimezoneOffset);
-          
           const year = correctedDate.getFullYear();
           const month = String(correctedDate.getMonth() + 1).padStart(2, '0');
           const day = String(correctedDate.getDate()).padStart(2, '0');
           const formattedDate = `${year}-${month}-${day}`;
-
           const appointmentData = {
             datosPaciente: datosPaciente,
             disponibilidadId: selecciones.disponibilidadId,
             serviceTypeId: selecciones.tipoServicioId,
             preferredDate: formattedDate, // ¡Enviar la cadena formateada!
             notes: datosPaciente.notes || null,
+            captchaToken,
           };
-
           const cita = await appointmentService.createGuestAppointment(appointmentData);
-
           if (cita.success) {
             dispatch({ type: 'SET_MESSAGE', payload: `¡Cita creada exitosamente! ID: ${cita.data.id}` });
             setTimeout(() => navigate('/login'), 3000);
@@ -367,13 +366,21 @@ function GuestAppointment() {
           )}
 
           {paso === 5 && (
-            <ConfirmacionCita
-              selecciones={selecciones}
-              datosPaciente={datosPaciente}
-              especialidades={especialidades}
-              tiposServicio={tiposServicio}
-              disponibilidades={disponibilidades}
-            />
+            <>
+              <ConfirmacionCita
+                selecciones={selecciones}
+                datosPaciente={datosPaciente}
+                especialidades={especialidades}
+                tiposServicio={tiposServicio}
+                disponibilidades={disponibilidades}
+              />
+              <div className="flex justify-center my-4">
+                <ReCAPTCHA
+                  sitekey="6LcH_2crAAAAAIdUCguL_3Yd8gpuumCShBddb_f7"
+                  onChange={token => setCaptchaToken(token)}
+                />
+              </div>
+            </>
           )}
         </motion.div>
 

@@ -79,9 +79,11 @@ export const appointmentService = {
         preferred_date: appointmentData.preferredDate,
         notes: appointmentData.notes || null,
       };
-
+      // Agregar captchaToken si está presente
+      if (appointmentData.captchaToken) {
+        payload.captchaToken = appointmentData.captchaToken;
+      }
       console.log('Payload unificado enviado al backend:', payload);
-
       const response = await axiosInstance.post(`${APPOINTMENT_BASE_PATH}/guest`, payload);
       console.log('Respuesta del backend (cita unificada):', response.data);
       return response.data;
