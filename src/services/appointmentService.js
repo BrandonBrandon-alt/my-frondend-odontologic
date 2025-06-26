@@ -1,6 +1,6 @@
 import axiosInstance from '../utils/axiosInstance';
 
-const APPOINTMENT_BASE_PATH = '/appointment';
+const APPOINTMENT_BASE_PATH = '/appointments';
 const ESPECIALIDAD_BASE_PATH = '/especialidad';
 const SERVICE_TYPE_BASE_PATH = '/service-type';
 const DISPONIBILIDAD_BASE_PATH = '/disponibilidad';
