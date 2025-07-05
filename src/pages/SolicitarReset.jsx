@@ -25,7 +25,7 @@ function SolicitarReset() {
       // CAMBIO AQUÍ: Usar authService.requestPasswordReset
       const response = await authService.requestPasswordReset(email);
       setMessage(response.message || 'Código de recuperación enviado. Revisa tu correo.');
-      
+
       setTimeout(() => {
         navigate('/cambiar-password-reset', { state: { email: email } });
       }, 2000);
@@ -118,10 +118,10 @@ function SolicitarReset() {
 
           {/* Mensajes de feedback */}
           <AnimatePresence>
-            <Alert type="success" message={message} />
-            <Alert type="error" message={error} />
+            {message && <Alert key="success-alert" type="success" message={message} />}
+            {error && <Alert key="error-alert" type="error" message={error} />}
           </AnimatePresence>
-
+          
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Correo Electrónico"

@@ -67,8 +67,8 @@ const ResendActivation = () => {
 
           {/* Mensajes de feedback */}
           <AnimatePresence>
-            {message && <Alert type="success" message={message} />}
-            {error && <Alert type="error" message={error} />}
+            {message && <Alert key="success-alert" type="success" message={message} />}
+            {error && <Alert key="error-alert" type="error" message={error} />}
           </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">

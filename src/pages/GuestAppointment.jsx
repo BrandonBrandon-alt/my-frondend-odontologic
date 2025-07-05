@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { appointmentService } from '../services';
 import { Button, Alert } from '../components';
-import ReCAPTCHA from "react-google-recaptcha";
+import { useRecaptchaV3 } from '../hooks/useRecaptchaV3'; // Importar el hook de reCAPTCHA v3
 import { 
   UserIcon, 
   CalendarIcon, 
@@ -73,7 +73,9 @@ function GuestAppointment() {
     selecciones,
     datosPaciente,
   } = state;
-  const [captchaToken, setCaptchaToken] = React.useState('');
+  
+  // Instanciar el hook de reCAPTCHA v3
+  const { executeRecaptcha, isScriptLoaded } = useRecaptchaV3();
 
   useEffect(() => {
     cargarEspecialidades();
@@ -90,7 +92,7 @@ function GuestAppointment() {
         dispatch({ type: 'SET_ERROR', payload: backendError.message || defaultMessage });
       }
     } else {
-      dispatch({ type: 'SET_ERROR', payload: defaultMessage });
+      dispatch({ type: 'SET_ERROR', payload: err.message || defaultMessage });
     }
   };
 
@@ -192,16 +194,10 @@ function GuestAppointment() {
 
       case 4:
         if (!validarDatosPaciente()) return;
-        // Solo validar y pasar al siguiente paso, sin crear el paciente aún.
         dispatch({ type: 'SET_PASO', payload: 5 });
         break;
 
       case 5:
-        // --- Validaciones Finales ---
-        if (!captchaToken) {
-          dispatch({ type: 'SET_ERROR', payload: 'Por favor completa el reCAPTCHA.' });
-          return;
-        }
         const disponibilidadSeleccionada = disponibilidades.find(disp => disp.id === selecciones.disponibilidadId);
         const tipoServicioSeleccionado = tiposServicio.find(serv => serv.id === selecciones.tipoServicioId);
         if (!disponibilidadSeleccionada || !tipoServicioSeleccionado || !validarDatosPaciente()) {
@@ -215,10 +211,14 @@ function GuestAppointment() {
             dispatch({ type: 'SET_ERROR', payload: `El servicio (${tipoServicioSeleccionado.name}) requiere ${tipoServicioSeleccionado.duration} min, pero el horario solo tiene ${slotDurationInMinutes} min.` });
             return;
         }
-        // --- Creación Unificada (Paciente + Cita) ---
+
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
-          // Ajuste de fecha para corregir problemas de zona horaria
+          if (!isScriptLoaded) {
+            throw new Error('El servicio de seguridad (reCAPTCHA) no ha cargado.');
+          }
+          const captchaToken = await executeRecaptcha('create_guest_appointment');
+          
           const date = new Date(disponibilidadSeleccionada.date);
           const userTimezoneOffset = date.getTimezoneOffset() * 60000;
           const correctedDate = new Date(date.getTime() + userTimezoneOffset);
@@ -226,14 +226,16 @@ function GuestAppointment() {
           const month = String(correctedDate.getMonth() + 1).padStart(2, '0');
           const day = String(correctedDate.getDate()).padStart(2, '0');
           const formattedDate = `${year}-${month}-${day}`;
+
           const appointmentData = {
             datosPaciente: datosPaciente,
             disponibilidadId: selecciones.disponibilidadId,
             serviceTypeId: selecciones.tipoServicioId,
-            preferredDate: formattedDate, // ¡Enviar la cadena formateada!
+            preferredDate: formattedDate,
             notes: datosPaciente.notes || null,
             captchaToken,
           };
+          
           const cita = await appointmentService.createGuestAppointment(appointmentData);
           if (cita.success) {
             dispatch({ type: 'SET_MESSAGE', payload: `¡Cita creada exitosamente! ID: ${cita.data.id}` });
@@ -322,9 +324,9 @@ function GuestAppointment() {
         </div>
 
         <AnimatePresence>
-          {error && <Alert type="error" message={error} />}
-          {message && <Alert type="success" message={message} />}
-        </AnimatePresence>
+  {message && <Alert key="success-alert" type="success" message={message} />}
+  {error && <Alert key="error-alert" type="error" message={error} />}
+</AnimatePresence>
 
         <motion.div
           key={paso}
@@ -374,12 +376,11 @@ function GuestAppointment() {
                 tiposServicio={tiposServicio}
                 disponibilidades={disponibilidades}
               />
-              <div className="flex justify-center my-4">
-                <ReCAPTCHA
-                  sitekey="6LcH_2crAAAAAIdUCguL_3Yd8gpuumCShBddb_f7"
-                  onChange={token => setCaptchaToken(token)}
-                />
-              </div>
+              <p className="text-xs text-center text-gray-500 mt-4">
+                This site is protected by reCAPTCHA and the Google&nbsp;
+                <a href="https://policies.google.com/privacy" className="underline hover:text-primary">Privacy Policy</a> and&nbsp;
+                <a href="https://policies.google.com/terms" className="underline hover:text-primary">Terms of Service</a> apply.
+              </p>
             </>
           )}
         </motion.div>
@@ -397,7 +398,7 @@ function GuestAppointment() {
 
           <Button
             onClick={handleSiguiente}
-            disabled={loading}
+            disabled={loading || (paso === 5 && !isScriptLoaded)}
             className="flex items-center"
           >
             {loading ? (
@@ -420,4 +421,4 @@ function GuestAppointment() {
   );
 }
 
-export default GuestAppointment; 
+export default GuestAppointment;
