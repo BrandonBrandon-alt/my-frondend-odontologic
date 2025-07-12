@@ -52,6 +52,11 @@ const Input = forwardRef(({
     ? 'border-[var(--color-error)] focus:border-[var(--color-error)] focus:ring-[var(--color-error)]/30' // Colores de error definidos en CSS
     : variants[variant];
   
+  // Estado deshabilitado
+  const disabledClasses = rest.disabled 
+    ? 'bg-gray-100 text-gray-500 cursor-not-allowed opacity-75' 
+    : '';
+  
   // Padding para iconos (ajustado para mayor consistencia)
   const paddingClasses = [
     startIcon ? 'pl-11' : '', // Ajustado a 11 para mejor espacio con icono w-5
@@ -62,6 +67,7 @@ const Input = forwardRef(({
     baseClasses,
     sizes[size],
     stateClasses,
+    disabledClasses,
     paddingClasses,
     className
   ].filter(Boolean).join(' ');

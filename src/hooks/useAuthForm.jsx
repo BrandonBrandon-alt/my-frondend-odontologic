@@ -57,10 +57,17 @@ export const useAuthForm = (initialState, authAction, options = {}) => {
         else if (userRole === 'user') finalPath = '/patient-dashboard';
       }
       
-      // Corrección: usa finalPath en lugar de dashboardPath
-      setTimeout(() => {
-        navigate(finalPath); 
-      }, 1500);
+      // Si la redirección es a activate-account, pasamos el email
+      if (finalPath === '/activate-account') {
+        setTimeout(() => {
+          navigate(finalPath, { state: { email: formData.email } }); 
+        }, 1500);
+      } else {
+        // Corrección: usa finalPath en lugar de dashboardPath
+        setTimeout(() => {
+          navigate(finalPath); 
+        }, 1500);
+      }
 
     } catch (err) {
       console.error('Error en la acción de autenticación:', err);
