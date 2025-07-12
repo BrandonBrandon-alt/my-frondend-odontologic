@@ -34,3 +34,70 @@ body {
   background-color: var(--color-background-light);
   color: var(--color-text-dark); /* Color de texto base */
 }
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-light);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 8px;
+  border: 2px solid var(--color-background-light);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-primary-darker), var(--color-primary));
+  transform: scale(1.05);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--color-background-light);
+}
+
+/* Scrollbar para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-background-light);
+}
+
+/* Scrollbar para elementos específicos */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 6px;
+}
+
+/* Animación suave para scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Estilos para scroll horizontal */
+::-webkit-scrollbar:horizontal {
+  height: 12px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  background: var(--color-background-light);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 8px;
+  border: 2px solid var(--color-background-light);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+  background: linear-gradient(90deg, var(--color-primary-darker), var(--color-primary));
+}

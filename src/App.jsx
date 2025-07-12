@@ -27,9 +27,9 @@ const AdminProfile = lazy(() => import('./pages/admin/AdminProfile'));
 const GuestAppointment = lazy(() => import('./pages/GuestAppointment'));
 const Services = lazy(() => import('./pages/Services'));
 const Contact = lazy(() => import('./pages/Contact'));
+const About = lazy(() => import('./pages/About'));
 
 // Componentes simples (dummies)
-const About = () => <div className="flex items-center justify-center min-h-[calc(100vh-128px)]">Página de Acerca de</div>;
 const NotFound = () => <div className="flex items-center justify-center min-h-[calc(100vh-128px)] bg-red-100 text-red-700 text-4xl font-bold">404 - Página no encontrada</div>;
 
 
