@@ -9,7 +9,8 @@ import {
   HomeIcon,
   InformationCircleIcon,
   PhoneIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';
 
 import { useAuth } from '../../../context/AuthContext';
@@ -180,6 +181,11 @@ const Navbar = () => {
           </li>
           <li>
             <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
+              <NavLink to="/services" className={getNavLinkClasses}><WrenchScrewdriverIcon className="h-5 w-5 mr-1 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />Servicios</NavLink>
+            </motion.div>
+          </li>
+          <li>
+            <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
               <NavLink to="/about" className={getNavLinkClasses}><InformationCircleIcon className="h-5 w-5 mr-1 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />Acerca de</NavLink>
             </motion.div>
           </li>
@@ -336,6 +342,14 @@ const Navbar = () => {
                   >
                     <HomeIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
                     Home
+                  </NavLink>
+                  <NavLink
+                    to="/services"
+                    className="block py-2 text-gray-700 hover:text-accent transition duration-150"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <WrenchScrewdriverIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
+                    Servicios
                   </NavLink>
                   <NavLink
                     to="/about"
