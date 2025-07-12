@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, KeyIcon } from '@heroicons/react/24/outline';
 
 // Importa los componentes Input, Button, Alert
@@ -26,8 +25,6 @@ function ActivateAccount() {
   const [error, setError] = useState('');
   const [resendMessage, setResendMessage] = useState('');
   const [resendError, setResendError] = useState('');
-  const [showResendForm, setShowResendForm] = useState(false);
-
   useEffect(() => {
     if (message || error || resendMessage || resendError) {
       setMessage('');

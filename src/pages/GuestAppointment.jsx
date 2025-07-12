@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { appointmentService } from '../services';
 import { Button, Alert } from '../components';
+import { useRecaptchaV3 } from '../hooks/useRecaptchaV3'; // Importar el hook de reCAPTCHA v3
 import { 
   UserIcon, 
   CalendarIcon, 
@@ -19,238 +20,245 @@ import SelectorDisponibilidad from '../components/appointment/SelectorDisponibil
 import FormularioPaciente from '../components/appointment/FormularioPaciente';
 import ConfirmacionCita from '../components/appointment/ConfirmacionCita';
 
+const initialState = {
+  paso: 1,
+  loading: false,
+  error: '',
+  message: '',
+  especialidades: [],
+  tiposServicio: [],
+  disponibilidades: [],
+  selecciones: {},
+  datosPaciente: {},
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_PASO':
+      return { ...state, paso: action.payload };
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload };
+    case 'SET_ERROR':
+      return { ...state, error: action.payload, message: '' };
+    case 'SET_MESSAGE':
+      return { ...state, message: action.payload, error: '' };
+    case 'SET_ESPECIALIDADES':
+      return { ...state, especialidades: action.payload };
+    case 'SET_TIPOS_SERVICIO':
+      return { ...state, tiposServicio: action.payload };
+    case 'SET_DISPONIBILIDADES':
+      return { ...state, disponibilidades: action.payload };
+    case 'SET_SELECCIONES':
+      return { ...state, selecciones: { ...state.selecciones, ...action.payload } };
+    case 'SET_DATOS_PACIENTE':
+      return { ...state, datosPaciente: action.payload };
+    case 'RESET_MESSAGES':
+      return { ...state, error: '', message: '' };
+    default:
+      return state;
+  }
+}
+
 function GuestAppointment() {
   const navigate = useNavigate();
-  const [paso, setPaso] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {
+    paso,
+    loading,
+    error,
+    message,
+    especialidades,
+    tiposServicio,
+    disponibilidades,
+    selecciones,
+    datosPaciente,
+  } = state;
+  
+  // Instanciar el hook de reCAPTCHA v3
+  const { executeRecaptcha, isScriptLoaded } = useRecaptchaV3();
 
-  // Estados para los datos
-  const [especialidades, setEspecialidades] = useState([]);
-  const [tiposServicio, setTiposServicio] = useState([]);
-  const [disponibilidades, setDisponibilidades] = useState([]);
-  const [selecciones, setSelecciones] = useState({});
-  const [datosPaciente, setDatosPaciente] = useState({});
-
-  // Cargar especialidades al iniciar
   useEffect(() => {
     cargarEspecialidades();
   }, []);
 
-  const cargarEspecialidades = async () => {
-    try {
-      setLoading(true);
-      const response = await appointmentService.getEspecialidades();
-      if (response.success) {
-        setEspecialidades(response.data);
+  const handleServiceError = (err, defaultMessage) => {
+    console.error('Error:', err);
+    if (err.response?.data) {
+      const backendError = err.response.data;
+      if (backendError.errors && backendError.errors.length > 0) {
+        const errorMessages = backendError.errors.map(e => e.message || e).join(', ');
+        dispatch({ type: 'SET_ERROR', payload: `Error de validación: ${errorMessages}` });
       } else {
-        setError('Error al cargar especialidades');
+        dispatch({ type: 'SET_ERROR', payload: backendError.message || defaultMessage });
       }
-    } catch (error) {
-      setError('Error al cargar especialidades');
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
+    } else {
+      dispatch({ type: 'SET_ERROR', payload: err.message || defaultMessage });
     }
   };
 
-  const cargarTiposServicio = async (especialidadId) => {
+  const cargarDatos = async (serviceCall, successAction, errorMessage) => {
+    dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      setLoading(true);
-      const response = await appointmentService.getTiposServicio(especialidadId);
+      const response = await serviceCall();
       if (response.success) {
-        setTiposServicio(response.data);
+        dispatch({ type: successAction, payload: response.data });
+        return true;
       } else {
-        setError('Error al cargar tipos de servicio');
+        handleServiceError(response, errorMessage);
+        return false;
       }
-    } catch (error) {
-      setError('Error al cargar tipos de servicio');
-      console.error('Error:', error);
+    } catch (err) {
+      handleServiceError(err, errorMessage);
+      return false;
     } finally {
-      setLoading(false);
+      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 
-  const cargarDisponibilidades = async (especialidadId) => {
-    try {
-      setLoading(true);
-      const response = await appointmentService.getDisponibilidades(especialidadId);
-      if (response.success) {
-        setDisponibilidades(response.data);
-      } else {
-        setError('Error al cargar disponibilidades');
-      }
-    } catch (error) {
-      setError('Error al cargar disponibilidades');
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const cargarEspecialidades = () => cargarDatos(
+    appointmentService.getEspecialidades,
+    'SET_ESPECIALIDADES',
+    'Error al cargar especialidades'
+  );
 
-  const handleSiguiente = async () => {
-    setLoading(true);
-    setError('');
-    setMessage('');
+  const cargarTiposServicio = (especialidadId) => cargarDatos(
+    () => appointmentService.getTiposServicio(especialidadId),
+    'SET_TIPOS_SERVICIO',
+    'Error al cargar tipos de servicio'
+  );
 
-    try {
-      switch (paso) {
-        case 1: // Especialidad seleccionada
-          if (!selecciones.especialidadId) {
-            setError('Por favor selecciona una especialidad');
-            return;
-          }
-          await cargarTiposServicio(selecciones.especialidadId);
-          setPaso(2);
-          break;
-
-        case 2: // Tipo de servicio seleccionado
-          if (!selecciones.tipoServicioId) {
-            setError('Por favor selecciona un tipo de servicio');
-            return;
-          }
-          await cargarDisponibilidades(selecciones.especialidadId);
-          setPaso(3);
-          break;
-
-        case 3: // Disponibilidad seleccionada
-          if (!selecciones.disponibilidadId) {
-            setError('Por favor selecciona una disponibilidad');
-            return;
-          }
-          setPaso(4);
-          break;
-
-        case 4: // Datos del paciente completados
-          if (!validarDatosPaciente()) {
-            return;
-          }
-          
-          console.log('Datos del paciente a enviar:', datosPaciente);
-          
-          try {
-            const paciente = await appointmentService.createGuestPatient(datosPaciente);
-            if (paciente.success) {
-              setSelecciones(prev => ({ ...prev, pacienteId: paciente.data.id }));
-              setPaso(5);
-            } else {
-              // Mostrar errores específicos del backend
-              if (paciente.errors && paciente.errors.length > 0) {
-                const errorMessages = paciente.errors.map(err => err.message || err).join(', ');
-                setError(`Error de validación: ${errorMessages}`);
-              } else {
-                setError(paciente.message || 'Error al crear paciente invitado');
-              }
-            }
-          } catch (error) {
-            console.error('Error completo:', error);
-            if (error.response?.data) {
-              const backendError = error.response.data;
-              if (backendError.errors && backendError.errors.length > 0) {
-                const errorMessages = backendError.errors.map(err => err.message || err).join(', ');
-                setError(`Error de validación: ${errorMessages}`);
-              } else {
-                setError(backendError.message || 'Error al crear paciente invitado');
-              }
-            } else {
-              setError('Error al crear paciente invitado');
-            }
-          }
-          break;
-
-        case 5: // Confirmar y crear cita
-          try {
-            // Obtener la disponibilidad seleccionada
-            const disponibilidadSeleccionada = disponibilidades.find(disp => disp.id === selecciones.disponibilidadId);
-            
-            const cita = await appointmentService.createGuestAppointment({
-              guest_patient_id: selecciones.pacienteId,
-              disponibilidad_id: selecciones.disponibilidadId,
-              service_type_id: selecciones.tipoServicioId,
-              disponibilidad: disponibilidadSeleccionada,
-              notes: datosPaciente.notes || ""
-            });
-            
-            if (cita.success) {
-              setMessage(`¡Cita creada exitosamente! ID: ${cita.data.id}`);
-              setTimeout(() => {
-                navigate('/login');
-              }, 3000);
-            } else {
-              // Mostrar errores específicos del backend
-              if (cita.errors && cita.errors.length > 0) {
-                const errorMessages = cita.errors.map(err => err.message || err).join(', ');
-                setError(`Error de validación: ${errorMessages}`);
-              } else {
-                setError(cita.message || 'Error al crear la cita');
-              }
-            }
-          } catch (error) {
-            console.error('Error completo en creación de cita:', error);
-            if (error.response?.data) {
-              const backendError = error.response.data;
-              if (backendError.errors && backendError.errors.length > 0) {
-                const errorMessages = backendError.errors.map(err => err.message || err).join(', ');
-                setError(`Error de validación: ${errorMessages}`);
-              } else {
-                setError(backendError.message || 'Error al crear la cita');
-              }
-            } else {
-              setError('Error al crear la cita');
-            }
-          }
-          break;
-      }
-    } catch (error) {
-      setError(`Error: ${error.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const cargarDisponibilidades = (especialidadId) => cargarDatos(
+    () => appointmentService.getDisponibilidades(especialidadId),
+    'SET_DISPONIBILIDADES',
+    'Error al cargar disponibilidades'
+  );
 
   const validarDatosPaciente = () => {
     const { name, email, phone } = datosPaciente;
-    
     if (!name || !phone) {
-      setError('Por favor completa todos los campos obligatorios');
+      dispatch({ type: 'SET_ERROR', payload: 'Por favor completa todos los campos obligatorios' });
       return false;
     }
-
     if (name.length < 2) {
-      setError('El nombre debe tener al menos 2 caracteres');
+      dispatch({ type: 'SET_ERROR', payload: 'El nombre debe tener al menos 2 caracteres' });
       return false;
     }
-
     if (name.length > 100) {
-      setError('El nombre no puede exceder 100 caracteres');
+      dispatch({ type: 'SET_ERROR', payload: 'El nombre no puede exceder 100 caracteres' });
       return false;
     }
-
-    // Validar email solo si se proporciona (es opcional según el esquema)
     if (email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        setError('Por favor ingresa un email válido');
+        dispatch({ type: 'SET_ERROR', payload: 'Por favor ingresa un email válido' });
         return false;
       }
     }
-
-    // Validar teléfono según el patrón del backend
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
     if (!phoneRegex.test(phone)) {
-      setError('El teléfono debe tener un formato válido (ej: +573001234567 o 3001234567)');
+      dispatch({ type: 'SET_ERROR', payload: 'El teléfono debe tener un formato válido (ej: +573001234567 o 3001234567)' });
       return false;
     }
-
     return true;
+  };
+
+  const handleSiguiente = async () => {
+    dispatch({ type: 'RESET_MESSAGES' });
+
+    switch (paso) {
+      case 1:
+        if (!selecciones.especialidadId) {
+          dispatch({ type: 'SET_ERROR', payload: 'Por favor selecciona una especialidad' });
+          return;
+        }
+        const successTipos = await cargarTiposServicio(selecciones.especialidadId);
+        if (successTipos) dispatch({ type: 'SET_PASO', payload: 2 });
+        break;
+
+      case 2:
+        if (!selecciones.tipoServicioId) {
+          dispatch({ type: 'SET_ERROR', payload: 'Por favor selecciona un tipo de servicio' });
+          return;
+        }
+        const successDispo = await cargarDisponibilidades(selecciones.especialidadId);
+        if (successDispo) dispatch({ type: 'SET_PASO', payload: 3 });
+        break;
+
+      case 3:
+        if (!selecciones.disponibilidadId) {
+          dispatch({ type: 'SET_ERROR', payload: 'Por favor selecciona una disponibilidad' });
+          return;
+        }
+        dispatch({ type: 'SET_PASO', payload: 4 });
+        break;
+
+      case 4:
+        if (!validarDatosPaciente()) return;
+        dispatch({ type: 'SET_PASO', payload: 5 });
+        break;
+
+      case 5:
+        const disponibilidadSeleccionada = disponibilidades.find(disp => disp.id === selecciones.disponibilidadId);
+        const tipoServicioSeleccionado = tiposServicio.find(serv => serv.id === selecciones.tipoServicioId);
+        if (!disponibilidadSeleccionada || !tipoServicioSeleccionado || !validarDatosPaciente()) {
+            dispatch({ type: 'SET_ERROR', payload: 'Faltan datos o hay un error. Por favor, revisa los pasos anteriores.' });
+            return;
+        }
+        const startTime = new Date(`1970-01-01T${disponibilidadSeleccionada.start_time}`);
+        const endTime = new Date(`1970-01-01T${disponibilidadSeleccionada.end_time}`);
+        const slotDurationInMinutes = (endTime - startTime) / (1000 * 60);
+        if (tipoServicioSeleccionado.duration > slotDurationInMinutes) {
+            dispatch({ type: 'SET_ERROR', payload: `El servicio (${tipoServicioSeleccionado.name}) requiere ${tipoServicioSeleccionado.duration} min, pero el horario solo tiene ${slotDurationInMinutes} min.` });
+            return;
+        }
+
+        dispatch({ type: 'SET_LOADING', payload: true });
+        try {
+          if (!isScriptLoaded) {
+            throw new Error('El servicio de seguridad (reCAPTCHA) no ha cargado.');
+          }
+          const captchaToken = await executeRecaptcha('create_guest_appointment');
+          
+          const date = new Date(disponibilidadSeleccionada.date);
+          const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+          const correctedDate = new Date(date.getTime() + userTimezoneOffset);
+          const year = correctedDate.getFullYear();
+          const month = String(correctedDate.getMonth() + 1).padStart(2, '0');
+          const day = String(correctedDate.getDate()).padStart(2, '0');
+          const formattedDate = `${year}-${month}-${day}`;
+
+          const appointmentData = {
+            datosPaciente: datosPaciente,
+            disponibilidadId: selecciones.disponibilidadId,
+            serviceTypeId: selecciones.tipoServicioId,
+            preferredDate: formattedDate,
+            notes: datosPaciente.notes || null,
+            captchaToken,
+          };
+          
+          const cita = await appointmentService.createGuestAppointment(appointmentData);
+          if (cita.success) {
+            dispatch({ type: 'SET_MESSAGE', payload: `¡Cita creada exitosamente! ID: ${cita.data.id}` });
+            setTimeout(() => navigate('/login'), 3000);
+          } else {
+            handleServiceError(cita, 'No se pudo crear la cita.');
+          }
+        } catch (err) {
+          handleServiceError(err, 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.');
+        } finally {
+          dispatch({ type: 'SET_LOADING', payload: false });
+        }
+        break;
+
+      default:
+        break;
+    }
   };
 
   const handleAnterior = () => {
     if (paso > 1) {
-      setPaso(paso - 1);
-      setError('');
-      setMessage('');
+      dispatch({ type: 'SET_PASO', payload: paso - 1 });
+      dispatch({ type: 'RESET_MESSAGES' });
     }
   };
 
@@ -270,7 +278,6 @@ function GuestAppointment() {
       transition={{ duration: 0.5 }}
     >
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary mb-2">
             Crear Cita como Invitado
@@ -280,7 +287,6 @@ function GuestAppointment() {
           </p>
         </div>
 
-        {/* Indicador de pasos */}
         <div className="flex justify-center mb-8">
           <div className="flex items-center space-x-4">
             {pasos.map((pasoInfo, index) => (
@@ -317,13 +323,11 @@ function GuestAppointment() {
           </div>
         </div>
 
-        {/* Mensajes de error y éxito */}
         <AnimatePresence>
-          {error && <Alert type="error" message={error} />}
-          {message && <Alert type="success" message={message} />}
-        </AnimatePresence>
+  {message && <Alert key="success-alert" type="success" message={message} />}
+  {error && <Alert key="error-alert" type="error" message={error} />}
+</AnimatePresence>
 
-        {/* Contenido del paso actual */}
         <motion.div
           key={paso}
           initial={{ opacity: 0, x: 20 }}
@@ -335,7 +339,7 @@ function GuestAppointment() {
           {paso === 1 && (
             <SelectorEspecialidad
               especialidades={especialidades}
-              onSelect={(id) => setSelecciones(prev => ({ ...prev, especialidadId: id }))}
+              onSelect={(id) => dispatch({ type: 'SET_SELECCIONES', payload: { especialidadId: id } })}
               selected={selecciones.especialidadId}
             />
           )}
@@ -343,7 +347,7 @@ function GuestAppointment() {
           {paso === 2 && (
             <SelectorTipoServicio
               tiposServicio={tiposServicio}
-              onSelect={(id) => setSelecciones(prev => ({ ...prev, tipoServicioId: id }))}
+              onSelect={(id) => dispatch({ type: 'SET_SELECCIONES', payload: { tipoServicioId: id } })}
               selected={selecciones.tipoServicioId}
             />
           )}
@@ -351,7 +355,7 @@ function GuestAppointment() {
           {paso === 3 && (
             <SelectorDisponibilidad
               disponibilidades={disponibilidades}
-              onSelect={(id) => setSelecciones(prev => ({ ...prev, disponibilidadId: id }))}
+              onSelect={(id) => dispatch({ type: 'SET_SELECCIONES', payload: { disponibilidadId: id } })}
               selected={selecciones.disponibilidadId}
             />
           )}
@@ -359,22 +363,28 @@ function GuestAppointment() {
           {paso === 4 && (
             <FormularioPaciente
               datos={datosPaciente}
-              onChange={setDatosPaciente}
+              onChange={(data) => dispatch({ type: 'SET_DATOS_PACIENTE', payload: data })}
             />
           )}
 
           {paso === 5 && (
-            <ConfirmacionCita
-              selecciones={selecciones}
-              datosPaciente={datosPaciente}
-              especialidades={especialidades}
-              tiposServicio={tiposServicio}
-              disponibilidades={disponibilidades}
-            />
+            <>
+              <ConfirmacionCita
+                selecciones={selecciones}
+                datosPaciente={datosPaciente}
+                especialidades={especialidades}
+                tiposServicio={tiposServicio}
+                disponibilidades={disponibilidades}
+              />
+              <p className="text-xs text-center text-gray-500 mt-4">
+                This site is protected by reCAPTCHA and the Google&nbsp;
+                <a href="https://policies.google.com/privacy" className="underline hover:text-primary">Privacy Policy</a> and&nbsp;
+                <a href="https://policies.google.com/terms" className="underline hover:text-primary">Terms of Service</a> apply.
+              </p>
+            </>
           )}
         </motion.div>
 
-        {/* Botones de navegación */}
         <div className="flex justify-between">
           <Button
             onClick={handleAnterior}
@@ -388,7 +398,7 @@ function GuestAppointment() {
 
           <Button
             onClick={handleSiguiente}
-            disabled={loading}
+            disabled={loading || (paso === 5 && !isScriptLoaded)}
             className="flex items-center"
           >
             {loading ? (
@@ -411,4 +421,4 @@ function GuestAppointment() {
   );
 }
 
-export default GuestAppointment; 
+export default GuestAppointment;

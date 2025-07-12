@@ -85,10 +85,10 @@ function Home() {
                         whileTap="tap"
                     >
                         <Link
-                            to="/appointment"
+                            to="/guest-appointment"
                             className="inline-block bg-accent text-white font-extrabold py-5 px-12 rounded-full shadow-2xl hover:bg-[var(--color-accent)] hover:text-white transition duration-300 ease-in-out text-xl transform hover:-translate-y-1 border-2 border-white/20 hover:border-[var(--color-accent)]"
                         >
-                            ¡Reserva tu Consulta Gratuita!
+                            ¡Agenda tu cita gratis!
                         </Link>
                     </motion.div>
                 </div>

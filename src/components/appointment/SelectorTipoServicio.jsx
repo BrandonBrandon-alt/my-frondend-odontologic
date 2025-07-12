@@ -1,15 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CalendarIcon, ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline'; // CurrencyDollarIcon eliminado
 
 function SelectorTipoServicio({ tiposServicio, onSelect, selected }) {
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
+  // formatPrice eliminado ya que 'price' no se utiliza
+  // const formatPrice = (price) => {
+  //   return new Intl.NumberFormat('es-CO', {
+  //     style: 'currency',
+  //     currency: 'COP',
+  //     minimumFractionDigits: 0,
+  //   }).format(price);
+  // };
 
   const formatDuration = (minutes) => {
     if (minutes < 60) {
@@ -62,12 +63,13 @@ function SelectorTipoServicio({ tiposServicio, onSelect, selected }) {
                     <span>{formatDuration(servicio.duration)}</span>
                   </div>
                 </div>
-                <div className="text-right">
+                {/* Bloque de precio eliminado */}
+                {/* <div className="text-right">
                   <div className="text-2xl font-bold text-primary">
                     {formatPrice(servicio.price)}
                   </div>
                   <div className="text-xs text-gray-500">Precio del servicio</div>
-                </div>
+                </div> */}
               </div>
 
               <div className="pt-2 border-t border-gray-100">
@@ -91,4 +93,4 @@ function SelectorTipoServicio({ tiposServicio, onSelect, selected }) {
   );
 }
 
-export default SelectorTipoServicio; 
+export default SelectorTipoServicio;

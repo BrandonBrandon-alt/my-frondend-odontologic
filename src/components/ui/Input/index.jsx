@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+// Asegúrate de que los colores definidos en :root en tu CSS global estén disponibles.
 
 /**
  * Componente Input profesional y atractivo
@@ -13,7 +14,8 @@ import React, { forwardRef } from 'react';
  * @param {string} props.variant
  * @param {string} props.className
  * @param {string} props.type - 'input' o 'textarea'
- * @param {Object} props.rest
+ * @param {number} props.rows - Número de filas para textarea
+ * @param {Object} props.rest - Resto de las props del input/textarea
  */
 const Input = forwardRef(({ 
   label, 
@@ -26,11 +28,11 @@ const Input = forwardRef(({
   variant = 'default',
   className = '', 
   type = 'input',
-  rows = 4,
+  rows = 4, // Default rows for textarea
   ...rest 
 }, ref) => {
-  // Clases base
-  const baseClasses = 'block w-full rounded-xl shadow-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-accent/30 focus:border-accent';
+  // Clases base para el input/textarea
+  const baseClasses = 'block w-full rounded-xl shadow-sm transition-all duration-200 focus:outline-none focus:ring-4';
   
   // Tamaños
   const sizes = {
@@ -41,19 +43,19 @@ const Input = forwardRef(({
   
   // Variantes
   const variants = {
-    default: 'border border-[var(--color-secondary)] bg-[var(--color-background-light)]',
-    filled: 'border border-[var(--color-secondary)] bg-[var(--color-secondary)]/20 focus:bg-[var(--color-background-light)]'
+    default: 'border border-[var(--color-secondary)] bg-white focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)]/30', // Fondo blanco para default
+    filled: 'border border-[var(--color-secondary)] bg-[var(--color-secondary)]/20 focus:bg-white focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)]/30' // Fondo suave para filled
   };
   
-  // Estados
+  // Estado de error y foco
   const stateClasses = error 
-    ? 'border-red-400 focus:border-red-500 focus:ring-red-200' 
+    ? 'border-[var(--color-error)] focus:border-[var(--color-error)] focus:ring-[var(--color-error)]/30' // Colores de error definidos en CSS
     : variants[variant];
   
-  // Padding para iconos
+  // Padding para iconos (ajustado para mayor consistencia)
   const paddingClasses = [
-    startIcon ? 'pl-12' : '',
-    endIcon ? 'pr-12' : ''
+    startIcon ? 'pl-11' : '', // Ajustado a 11 para mejor espacio con icono w-5
+    endIcon ? 'pr-11' : ''    // Ajustado a 11
   ].filter(Boolean).join(' ');
   
   const inputClasses = [
@@ -71,9 +73,8 @@ const Input = forwardRef(({
           ref={ref}
           id={id}
           className={inputClasses}
-          placeholder={rest.placeholder ? rest.placeholder : ''}
           rows={rows}
-          {...rest}
+          {...rest} // Pasa todas las props restantes, incluyendo placeholder
         />
       );
     }
@@ -83,8 +84,8 @@ const Input = forwardRef(({
         ref={ref}
         id={id}
         className={inputClasses}
-        placeholder={rest.placeholder ? rest.placeholder : ''}
-        {...rest}
+        type={type} // Asegura que el tipo de input se propague
+        {...rest} // Pasa todas las props restantes, incluyendo placeholder
       />
     );
   };
@@ -100,10 +101,10 @@ const Input = forwardRef(({
         </label>
       )}
       
-      <div className="relative">
+      <div className="relative flex items-center"> {/* flex items-center para centrar iconos verticalmente */}
         {startIcon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-            <div className="text-[var(--color-accent)] text-lg">
+          <div className="absolute left-0 flex items-center pl-3.5 pointer-events-none h-full"> {/* h-full y pl-3.5 */}
+            <div className="text-gray-400 text-xl"> {/* Color más sutil para el icono, tamaño xl para que sea visible */}
               {startIcon}
             </div>
           </div>
@@ -112,8 +113,8 @@ const Input = forwardRef(({
         {renderInput()}
         
         {endIcon && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-            <div className="text-[var(--color-accent)] text-lg">
+          <div className="absolute right-0 flex items-center pr-3.5 h-full"> {/* h-full y pr-3.5 */}
+            <div className="text-gray-400 text-xl"> {/* Color más sutil para el icono, tamaño xl */}
               {endIcon}
             </div>
           </div>
@@ -123,10 +124,11 @@ const Input = forwardRef(({
       {(error || helperText) && (
         <div className="mt-1">
           {error && (
-            <p className="text-sm text-[var(--color-accent)] font-semibold animate-pulse">{error}</p>
+            // Color rojo de error, sin animación de pulso
+            <p className="text-sm text-[var(--color-error)] font-medium">{error}</p> 
           )}
           {helperText && !error && (
-            <p className="text-sm text-[var(--color-secondary)] italic">{helperText}</p>
+            <p className="text-sm text-gray-500 italic">{helperText}</p> 
           )}
         </div>
       )}
@@ -136,4 +138,4 @@ const Input = forwardRef(({
 
 Input.displayName = 'Input';
 
-export default Input; 
+export default Input;
