@@ -1,12 +1,13 @@
-import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 // Importa tus componentes de layout y UI
 import { MainLayout, ProtectedRoute } from './components';
 import { LoadingSpinner } from './components/ui';
 
-// Importa tu AuthProvider
+// Importa tus providers
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // --- LAZY LOADING PAGES (sin cambios) ---
 const Home = lazy(() => import('./pages/Home'));
@@ -30,6 +31,26 @@ const Services = lazy(() => import('./pages/Services'));
 const Contact = lazy(() => import('./pages/Contact'));
 const About = lazy(() => import('./pages/About'));
 
+// Componente para scroll automático
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+      console.log('App ScrollToTop: Navegando a', pathname);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
+  return null;
+};
+
 // Componentes simples (dummies)
 const NotFound = () => <div className="flex items-center justify-center min-h-[calc(100vh-128px)] bg-red-100 text-red-700 text-4xl font-bold">404 - Página no encontrada</div>;
 
@@ -38,11 +59,13 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        {/* 1. MainLayout ahora envuelve TODAS las rutas, asegurando que Navbar y Footer estén siempre presentes. */}
-        <MainLayout>
-          <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingSpinner /></div>}>
-            {/* 2. Usamos un solo componente <Routes> para toda la aplicación. */}
-            <Routes>
+        <ThemeProvider>
+          <ScrollToTop />
+          {/* 1. MainLayout ahora envuelve TODAS las rutas, asegurando que Navbar y Footer estén siempre presentes. */}
+          <MainLayout>
+            <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingSpinner /></div>}>
+              {/* 2. Usamos un solo componente <Routes> para toda la aplicación. */}
+              <Routes>
               {/* --- RUTAS PÚBLICAS --- */}
               <Route path="/" element={<Home />} />
               <Route path="/services" element={<Services />} />
@@ -86,6 +109,7 @@ function App() {
             </Routes>
           </Suspense>
         </MainLayout>
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   );

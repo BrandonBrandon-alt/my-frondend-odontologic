@@ -111,3 +111,38 @@ html {
 .hover\:shadow-3xl:hover {
   box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
+
+/* Estilos para modo oscuro */
+.dark {
+  color-scheme: dark;
+}
+
+/* Variables CSS para modo oscuro */
+:root {
+  --color-primary: #009688;         /* Verde azulado */
+  --color-primary-darker: #004D40;  /* Verde oscuro */
+  --color-secondary: #B2DFDB;       /* Verde agua claro */
+  --color-accent: #00B8D4;          /* Celeste acento */
+  --color-background-light: #F5F5F5;/* Gris muy claro */
+  --color-background-dark: #e8ddea; /* Fondo alternativo suave */
+  --color-text-dark: #004D40;       /* Gris azulado oscuro */
+  --color-success: #4caf50;         /* Verde éxito */
+  --color-error: #e53935;           /* Rojo error */
+}
+
+.dark {
+  --color-primary: #00BFA5;         /* Verde azulado más claro */
+  --color-primary-darker: #008E76;  /* Verde oscuro más claro */
+  --color-secondary: #80CBC4;       /* Verde agua más claro */
+  --color-accent: #00D4FF;          /* Celeste acento más brillante */
+  --color-background-light: #1A1A1A;/* Gris muy oscuro */
+  --color-background-dark: #2D2D2D; /* Fondo alternativo oscuro */
+  --color-text-dark: #E0E0E0;       /* Gris claro para texto */
+  --color-success: #66BB6A;         /* Verde éxito más claro */
+  --color-error: #EF5350;           /* Rojo error más claro */
+}
+
+/* Transiciones suaves para cambios de tema */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

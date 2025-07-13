@@ -14,7 +14,9 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { useAuth } from '../../../context/AuthContext';
+import { useTheme } from '../../../context/ThemeContext';
 import useScrollDirection from '../../../hooks/useScrollDirection';
+import { ThemeToggle } from '../../ui';
 
 /**
  * Componente Navbar profesional y atractivo
@@ -26,6 +28,7 @@ const Navbar = () => {
   const { isLoggedIn, user, logout: logoutContext, loading } = useAuth();
   const dropdownRef = useRef(null);
   const { isVisible } = useScrollDirection();
+  const { isDarkMode } = useTheme();
 
   // Cerrar dropdown al hacer clic fuera
   useEffect(() => {
@@ -282,6 +285,12 @@ const Navbar = () => {
                   )}
                 </AnimatePresence>
               </li>
+              <li className="text-white/40">|</li>
+              <li>
+                <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
+                  <ThemeToggle size="sm" />
+                </motion.div>
+              </li>
             </>
           ) : (
             <>
@@ -305,6 +314,12 @@ const Navbar = () => {
                   >
                     Registrarse
                   </NavLink>
+                </motion.div>
+              </li>
+              <li className="text-white/40">|</li>
+              <li>
+                <motion.div variants={linkVariants} whileHover="hover" whileTap="tap">
+                  <ThemeToggle size="sm" />
                 </motion.div>
               </li>
             </>

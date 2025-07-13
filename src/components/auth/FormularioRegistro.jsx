@@ -110,7 +110,7 @@ function FormularioRegistro() {
             {loading ? 'Registrando...' : 'Registrarse'}
           </Button>
 
-          <p className="text-xs text-center text-gray-500 mt-4">
+          <p className="text-xs text-left text-gray-500 mt-4">
             This site is protected by reCAPTCHA and the Google&nbsp;
             <a href="https://policies.google.com/privacy" className="underline hover:text-primary">Privacy Policy</a> and&nbsp;
             <a href="https://policies.google.com/terms" className="underline hover:text-primary">Terms of Service</a> apply.

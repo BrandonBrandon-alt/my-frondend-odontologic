@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import RippleEffect from '../RippleEffect';
+import Tooltip from '../Tooltip';
 
 /**
  * Componente ScrollToTop que aparece cuando el usuario hace scroll
@@ -76,19 +78,23 @@ const ScrollToTop = () => {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.button
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white p-3 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 backdrop-blur-md border border-white/20"
-          variants={buttonVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          whileHover="hover"
-          whileTap="tap"
-          aria-label="Volver al inicio"
-        >
-          <ChevronUpIcon className="h-6 w-6" />
-        </motion.button>
+        <Tooltip content="Volver al inicio de la página" position="left" delay={300}>
+          <RippleEffect>
+            <motion.button
+              onClick={scrollToTop}
+              className="fixed bottom-20 right-6 z-50 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white p-3 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 backdrop-blur-md border border-white/20"
+              variants={buttonVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              whileHover="hover"
+              whileTap="tap"
+              aria-label="Volver al inicio"
+            >
+              <ChevronUpIcon className="h-6 w-6" />
+            </motion.button>
+          </RippleEffect>
+        </Tooltip>
       )}
     </AnimatePresence>
   );
