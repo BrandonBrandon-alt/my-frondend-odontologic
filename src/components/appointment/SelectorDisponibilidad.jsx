@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ClockIcon, UserIcon, CalendarIcon } from '@heroicons/react/24/outline';
 
+const textVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+
 function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
   // Estado para la fecha activa/seleccionada para mostrar sus disponibilidades
   const [activeDate, setActiveDate] = useState(null);
@@ -81,11 +87,11 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <ClockIcon className="w-12 h-12 text-primary mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Selecciona un Horario
-        </h2>
-        <p className="text-gray-600">
+        <ClockIcon className="w-12 h-12 text-[var(--color-primary)] mx-auto mb-4" />
+        <motion.h2 className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] text-center mb-4" variants={textVariants}>
+          Selecciona una Especialidad
+        </motion.h2>
+        <p className="text-[var(--color-text-secondary)]">
           Elige la fecha y hora que mejor te convenga
         </p>
       </div>
@@ -93,7 +99,7 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
       {dates.length > 0 ? (
         <div className="flex flex-col space-y-6">
           {/* Contenedor de Pestañas de Fechas */}
-          <div className="flex overflow-x-auto pb-2 scrollbar-hide"> {/* scrollbar-hide para ocultar scroll nativo */}
+          <div className="flex overflow-x-auto pb-2 scrollbar-hide">
             <div className="flex space-x-3 justify-center md:justify-start flex-nowrap">
               {dates.map((date) => (
                 <button
@@ -101,8 +107,8 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
                   onClick={() => setActiveDate(date)}
                   className={`flex-shrink-0 px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 ease-in-out
                     ${activeDate === date
-                      ? 'bg-primary-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-[var(--color-primary)] text-white shadow-md'
+                      : 'bg-[var(--color-background-light)] dark:bg-[var(--color-background)] text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] hover:bg-[var(--color-primary)]/10'
                     }`}
                 >
                   {formatDateShort(date)}
@@ -115,7 +121,7 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
           <AnimatePresence mode="wait">
             {activeDate && (
               <motion.div
-                key={activeDate} // Cambia la key para animar la entrada/salida cuando cambia la fecha
+                key={activeDate}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -123,8 +129,8 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
                 className="space-y-4"
               >
                 <div className="flex items-center space-x-2 text-lg font-semibold text-gray-900 mb-4">
-                  <CalendarIcon className="w-5 h-5 text-primary" />
-                  <span>{formatDateLong(activeDate)}</span>
+                  <CalendarIcon className="w-5 h-5 text-[var(--color-primary)]" />
+                  <span className="text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">{formatDateLong(activeDate)}</span>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -136,14 +142,14 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
                       onClick={() => onSelect(disponibilidad.id)}
                       className={`p-5 rounded-xl border-2 cursor-pointer transition-all duration-200 ease-in-out flex flex-col justify-between
                         ${selected === disponibilidad.id
-                          ? 'border-primary-600 bg-primary-50 text-primary-900 shadow-xl ring-2 ring-primary-500'
-                          : 'border-gray-200 bg-white text-gray-800 hover:border-primary-300 hover:shadow-lg'
+                          ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)] shadow-xl ring-2 ring-[var(--color-primary)]'
+                          : 'border-[var(--border-primary)] bg-[var(--color-background-light)] dark:bg-[var(--color-background)] text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] hover:border-[var(--color-primary)]/50 hover:shadow-lg'
                         }`}
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-2">
-                            <ClockIcon className="w-5 h-5 text-primary-600" />
+                            <ClockIcon className="w-5 h-5 text-[var(--color-primary)]" />
                             <span className="font-semibold text-lg">
                               {formatTime(disponibilidad.start_time)} - {formatTime(disponibilidad.end_time)}
                             </span>
@@ -152,12 +158,12 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
 
                         <div className="border-t border-gray-100 pt-3">
                           <div className="flex items-center space-x-2 mb-2">
-                            <UserIcon className="w-5 h-5 text-gray-500" />
-                            <span className="text-base font-medium">
+                            <UserIcon className="w-5 h-5 text-[var(--color-text-secondary)]" />
+                            <span className="text-base font-medium text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
                               {disponibilidad.dentist.name}
                             </span>
                           </div>
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm text-[var(--color-text-secondary)]">
                             {disponibilidad.especialidad.name}
                           </div>
                         </div>
@@ -168,7 +174,7 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
                           animate={{ opacity: 1, y: 0 }}
                           className="mt-4"
                         >
-                          <div className="bg-primary-600 text-white text-center text-sm font-semibold py-2 rounded-md shadow">
+                          <div className="bg-[var(--color-primary)] text-white text-center text-sm font-semibold py-2 rounded-md shadow">
                             Horario Seleccionado
                           </div>
                         </motion.div>
@@ -182,9 +188,9 @@ function SelectorDisponibilidad({ disponibilidades, onSelect, selected }) {
         </div>
       ) : (
         <div className="text-center py-8">
-          <ClockIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500">No hay disponibilidades para esta especialidad</p>
-          <p className="text-sm text-gray-400 mt-2">
+          <ClockIcon className="w-16 h-16 text-[var(--color-text-secondary)] mx-auto mb-4" />
+          <p className="text-[var(--color-text-secondary)]">No hay disponibilidades para esta especialidad</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-2">
             Intenta con otra fecha o especialidad
           </p>
         </div>

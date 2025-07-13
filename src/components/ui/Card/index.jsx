@@ -21,8 +21,8 @@ const Card = ({
   ...rest 
 }) => {
   const variants = {
-    default: 'bg-[var(--color-background)] border border-[var(--border-primary)] shadow-xl',
-    elevated: 'bg-[var(--color-background)] border border-[var(--border-primary)] shadow-xl hover:shadow-2xl transition-shadow duration-300',
+    default: 'bg-[var(--color-background-light)] dark:bg-[var(--color-background)] border border-[var(--border-primary)] shadow-xl',
+    elevated: 'bg-[var(--color-background-light)] dark:bg-[var(--color-background)] border border-[var(--border-primary)] shadow-xl hover:shadow-2xl transition-shadow duration-300',
   };
   
   const cardClasses = [
@@ -39,16 +39,16 @@ const Card = ({
         </div>
       )}
       {title && (
-        <h3 className="text-2xl font-bold text-[var(--color-text-dark)] mb-1">
+        <h3 className="text-2xl font-bold text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] mb-1">
           {title}
         </h3>
       )}
       {subtitle && (
-        <p className="text-base text-[var(--color-text-secondary)] mb-4">
+        <p className="text-base text-[var(--color-text-secondary)] dark:text-[var(--color-text-light)]/80 mb-4">
           {subtitle}
         </p>
       )}
-      <div className="text-[var(--color-text-dark)] text-base">
+      <div className="text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] text-base">
         {children}
       </div>
     </div>

@@ -45,13 +45,13 @@ function FormularioPaciente({ datos, onChange }) {
   };
 
   return (
-    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden md:flex md:min-h-[600px]">
-      <div className="text-center">
-        <UserIcon className="w-12 h-12 text-primary mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+    <div className="relative w-full transition-colors duration-200">
+      <div className="text-center mb-8">
+        <UserIcon className="w-12 h-12 text-[var(--color-primary)] mx-auto mb-4" />
+        <h2 className="text-2xl font-bold text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] mb-2">
           Datos del Paciente
         </h2>
-        <p className="text-gray-600">
+        <p className="text-[var(--color-text-secondary)]">
           Ingresa tu información personal para crear la cita
         </p>
       </div>
@@ -60,9 +60,10 @@ function FormularioPaciente({ datos, onChange }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="space-y-6"
+        className="space-y-8"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6 mb-2">
+          {/* Nombre y correo */}
           <Input
             label="Nombre Completo"
             id="name"
@@ -75,7 +76,6 @@ function FormularioPaciente({ datos, onChange }) {
             startIcon={<UserIcon className="h-5 w-5 text-gray-400" />}
             helperText="Ingresa tu nombre completo"
           />
-
           <Input
             label="Correo Electrónico"
             id="email"
@@ -88,9 +88,7 @@ function FormularioPaciente({ datos, onChange }) {
             startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
             helperText="Ingresa un correo válido"
           />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Teléfono y cédula */}
           <Input
             label="Teléfono"
             id="phone"
@@ -104,7 +102,6 @@ function FormularioPaciente({ datos, onChange }) {
             helperText="10 dígitos sin espacios"
             maxLength="10"
           />
-
           <Input
             label="Número de Identificación (Opcional)"
             id="id_number"
@@ -118,7 +115,7 @@ function FormularioPaciente({ datos, onChange }) {
             maxLength="10"
           />
         </div>
-
+        {/* Notas adicionales (ocupa todo el ancho) */}
         <div className="space-y-2">
           <Input
             label="Notas Adicionales (Opcional)"
@@ -133,25 +130,24 @@ function FormularioPaciente({ datos, onChange }) {
             rows={4}
           />
         </div>
-
-        {/* Información adicional */}
+        {/* Información adicional (ocupa todo el ancho) */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="bg-blue-50 border border-blue-200 rounded-lg p-4"
+          className="bg-white dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-lg p-4 mb-4 transition-colors duration-200"
         >
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0">
-              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <DocumentTextIcon className="w-4 h-4 text-blue-600" />
+              <div className="w-6 h-6 bg-[var(--color-accent)]/20 rounded-full flex items-center justify-center">
+                <DocumentTextIcon className="w-4 h-4 text-[var(--color-accent)]" />
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-medium text-blue-900 mb-1">
+              <h4 className="text-sm font-medium text-[var(--color-accent)] mb-1">
                 Información Importante
               </h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+              <ul className="text-sm text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] space-y-1">
                 <li>• Llega 10 minutos antes de tu cita</li>
                 <li>• Trae tu documento de identidad</li>
                 <li>• Si tienes estudios previos, tráelos</li>
