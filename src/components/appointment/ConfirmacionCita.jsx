@@ -9,6 +9,10 @@ import {
   DocumentTextIcon
 } from '@heroicons/react/24/outline';
 // CurrencyDollarIcon eliminado, ya no se usa.
+const textVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
 
 function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposServicio, disponibilidades }) {
   // formatPrice eliminado, ya no se usa.
@@ -88,11 +92,11 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <CheckCircleIcon className="w-12 h-12 text-green-500 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Confirma tu Cita
-        </h2>
-        <p className="text-gray-600">
+        <CheckCircleIcon className="w-12 h-12 text-[var(--color-success)] mx-auto mb-4" />
+        <motion.h2 className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] text-center mb-4" variants={textVariants}>
+          Selecciona una Especialidad
+        </motion.h2>
+        <p className="text-[var(--color-text-secondary)]">
           Revisa toda la información antes de confirmar
         </p>
       </div>
@@ -109,25 +113,25 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
             key={seccion.titulo}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.4 }} // Duración ligeramente ajustada
-            className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200" // rounded-xl y sombras
+            transition={{ delay: index * 0.1, duration: 0.4 }}
+            className="bg-[var(--color-background-light)] dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
           >
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0"> {/* Icono más grande y color más definido */}
-                <seccion.icono className="w-6 h-6 text-primary-600" /> {/* Icono más grande y color primario oscuro */}
+              <div className="w-9 h-9 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <seccion.icono className="w-6 h-6 text-[var(--color-primary)]" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
                 {seccion.titulo}
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4"> {/* Más espacio entre columnas y filas */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
               {seccion.items.map((item, itemIndex) => (
-                <div key={itemIndex} className="flex flex-col"> {/* Asegura que label y value estén en columna */}
-                  <dt className="text-sm font-medium text-gray-500 mb-0.5"> {/* Color más tenue y margen */}
+                <div key={itemIndex} className="flex flex-col">
+                  <dt className="text-sm font-medium text-[var(--color-text-secondary)] mb-0.5">
                     {item.label}
                   </dt>
-                  <dd className="text-base text-gray-800 font-semibold"> {/* Más grande y negrita para el valor */}
+                  <dd className="text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] font-semibold">
                     {item.value || 'No especificado'}
                   </dd>
                 </div>
@@ -142,17 +146,17 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.4 }}
-            className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+            className="bg-[var(--color-background-light)] dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
           >
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <DocumentTextIcon className="w-6 h-6 text-blue-600" />
+              <div className="w-9 h-9 bg-[var(--color-accent)]/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <DocumentTextIcon className="w-6 h-6 text-[var(--color-accent)]" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
                 Notas Adicionales
               </h3>
             </div>
-            <p className="text-gray-700 text-base leading-relaxed"> {/* Ajuste de tamaño de texto */}
+            <p className="text-[var(--color-text-secondary)] text-base leading-relaxed">
               {datosPaciente.notes}
             </p>
           </motion.div>
@@ -163,19 +167,19 @@ function ConfirmacionCita({ selecciones, datosPaciente, especialidades, tiposSer
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.4 }}
-          className="bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm" // rounded-xl y sombra ligera
+          className="bg-white dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-lg p-4 mb-4 transition-colors duration-200"
         >
-          <div className="flex items-start space-x-4"> {/* Aumento de espacio */}
-            <div className="flex-shrink-0 mt-0.5"> {/* Alineación del icono */}
-              <div className="w-7 h-7 bg-blue-200 rounded-full flex items-center justify-center"> {/* Icono más grande y fondo más visible */}
-                <CheckCircleIcon className="w-5 h-5 text-blue-700" /> {/* Icono más grande y color más oscuro */}
+          <div className="flex items-start space-x-4">
+            <div className="flex-shrink-0 mt-0.5">
+              <div className="w-7 h-7 bg-[var(--color-accent)]/20 rounded-full flex items-center justify-center">
+                <CheckCircleIcon className="w-5 h-5 text-[var(--color-accent)]" />
               </div>
             </div>
             <div>
-              <h4 className="text-md font-semibold text-blue-900 mb-2"> {/* Título un poco más grande y negrita */}
+              <h4 className="text-md font-semibold text-[var(--color-accent)] mb-2">
                 Información Importante
               </h4>
-              <ul className="text-sm text-blue-800 space-y-1.5"> {/* Espaciado un poco mayor entre ítems */}
+              <ul className="text-sm text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] space-y-1">
                 <li>• Recibirás confirmación por correo electrónico.</li>
                 <li>• Llega 10 minutos antes de tu cita.</li>
                 <li>• Trae tu documento de identidad.</li>

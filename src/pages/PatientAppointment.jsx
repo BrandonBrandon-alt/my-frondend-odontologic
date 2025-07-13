@@ -278,42 +278,59 @@ function PatientAppointment() {
             Hola {user.name}, completa los siguientes pasos para agendar tu cita
           </p>
         </div>
-
-        <div className="flex justify-center mb-8">
-          <div className="flex items-center space-x-4">
-            {pasos.map((pasoInfo, index) => (
-              <div key={pasoInfo.numero} className="flex items-center">
-                <div
-                  className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                    paso >= pasoInfo.numero
-                      ? 'bg-primary border-primary text-white'
-                      : 'border-gray-300 text-gray-500'
-                  }`}
-                >
-                  {paso > pasoInfo.numero ? (
-                    <CheckCircleIcon className="w-6 h-6" />
-                  ) : (
-                    <pasoInfo.icono className="w-5 h-5" />
+        <nav className="flex justify-center mb-8">
+          <ol className="flex flex-row gap-0 md:gap-8 w-full max-w-2xl items-center">
+            {pasos.map((pasoInfo, index) => {
+              const isCompleted = paso > pasoInfo.numero;
+              const isActive = paso === pasoInfo.numero;
+              const isPending = paso < pasoInfo.numero;
+              return (
+                <li key={pasoInfo.numero} className="flex-1 flex flex-col items-center relative min-w-[60px]">
+                  {/* Línea de conexión izquierda */}
+                  {index > 0 && (
+                    <span
+                      className={`absolute left-0 top-1/2 -translate-y-1/2 -z-10 h-1 w-1/2 md:w-8 rounded bg-gradient-to-r
+                        ${isCompleted ? 'from-[var(--color-primary)] to-[var(--color-primary)]' : 'from-[var(--border-primary)] to-[var(--border-primary)]'}
+                      `}
+                      style={{ marginLeft: '-50%' }}
+                    />
                   )}
-                </div>
-                <span
-                  className={`ml-2 text-sm font-medium ${
-                    paso >= pasoInfo.numero ? 'text-primary' : 'text-gray-500'
-                  }`}
-                >
-                  {pasoInfo.titulo}
-                </span>
-                {index < pasos.length - 1 && (
+                  {/* Círculo con icono */}
                   <div
-                    className={`w-8 h-0.5 mx-4 ${
-                      paso > pasoInfo.numero ? 'bg-primary' : 'bg-gray-300'
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+                    className={`flex items-center justify-center w-16 h-16 rounded-full border-4 transition-all duration-300
+                      ${isCompleted ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white scale-100' : ''}
+                      ${isActive ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white shadow-2xl scale-110 ring-4 ring-[var(--color-primary)]/30 z-10' : ''}
+                      ${isPending ? 'bg-transparent border-[var(--border-primary)] text-[var(--color-primary)]/40 opacity-70' : ''}
+                    `}
+                  >
+                    {isCompleted ? (
+                      <CheckCircleIcon className="w-9 h-9" />
+                    ) : (
+                      <pasoInfo.icono className={`w-9 h-9`} />
+                    )}
+                  </div>
+                  {/* Título del paso */}
+                  <span
+                    className={`mt-2 text-xs md:text-base font-bold text-center transition-colors duration-200
+                      ${isActive ? 'text-[var(--color-primary)] scale-105' : 'text-[var(--color-text-secondary)] font-semibold'}
+                    `}
+                  >
+                    {pasoInfo.titulo}
+                  </span>
+                  {/* Línea de conexión derecha */}
+                  {index < pasos.length - 1 && (
+                    <span
+                      className={`absolute right-0 top-1/2 -translate-y-1/2 -z-10 h-1 w-1/2 md:w-8 rounded bg-gradient-to-r
+                        ${paso > pasoInfo.numero ? 'from-[var(--color-primary)] to-[var(--color-primary)]' : 'from-[var(--border-primary)] to-[var(--border-primary)]'}
+                      `}
+                      style={{ marginRight: '-50%' }}
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
 
         <AnimatePresence>
           {message && <Alert key="success-alert" type="success" message={message} />}
@@ -348,7 +365,7 @@ function PatientAppointment() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-lg shadow-lg p-6 mb-6"
+          className="bg-white dark:bg-[var(--color-background)] rounded-2xl shadow-xl p-6 md:p-10 mb-6 transition-colors duration-200 border border-[var(--border-primary)]"
         >
           {paso === 1 && (
             <SelectorEspecialidad
@@ -375,7 +392,7 @@ function PatientAppointment() {
           )}
 
           {paso === 4 && (
-            <div>
+            <div className="bg-white dark:bg-[var(--color-background)] rounded-2xl shadow-xl p-6 md:p-10">
               <ConfirmacionCita
                 selecciones={selecciones}
                 datosPaciente={{
@@ -398,7 +415,7 @@ function PatientAppointment() {
                   value={notas}
                   onChange={(e) => dispatch({ type: 'SET_NOTAS', payload: e.target.value })}
                   placeholder="Agrega cualquier información adicional que consideres importante..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[var(--border-primary)] bg-[var(--color-background-light)] dark:bg-[var(--color-background)] text-[var(--color-text-dark)] dark:text-[var(--color-text-light)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-transparent transition-colors duration-200"
                   rows="3"
                 />
               </div>
