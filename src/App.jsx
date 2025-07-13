@@ -25,6 +25,7 @@ const ResendActivation = lazy(() => import('./pages/ResendActivation'));
 const DentistProfile = lazy(() => import('./pages/dentist/DentistProfile'));
 const AdminProfile = lazy(() => import('./pages/admin/AdminProfile'));
 const GuestAppointment = lazy(() => import('./pages/GuestAppointment'));
+const PatientAppointment = lazy(() => import('./pages/PatientAppointment'));
 const Services = lazy(() => import('./pages/Services'));
 const Contact = lazy(() => import('./pages/Contact'));
 const About = lazy(() => import('./pages/About'));
@@ -63,6 +64,7 @@ function App() {
                 <Route path="/patient-dashboard" element={<PatientDashboard />} />
                 <Route path="/dashboard" element={<PatientDashboard />} /> {/* Alias común */}
                 <Route path="/patient-profile" element={<PatientProfile />} />
+                <Route path="/patient-appointment" element={<PatientAppointment />} />
               </Route>
               
               <Route element={<ProtectedRoute allowedRoles={['dentist', 'admin']} />}>

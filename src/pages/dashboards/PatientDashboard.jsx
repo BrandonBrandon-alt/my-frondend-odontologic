@@ -245,6 +245,15 @@ function PatientDashboard() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
           variants={containerVariants}
         >
+          {/* Tarjeta: Agendar Cita */}
+          <motion.div variants={itemVariants}>
+            <DashboardCard
+              to="/patient-appointment"
+              icon={<CircleIconBg><CalendarDaysIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Agendar Cita"
+              description="Reserva tu próxima cita de manera rápida y fácil."
+            />
+          </motion.div>
           {/* Tarjeta: Mis Citas */}
           <motion.div variants={itemVariants}>
             <DashboardCard

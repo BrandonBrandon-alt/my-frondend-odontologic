@@ -15,6 +15,7 @@ import {
   StarIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
+import AgendarCitaButton from '../components/ui/Button/AgendarCitaButton';
 
 // Animaciones
 const containerVariants = {
@@ -436,12 +437,11 @@ function About() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
             variants={itemVariants}
           >
-            <Link 
-              to="/guest-appointment"
+            <AgendarCitaButton
               className="bg-white text-[var(--color-primary)] font-bold py-4 px-8 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 inline-block text-center"
             >
               Agendar Cita
-            </Link>
+            </AgendarCitaButton>
             <Link 
               to="/services"
               className="border-2 border-white text-white font-bold py-4 px-8 rounded-lg hover:bg-white hover:text-[var(--color-primary)] transition-all duration-200 inline-block text-center"

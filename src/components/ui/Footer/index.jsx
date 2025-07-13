@@ -13,50 +13,123 @@ const socialLinks = [
   ) },
 ];
 
+// Enlaces de navegación rápida
+const quickLinks = [
+  { to: "/", label: "Inicio" },
+  { to: "/about", label: "Nosotros" },
+  { to: "/services", label: "Servicios" },
+  { to: "/contact", label: "Contacto" },
+  { to: "/login", label: "Iniciar Sesión" },
+  { to: "/register", label: "Registrarse" },
+  { to: "/guest-appointment", label: "Agendar Cita (Invitado)" },
+  { to: "/patient-appointment", label: "Agendar Cita (Paciente)" },
+];
+
+// Enlaces de servicios
+const serviceLinks = [
+  { to: "/services", label: "Odontología General" },
+  { to: "/services", label: "Ortodoncia" },
+  { to: "/services", label: "Endodoncia" },
+  { to: "/services", label: "Cirugía Oral" },
+  { to: "/services", label: "Estética Dental" },
+  { to: "/services", label: "Periodoncia" },
+];
+
 const Footer = ({ children }) => {
   return (
     <footer className="bg-[var(--color-primary)] text-white border-t-2 border-[var(--color-accent)] py-10 shadow-inner mt-12">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row md:justify-between gap-8 items-center md:items-start text-center md:text-left">
-        {/* Sección de contacto */}
-        <div className="flex-1 mb-6 md:mb-0">
-          <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-            <svg className="w-6 h-6 inline-block text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11c0 5.25 7.02 10.45 8.09 11.22.34.24.81.24 1.15 0C13.98 21.45 21 16.25 21 11c0-4.97-4.03-9-9-9zm0 17.88C10.14 18.09 5 14.13 5 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 3.13-5.14 7.09-7 8.88z"/><circle cx="12" cy="11" r="3"/></svg>
-            Contáctanos
-          </h3>
-          <p className="text-sm opacity-90 mb-1">Teléfono: <a href="tel:+573001234567" className="hover:underline">+57 300 123 4567</a></p>
-          <p className="text-sm opacity-90 mb-1">Email: <a href="mailto:info@odontologic.com" className="hover:underline">info@odontologic.com</a></p>
-          <p className="text-sm opacity-90 mb-1">Dirección: Calle 10 #15-20, Armenia, Quindío</p>
-        </div>
-        {/* Sección de redes sociales */}
-        <div className="flex-1 mb-6 md:mb-0 flex flex-col items-center">
-          <h3 className="text-xl font-bold mb-2">Síguenos</h3>
-          <div className="flex space-x-4 justify-center">
-            {socialLinks.map(({ href, label, icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="bg-white/10 hover:bg-[var(--color-accent)] text-white hover:text-white rounded-full p-3 transition-colors duration-200 shadow-md"
-              >
-                {icon}
-              </a>
-            ))}
+      <div className="container mx-auto px-4">
+        {/* Navegación rápida principal */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          {/* Sección de contacto */}
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-bold mb-4 flex items-center justify-center md:justify-start gap-2">
+              <svg className="w-6 h-6 inline-block text-[var(--color-accent)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11c0 5.25 7.02 10.45 8.09 11.22.34.24.81.24 1.15 0C13.98 21.45 21 16.25 21 11c0-4.97-4.03-9-9-9zm0 17.88C10.14 18.09 5 14.13 5 11c0-3.86 3.14-7 7-7s7 3.14 7 7c0 3.13-5.14 7.09-7 8.88z"/><circle cx="12" cy="11" r="3"/></svg>
+              Contáctanos
+            </h3>
+            <div className="space-y-2 text-sm opacity-90">
+              <p>Teléfono: <a href="tel:+573001234567" className="hover:underline hover:text-[var(--color-accent)]">+57 300 123 4567</a></p>
+              <p>Email: <a href="mailto:info@odontologic.com" className="hover:underline hover:text-[var(--color-accent)]">info@odontologic.com</a></p>
+              <p>Dirección: Calle 10 #15-20, Armenia, Quindío</p>
+            </div>
+          </div>
+
+          {/* Navegación rápida */}
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-bold mb-4">Navegación</h3>
+            <div className="space-y-2 text-sm opacity-90">
+              {quickLinks.map(({ to, label }) => (
+                <div key={label}>
+                  <Link 
+                    to={to} 
+                    className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200"
+                  >
+                    {label}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Servicios */}
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-bold mb-4">Servicios</h3>
+            <div className="space-y-2 text-sm opacity-90">
+              {serviceLinks.map(({ to, label }) => (
+                <div key={label}>
+                  <Link 
+                    to={to} 
+                    className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200"
+                  >
+                    {label}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Redes sociales */}
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-bold mb-4">Síguenos</h3>
+            <div className="flex space-x-4 justify-center md:justify-start mb-4">
+              {socialLinks.map(({ href, label, icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="bg-white/10 hover:bg-[var(--color-accent)] text-white hover:text-white rounded-full p-3 transition-colors duration-200 shadow-md"
+                >
+                  {icon}
+                </a>
+              ))}
+            </div>
+            <div className="text-sm opacity-90">
+              <p>Horarios de atención:</p>
+              <p>Lun - Vie: 8:00 AM - 6:00 PM</p>
+              <p>Sábados: 8:00 AM - 2:00 PM</p>
+            </div>
           </div>
         </div>
-        {/* Sección de enlaces legales */}
-        <div className="flex-1 flex flex-col items-center md:items-end">
-          <h3 className="text-xl font-bold mb-2">Legal</h3>
-          <div className="flex flex-col space-y-1 text-sm opacity-90">
-            <Link to="/privacy" className="hover:underline hover:text-[var(--color-accent)]">Política de Privacidad</Link>
-            <Link to="/terms" className="hover:underline hover:text-[var(--color-accent)]">Términos de Servicio</Link>
+
+        {/* Línea divisoria */}
+        <div className="border-t border-white/20 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            {/* Enlaces legales */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm opacity-90">
+              <Link to="/privacy" className="hover:underline hover:text-[var(--color-accent)]">Política de Privacidad</Link>
+              <Link to="/terms" className="hover:underline hover:text-[var(--color-accent)]">Términos de Servicio</Link>
+              <Link to="/about" className="hover:underline hover:text-[var(--color-accent)]">Sobre Nosotros</Link>
+              <Link to="/contact" className="hover:underline hover:text-[var(--color-accent)]">Contacto</Link>
+            </div>
+            
+            {/* Copyright */}
+            <div className="text-center text-xs opacity-70">
+              &copy; {new Date().getFullYear()} Odontologic - Tu Clínica Dental en Armenia, Quindío. Todos los derechos reservados.
+            </div>
           </div>
         </div>
-      </div>
-      {/* Línea divisoria y copyright */}
-      <div className="container mx-auto px-4 mt-8 border-t border-white/20 pt-4 text-center text-xs opacity-70">
-        &copy; {new Date().getFullYear()} Odontologic - Tu Clínica Dental en Armenia, Quindío. Todos los derechos reservados.
       </div>
       {children && <div className="mt-2 w-full">{children}</div>}
     </footer>

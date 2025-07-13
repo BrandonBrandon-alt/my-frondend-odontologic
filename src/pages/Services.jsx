@@ -11,6 +11,7 @@ import {
   MapPinIcon,
   PhoneIcon
 } from '@heroicons/react/24/outline';
+import AgendarCitaButton from '../components/ui/Button/AgendarCitaButton';
 
 // Animaciones
 const containerVariants = {
@@ -257,12 +258,11 @@ function Services() {
                       <span className="text-2xl font-bold text-[var(--color-primary)]">
                         {service.price}
                       </span>
-                      <Link
-                        to="/guest-appointment"
+                      <AgendarCitaButton
                         className="bg-[var(--color-accent)] text-white px-6 py-2 rounded-full hover:bg-[var(--color-primary)] transition duration-300 font-semibold"
                       >
                         Agendar
-                      </Link>
+                      </AgendarCitaButton>
                     </div>
                   </motion.div>
                 ))}
@@ -288,12 +288,11 @@ function Services() {
             Agenda tu cita hoy y recibe una consulta de evaluación gratuita
           </motion.p>
           <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={itemVariants}>
-            <Link
-              to="/guest-appointment"
+            <AgendarCitaButton
               className="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition duration-300"
             >
               Agendar Cita
-            </Link>
+            </AgendarCitaButton>
             <Link
               to="/contact"
               className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-[var(--color-primary)] transition duration-300"

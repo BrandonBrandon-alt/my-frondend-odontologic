@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import AgendarCitaButton from '../ui/Button/AgendarCitaButton';
 
 const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -49,12 +49,11 @@ function CallToActionSection() {
                     whileHover="hover"
                     whileTap="tap"
                 >
-                    <Link
-                        to="/guest-appointment"
+                    <AgendarCitaButton
                         className="inline-block bg-white text-[var(--color-primary)] font-extrabold py-4 px-10 rounded-full shadow-xl transition duration-300 ease-in-out text-xl border-2 border-white/20 hover:bg-[var(--color-accent)] hover:text-white hover:border-[var(--color-accent)]"
                     >
                         ¡Agenda tu cita ahora!
-                    </Link>
+                    </AgendarCitaButton>
                 </motion.div>
             </motion.div>
         </section>

@@ -93,4 +93,39 @@ export const appointmentService = {
       throw error;
     }
   },
+
+  // ======================= CREAR CITA PARA PACIENTE AUTENTICADO =======================
+  createPatientAppointment: async (appointmentData) => {
+    try {
+      const payload = {
+        patient_id: appointmentData.user_id,
+        disponibilidad_id: appointmentData.disponibilidad_id,
+        service_type_id: appointmentData.service_type_id,
+        preferred_date: appointmentData.preferred_date,
+        notes: appointmentData.notes || null,
+      };
+      
+      console.log('Payload para paciente autenticado enviado al backend:', payload);
+      console.log('URL del endpoint:', `${APPOINTMENT_BASE_PATH}/patient`);
+      
+      const response = await axiosInstance.post(`${APPOINTMENT_BASE_PATH}/patient`, payload);
+      console.log('Respuesta del backend (cita paciente autenticado):', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error en createPatientAppointment:', error);
+      console.error('Status del error:', error.response?.status);
+      console.error('Datos del error:', error.response?.data);
+      console.error('Headers del error:', error.response?.headers);
+      console.error('URL que falló:', error.config?.url);
+      console.error('Método que falló:', error.config?.method);
+      console.error('Payload que se envió:', error.config?.data);
+      
+      // Si el backend no está implementado aún, devolver un error más descriptivo
+      if (error.response?.status === 500) {
+        throw new Error('El endpoint para crear citas de pacientes registrados aún no está implementado en el backend. Por favor, contacta al administrador.');
+      }
+      
+      throw error;
+    }
+  },
 }; 
