@@ -23,7 +23,7 @@ const FormField = ({
   const displayLabel = required ? `${label} *` : label;
 
   return (
-    <div className="w-full">
+    <div className="w-full text-[var(--color-text-dark)]">
       <Input
         id={fieldId}
         name={name}

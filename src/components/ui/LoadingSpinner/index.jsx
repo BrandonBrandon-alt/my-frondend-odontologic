@@ -4,7 +4,7 @@ import React from 'react';
  * Componente LoadingSpinner reutilizable para mostrar estados de carga
  * @param {Object} props - Propiedades del componente
  * @param {string} props.size - Tamaño del spinner ('sm', 'md', 'lg')
- * @param {string} props.color - Color del spinner ('primary', 'white', 'gray')
+ * @param {string} props.color - Color del spinner ('primary', 'white', 'gray', 'accent', 'text')
  * @param {string} props.className - Clases CSS adicionales
  */
 const LoadingSpinner = ({ 
@@ -21,9 +21,11 @@ const LoadingSpinner = ({
   
   // Colores
   const colors = {
-    primary: 'text-[var(--color-accent)]',
+    primary: 'text-[var(--color-primary)]',
+    accent: 'text-[var(--color-accent)]',
     white: 'text-white',
-    gray: 'text-[var(--color-secondary)]'
+    gray: 'text-[var(--color-secondary)]',
+    text: 'text-[var(--color-text-dark)]'
   };
   
   const spinnerClasses = [

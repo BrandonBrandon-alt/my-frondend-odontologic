@@ -144,171 +144,173 @@ function FormularioCambiarPasswordReset() {
   };
 
   return (
-    <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px] flex-row-reverse">
-      {/* Columna de la Imagen */}
-      <motion.div
-        className="hidden md:block md:w-1/2 relative overflow-hidden"
-        initial="hidden"
-        animate="visible"
-        variants={imageVariants}
-      >
-        <img
-          src={resetImage}
-          alt="Fondo de cambio de contraseña"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-tl from-primary/70 to-secondary/70"></div>
-        <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
-          <div className="text-white z-10">
-            <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 drop-shadow-lg">
-              Establece tu Nueva Contraseña
-            </h2>
-            <p className="text-lg lg:text-xl font-light opacity-90 leading-relaxed">
-              Ingresa el código que recibiste y tu nueva contraseña segura.
-            </p>
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]">
+      <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px] flex-row-reverse">
+        {/* Columna de la Imagen */}
+        <motion.div
+          className="hidden md:block md:w-1/2 relative overflow-hidden"
+          initial="hidden"
+          animate="visible"
+          variants={imageVariants}
+        >
+          <img
+            src={resetImage}
+            alt="Fondo de cambio de contraseña"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tl from-primary/70 to-secondary/70"></div>
+          <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
+            <div className="text-white z-10">
+              <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 drop-shadow-lg">
+                Establece tu Nueva Contraseña
+              </h2>
+              <p className="text-lg lg:text-xl font-light opacity-90 leading-relaxed">
+                Ingresa el código que recibiste y tu nueva contraseña segura.
+              </p>
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Columna del Formulario */}
-      <motion.div
-        className="w-full md:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
-        initial="hidden"
-        animate="visible"
-        variants={formVariants}
-      >
-        <motion.h2
-          className="text-3xl md:text-4xl font-extrabold text-primary text-center mb-4"
-          variants={textVariants}
+        {/* Columna del Formulario */}
+        <motion.div
+          className="w-full md:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
+          initial="hidden"
+          animate="visible"
+          variants={formVariants}
         >
-          Restablecer Contraseña
-        </motion.h2>
-        <motion.p
-          className="text-base text-text-dark text-center mb-8"
-          variants={textVariants}
-          transition={{ delay: 0.1 }}
-        >
-          Ingresa el código de recuperación y tu nueva contraseña.
-        </motion.p>
+          <motion.h2
+            className="text-3xl md:text-4xl font-extrabold text-[var(--color-text-main)] text-center mb-4"
+            variants={textVariants}
+          >
+            Restablecer Contraseña
+          </motion.h2>
+          <motion.p
+            className="text-base text-[var(--color-text-secondary)] text-center mb-8"
+            variants={textVariants}
+            transition={{ delay: 0.1 }}
+          >
+            Ingresa el código de recuperación y tu nueva contraseña.
+          </motion.p>
 
-        <AnimatePresence>
-          {message && <Alert type="success" message={message} />}
-          {error && <Alert type="error" message={error} />}
-          {passwordMismatchError && <Alert type="warning" message={passwordMismatchError} />}
-        </AnimatePresence>
+          <AnimatePresence>
+            {message && <Alert type="success" message={message} />}
+            {error && <Alert type="error" message={error} />}
+            {passwordMismatchError && <Alert type="warning" message={passwordMismatchError} />}
+          </AnimatePresence>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {initialEmail && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {initialEmail && (
+              <Input
+                label="Correo Electrónico (No editable)"
+                id="email"
+                type="email"
+                name="email"
+                value={formData.email}
+                readOnly
+                className="bg-gray-100 cursor-not-allowed"
+                startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} 
+              />
+            )}
+
             <Input
-              label="Correo Electrónico (No editable)"
-              id="email"
-              type="email"
-              name="email"
-              value={formData.email}
-              readOnly
-              className="bg-gray-100 cursor-not-allowed"
-              startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} 
+              label="Código de Recuperación"
+              id="code"
+              type="text"
+              name="code"
+              value={formData.code}
+              onChange={handleChange}
+              required
+              placeholder="Ej. d5f7c3b1"
+              startIcon={<KeyIcon className="h-5 w-5 text-gray-400" />} 
             />
-          )}
 
-          <Input
-            label="Código de Recuperación"
-            id="code"
-            type="text"
-            name="code"
-            value={formData.code}
-            onChange={handleChange}
-            required
-            placeholder="Ej. d5f7c3b1"
-            startIcon={<KeyIcon className="h-5 w-5 text-gray-400" />} 
-          />
+            <Input
+              label="Nueva Contraseña"
+              id="newPassword"
+              type={showNewPassword ? 'text' : 'password'}
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleChange}
+              required
+              minLength="6"
+              maxLength="20"
+              placeholder="Mínimo 6 caracteres"
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              endIcon={
+                <button
+                  type="button"
+                  onClick={toggleNewPasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showNewPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              }
+            />
 
-          <Input
-            label="Nueva Contraseña"
-            id="newPassword"
-            type={showNewPassword ? 'text' : 'password'}
-            name="newPassword"
-            value={formData.newPassword}
-            onChange={handleChange}
-            required
-            minLength="6"
-            maxLength="20"
-            placeholder="Mínimo 6 caracteres"
-            startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
-            endIcon={
-              <button
-                type="button"
-                onClick={toggleNewPasswordVisibility}
-                tabIndex={0}
-                aria-label={showNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
-                className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
-              >
-                {showNewPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500" />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500" />
-                )}
-              </button>
-            }
-          />
+            <Input
+              label="Confirmar Nueva Contraseña"
+              id="confirmNewPassword"
+              type={showConfirmNewPassword ? 'text' : 'password'}
+              name="confirmNewPassword"
+              value={formData.confirmNewPassword}
+              onChange={handleChange}
+              required
+              placeholder="Confirma tu nueva contraseña"
+              startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
+              endIcon={
+                <button
+                  type="button"
+                  onClick={toggleConfirmNewPasswordVisibility}
+                  tabIndex={0}
+                  aria-label={showConfirmNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
+                  className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                >
+                  {showConfirmNewPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              }
+            />
 
-          <Input
-            label="Confirmar Nueva Contraseña"
-            id="confirmNewPassword"
-            type={showConfirmNewPassword ? 'text' : 'password'}
-            name="confirmNewPassword"
-            value={formData.confirmNewPassword}
-            onChange={handleChange}
-            required
-            placeholder="Confirma tu nueva contraseña"
-            startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} 
-            endIcon={
-              <button
-                type="button"
-                onClick={toggleConfirmNewPasswordVisibility}
-                tabIndex={0}
-                aria-label={showConfirmNewPassword ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'}
-                className="ml-2 p-1 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
-              >
-                {showConfirmNewPassword ? (
-                  <EyeSlashIcon className="h-5 w-5 text-gray-500" />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-500" />
-                )}
-              </button>
-            }
-          />
+            <Button type="submit" loading={loading} className="py-3 mt-6">
+              {loading ? 'Cambiando...' : 'Cambiar Contraseña'}
+            </Button>
+          </form>
 
-          <Button type="submit" loading={loading} className="py-3 mt-6">
-            {loading ? 'Cambiando...' : 'Cambiar Contraseña'}
-          </Button>
-        </form>
+          {/* Hipervínculo para Reenviar Código */}
+          <p className="mt-4 text-center text-[var(--color-text-secondary)] text-sm">
+            ¿No recibiste el código?{' '}
+            <button
+              type="button"
+              onClick={handleResendCode}
+              disabled={resendLoading || !formData.email}
+              className={`
+                font-semibold text-primary hover:text-secondary underline
+                ${resendLoading || !formData.email ? 'opacity-50 cursor-not-allowed' : ''}
+              `}
+            >
+              {resendLoading ? 'Reenviando...' : 'Reenviar Código'}
+            </button>
+          </p>
 
-        {/* Hipervínculo para Reenviar Código */}
-        <p className="mt-4 text-center text-text-dark text-sm">
-          ¿No recibiste el código?{' '}
-          <button
-            type="button" // Importante: type="button" para no enviar el formulario
-            onClick={handleResendCode}
-            disabled={resendLoading || !formData.email} // Deshabilitar si está cargando o no hay email
-            className={`
-              font-semibold text-primary hover:text-secondary underline
-              ${resendLoading || !formData.email ? 'opacity-50 cursor-not-allowed' : ''}
-            `}
-          >
-            {resendLoading ? 'Reenviando...' : 'Reenviar Código'}
-          </button>
-        </p>
-
-        <p className="mt-6 text-center text-text-dark text-sm">
-          <Link
-            to="/login"
-            className="font-semibold text-primary hover:text-secondary underline"
-          >
-            Volver al inicio de sesión
-          </Link>
-        </p>
-      </motion.div>
+          <p className="mt-6 text-center text-[var(--color-text-secondary)] text-sm">
+            <Link
+              to="/login"
+              className="font-semibold text-primary hover:text-secondary underline"
+            >
+              Volver al inicio de sesión
+            </Link>
+          </p>
+        </motion.div>
+      </div>
     </div>
   );
 }

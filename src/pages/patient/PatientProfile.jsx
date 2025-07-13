@@ -1,11 +1,9 @@
 // src/pages/patient/PatientProfile.jsx
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // Importa AnimatePresence para mensajes
 import { userService } from '../../services';
-import { Button, Input, Alert, LoadingSpinner } from '../../components';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { UserCircleIcon, MapPinIcon, PhoneIcon, EnvelopeIcon, CalendarIcon, IdentificationIcon } from '@heroicons/react/24/outline'; // Nuevos iconos
+import { UserCircleIcon, MapPinIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import FormularioPatientProfile from '../../components/features/FormularioPatientProfile';
 
 function PatientProfile() {
   const { user, updateUserContext, loading: authLoading } = useAuth();
@@ -41,13 +39,10 @@ function PatientProfile() {
     setLoading(true);
     setMessage('');
     setError('');
-
-    // Solo enviar los campos permitidos por el backend
     const allowedFields = ['name', 'email', 'phone', 'address'];
     const dataToSend = Object.fromEntries(
       Object.entries(userData).filter(([key]) => allowedFields.includes(key))
     );
-
     try {
       const updatedUser = await userService.updateProfile(dataToSend);
       updateUserContext(updatedUser);
@@ -59,99 +54,25 @@ function PatientProfile() {
     }
   };
 
-  // Variantes de Framer Motion
-  const pageVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-  };
-
-  if (loading && !userData) {
-    return (
-      <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  const fields = [
+    { name: 'name', label: 'Nombre Completo', icon: <UserCircleIcon className="h-5 w-5 text-gray-400" /> },
+    { name: 'email', label: 'Correo Electrónico', icon: <EnvelopeIcon className="h-5 w-5 text-gray-400" /> },
+    { name: 'phone', label: 'Teléfono', icon: <PhoneIcon className="h-5 w-5 text-gray-400" /> },
+    { name: 'address', label: 'Dirección', icon: <MapPinIcon className="h-5 w-5 text-gray-400" /> },
+  ];
 
   return (
-    <motion.div
-      className="container mx-auto p-4 sm:p-6 lg:p-8"
-      variants={pageVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-8">
-        <div className="text-center mb-8">
-          <UserCircleIcon className="w-24 h-24 mx-auto text-gray-300" />
-          <h1 className="text-3xl font-bold text-gray-900 mt-4">{userData?.name || 'Mi Perfil'}</h1>
-          <p className="text-md text-gray-500">{userData?.email}</p>
-        </div>
-
-        <AnimatePresence>
-          {error && <Alert type="error" message={error} />}
-        </AnimatePresence>
-
-        {userData && (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input
-                label="Nombre Completo"
-                id="name"
-                name="name"
-                type="text"
-                value={userData.name || ''}
-                onChange={handleChange}
-                startIcon={<UserCircleIcon className="h-5 w-5 text-gray-400" />}
-              />
-              <Input
-                label="Correo Electrónico"
-                id="email"
-                name="email"
-                type="email"
-                value={userData.email || ''}
-                onChange={handleChange}
-                startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
-              />
-              <Input
-                label="Teléfono"
-                id="phone"
-                name="phone"
-                type="tel"
-                value={userData.phone || ''}
-                onChange={handleChange}
-                startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />}
-              />
-              <Input
-                label="Dirección"
-                id="address"
-                name="address"
-                type="text"
-                value={userData.address || ''}
-                onChange={handleChange}
-                startIcon={<MapPinIcon className="h-5 w-5 text-gray-400" />}
-              />
-            </div>
-
-            <div className="mt-6">
-              <AnimatePresence>
-                {message && <Alert type="success" message={message} key="success-msg" />}
-              </AnimatePresence>
-            </div>
-
-            <div className="mt-8 flex justify-end space-x-4">
-              <Link to={user.role === 'admin' ? '/admin-dashboard' : user.role === 'dentist' ? '/dentist-dashboard' : '/patient-dashboard'}>
-                <Button variant="outline">
-                  Volver al Dashboard
-                </Button>
-              </Link>
-              <Button type="submit" loading={loading} disabled={loading}>
-                {loading ? 'Guardando...' : 'Guardar Cambios'}
-              </Button>
-            </div>
-          </form>
-        )}
-      </div>
-    </motion.div>
+    <FormularioPatientProfile
+      userData={userData}
+      onChange={handleChange}
+      onSubmit={handleSubmit}
+      loading={loading}
+      error={error}
+      message={message}
+      fields={fields}
+      dashboardPath="/patient-dashboard"
+      title="Mi Perfil"
+    />
   );
 }
 

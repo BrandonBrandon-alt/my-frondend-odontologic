@@ -25,12 +25,12 @@ const Button = ({
   // Clases base
   const baseClasses = 'inline-flex items-center justify-center font-semibold rounded-lg shadow-md transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed active:scale-95';
   
-  // Variantes
+  // Variantes con variables CSS para modo oscuro
   const variants = {
-    primary: 'bg-[var(--color-accent)] hover:bg-[var(--color-primary)] text-white focus:ring-[var(--color-accent)]',
-    secondary: 'bg-[var(--color-primary-darker)] hover:bg-[var(--color-primary)] text-white focus:ring-[var(--color-primary)]',
-    outline: 'border-2 border-[var(--color-accent)] text-[var(--color-accent)] bg-[var(--color-background-light)] hover:bg-[var(--color-accent)] hover:text-white focus:ring-[var(--color-accent)]',
-    ghost: 'text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 focus:ring-[var(--color-accent)] bg-transparent'
+    primary: 'bg-[var(--color-accent)] hover:bg-[var(--color-primary)] text-[var(--color-text-on-accent)] focus:ring-[var(--color-accent)] shadow-[var(--shadow-accent)]',
+    secondary: 'bg-[var(--color-secondary)] hover:bg-[var(--color-secondary-hover)] text-[var(--color-text-on-secondary)] focus:ring-[var(--color-secondary)] shadow-[var(--shadow-secondary)]',
+    outline: 'border-2 border-[var(--color-accent)] text-[var(--color-accent)] bg-[var(--color-background)] hover:bg-[var(--color-accent)] hover:text-[var(--color-text-on-accent)] focus:ring-[var(--color-accent)] shadow-[var(--shadow-outline)]',
+    ghost: 'text-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] focus:ring-[var(--color-accent)] bg-transparent shadow-none'
   };
   
   // Tamaños
@@ -60,7 +60,7 @@ const Button = ({
     >
       {loading && (
         <svg 
-          className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" 
+          className="animate-spin -ml-1 mr-2 h-5 w-5 text-current" 
           xmlns="http://www.w3.org/2000/svg" 
           fill="none" 
           viewBox="0 0 24 24"

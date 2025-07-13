@@ -11,72 +11,42 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Verificar localStorage primero
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    
-    // Si no hay tema guardado, usar preferencia del sistema
-    if (window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    
-    // Fallback a modo claro
-    return false;
+  const [isDark, setIsDark] = useState(() => {
+    // 1. Verificar localStorage
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved === 'dark';
+    // 2. Detectar preferencia del sistema
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
-  // Función para cambiar el tema
-  const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
-  };
-
-  // Función para establecer tema específico
-  const setTheme = (theme) => {
-    setIsDarkMode(theme === 'dark');
-  };
-
-  // Aplicar tema al documento
+  // 3. Aplicar clase .dark al <html> y guardar en localStorage
   useEffect(() => {
     const root = document.documentElement;
-    
-    if (isDarkMode) {
+    if (isDark) {
       root.classList.add('dark');
-      root.setAttribute('data-theme', 'dark');
     } else {
       root.classList.remove('dark');
-      root.setAttribute('data-theme', 'light');
     }
-    
-    // Guardar en localStorage
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
-  // Escuchar cambios en preferencias del sistema
+  // 4. Escuchar cambios en la preferencia del sistema
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
     const handleChange = (e) => {
-      // Solo cambiar si no hay tema guardado en localStorage
       if (!localStorage.getItem('theme')) {
-        setIsDarkMode(e.matches);
+        setIsDark(e.matches);
       }
     };
-
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  const value = {
-    isDarkMode,
-    toggleTheme,
-    setTheme,
-    theme: isDarkMode ? 'dark' : 'light'
-  };
+  const toggleTheme = () => setIsDark((prev) => !prev);
+  const setTheme = (theme) => setIsDark(theme === 'dark');
 
   return (
-    <ThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme, setTheme, theme: isDark ? 'dark' : 'light' }}>
       {children}
     </ThemeContext.Provider>
   );

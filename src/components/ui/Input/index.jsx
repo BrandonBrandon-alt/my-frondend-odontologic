@@ -1,21 +1,7 @@
 import React, { forwardRef } from 'react';
-// Asegúrate de que los colores definidos en :root en tu CSS global estén disponibles.
 
 /**
  * Componente Input profesional y atractivo
- * @param {Object} props
- * @param {string} props.label
- * @param {string} props.id
- * @param {React.ReactNode} props.startIcon
- * @param {React.ReactNode} props.endIcon
- * @param {string} props.error
- * @param {string} props.helperText
- * @param {string} props.size
- * @param {string} props.variant
- * @param {string} props.className
- * @param {string} props.type - 'input' o 'textarea'
- * @param {number} props.rows - Número de filas para textarea
- * @param {Object} props.rest - Resto de las props del input/textarea
  */
 const Input = forwardRef(({ 
   label, 
@@ -43,24 +29,24 @@ const Input = forwardRef(({
   
   // Variantes
   const variants = {
-    default: 'border border-[var(--color-secondary)] bg-white focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)]/30', // Fondo blanco para default
-    filled: 'border border-[var(--color-secondary)] bg-[var(--color-secondary)]/20 focus:bg-white focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)]/30' // Fondo suave para filled
+    default: 'bg-[var(--bg-primary)] text-[var(--text-primary)] border border-[var(--border-primary)] placeholder-[var(--text-muted)] focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)]/30',
+    filled: 'bg-[var(--bg-secondary)] text-[var(--text-primary)] border border-[var(--border-secondary)] placeholder-[var(--text-muted)] focus:bg-[var(--bg-primary)] focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)]/30'
   };
   
   // Estado de error y foco
   const stateClasses = error 
-    ? 'border-[var(--color-error)] focus:border-[var(--color-error)] focus:ring-[var(--color-error)]/30' // Colores de error definidos en CSS
+    ? 'border-[var(--error)] text-[var(--error)] focus:border-[var(--error)] focus:ring-[var(--error)]/30' 
     : variants[variant];
   
   // Estado deshabilitado
   const disabledClasses = rest.disabled 
-    ? 'bg-gray-100 text-gray-500 cursor-not-allowed opacity-75' 
+    ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)] cursor-not-allowed opacity-75' 
     : '';
   
-  // Padding para iconos (ajustado para mayor consistencia)
+  // Padding para iconos
   const paddingClasses = [
-    startIcon ? 'pl-11' : '', // Ajustado a 11 para mejor espacio con icono w-5
-    endIcon ? 'pr-11' : ''    // Ajustado a 11
+    startIcon ? 'pl-11' : '',
+    endIcon ? 'pr-11' : ''
   ].filter(Boolean).join(' ');
   
   const inputClasses = [
@@ -80,18 +66,17 @@ const Input = forwardRef(({
           id={id}
           className={inputClasses}
           rows={rows}
-          {...rest} // Pasa todas las props restantes, incluyendo placeholder
+          {...rest}
         />
       );
     }
-    
     return (
       <input
         ref={ref}
         id={id}
         className={inputClasses}
-        type={type} // Asegura que el tipo de input se propague
-        {...rest} // Pasa todas las props restantes, incluyendo placeholder
+        type={type}
+        {...rest}
       />
     );
   };
@@ -101,40 +86,35 @@ const Input = forwardRef(({
       {label && (
         <label 
           htmlFor={id} 
-          className="block text-sm font-semibold text-[var(--color-text-dark)] mb-1 tracking-wide"
+          className="block text-sm font-semibold text-[var(--text-secondary)] mb-1 tracking-wide"
         >
           {label}
         </label>
       )}
-      
-      <div className="relative flex items-center"> {/* flex items-center para centrar iconos verticalmente */}
+      <div className="relative flex items-center">
         {startIcon && (
-          <div className="absolute left-0 flex items-center pl-3.5 pointer-events-none h-full"> {/* h-full y pl-3.5 */}
-            <div className="text-gray-400 text-xl"> {/* Color más sutil para el icono, tamaño xl para que sea visible */}
+          <div className="absolute left-0 flex items-center pl-3.5 pointer-events-none h-full">
+            <div className="text-[var(--text-muted)] text-xl">
               {startIcon}
             </div>
           </div>
         )}
-        
         {renderInput()}
-        
         {endIcon && (
-          <div className="absolute right-0 flex items-center pr-3.5 h-full"> {/* h-full y pr-3.5 */}
-            <div className="text-gray-400 text-xl"> {/* Color más sutil para el icono, tamaño xl */}
+          <div className="absolute right-0 flex items-center pr-3.5 h-full">
+            <div className="text-[var(--text-muted)] text-xl">
               {endIcon}
             </div>
           </div>
         )}
       </div>
-      
       {(error || helperText) && (
         <div className="mt-1">
           {error && (
-            // Color rojo de error, sin animación de pulso
-            <p className="text-sm text-[var(--color-error)] font-medium">{error}</p> 
+            <p className="text-sm text-[var(--error)] font-medium">{error}</p> 
           )}
           {helperText && !error && (
-            <p className="text-sm text-gray-500 italic">{helperText}</p> 
+            <p className="text-sm text-[var(--text-muted)] italic">{helperText}</p> 
           )}
         </div>
       )}

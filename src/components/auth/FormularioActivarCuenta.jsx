@@ -122,8 +122,7 @@ function FormularioActivarCuenta() {
   };
 
   return (
-    <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
-
+    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
       {/* Columna de la Imagen (visible en md y superior) */}
       <motion.div
         className="hidden md:block md:w-1/2 relative overflow-hidden"
@@ -153,13 +152,13 @@ function FormularioActivarCuenta() {
         variants={formVariants}
       >
         <motion.h2
-          className="text-3xl md:text-4xl font-extrabold text-primary text-center mb-4"
+          className="text-3xl md:text-4xl font-extrabold text-[var(--color-text-main)] text-center mb-4"
           variants={textVariants}
         >
           Activa tu Cuenta
         </motion.h2>
         <motion.p
-          className="text-base text-text-dark text-center mb-8"
+          className="text-base text-[var(--color-text-secondary)] text-center mb-8"
           variants={textVariants}
           transition={{ delay: 0.1 }}
         >
@@ -209,7 +208,7 @@ function FormularioActivarCuenta() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-text-dark text-sm">
+        <p className="mt-6 text-center text-[var(--color-text-secondary)] text-sm">
           ¿No recibiste el código?{' '}
           <button
             type="button"
@@ -220,7 +219,7 @@ function FormularioActivarCuenta() {
             {resendLoading ? 'Enviando...' : 'Reenviar Código'}
           </button>
         </p>
-        <p className="mt-2 text-center text-text-dark text-sm">
+        <p className="mt-2 text-center text-[var(--color-text-secondary)] text-sm">
           ¿Ya activaste tu cuenta?{' '}
           <Link
             to="/login"

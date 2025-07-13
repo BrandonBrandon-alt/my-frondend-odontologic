@@ -12,6 +12,7 @@ import {
   PhoneIcon
 } from '@heroicons/react/24/outline';
 import AgendarCitaButton from '../components/ui/Button/AgendarCitaButton';
+import Card from '../components/ui/Card';
 
 // Animaciones
 const containerVariants = {
@@ -235,35 +236,33 @@ function Services() {
                 <div className="w-24 h-1 bg-[var(--color-accent)] mx-auto rounded-full"></div>
               </motion.div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start">
                 {categoryData.services.map((service, serviceIndex) => (
                   <motion.div
                     key={serviceIndex}
-                    className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 border-l-4 border-[var(--color-accent)]"
                     variants={cardVariants}
                     whileHover="hover"
                   >
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-xl font-bold text-[var(--color-text-dark)]">
-                        {service.name}
-                      </h3>
-                      <span className="text-sm bg-[var(--color-accent)] text-white px-3 py-1 rounded-full">
-                        {service.duration}
-                      </span>
-                    </div>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      {service.description}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-2xl font-bold text-[var(--color-primary)]">
-                        {service.price}
-                      </span>
-                      <AgendarCitaButton
-                        className="bg-[var(--color-accent)] text-white px-6 py-2 rounded-full hover:bg-[var(--color-primary)] transition duration-300 font-semibold"
-                      >
-                        Agendar
-                      </AgendarCitaButton>
-                    </div>
+                    <Card
+                      variant="elevated"
+                      className="p-8 border-l-4 border-[var(--color-accent)] h-auto"
+                      title={service.name}
+                      subtitle={service.description}
+                    >
+                      <div className="flex justify-between items-center mt-6">
+                        <span className="text-2xl font-bold text-[var(--color-primary)]">
+                          {service.price}
+                        </span>
+                        <span className="text-sm bg-[var(--color-accent)] text-white px-3 py-1 rounded-full ml-2">
+                          {service.duration}
+                        </span>
+                        <AgendarCitaButton
+                          className="bg-[var(--color-accent)] text-white px-6 py-2 rounded-full hover:bg-[var(--color-primary)] transition duration-300 font-semibold ml-4"
+                        >
+                          Agendar
+                        </AgendarCitaButton>
+                      </div>
+                    </Card>
                   </motion.div>
                 ))}
               </div>
@@ -304,7 +303,7 @@ function Services() {
       </motion.section>
 
       {/* Información de Contacto */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-[var(--color-background)]">
         <div className="container mx-auto px-6">
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
@@ -315,18 +314,18 @@ function Services() {
           >
             <motion.div className="text-center" variants={itemVariants}>
               <div className="text-4xl mb-4">📍</div>
-              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2">Ubicación</h3>
-              <p className="text-gray-600">Armenia, Quindío<br />Centro Comercial</p>
+              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2 dark:text-[var(--color-text-light)]">Ubicación</h3>
+              <p className="text-gray-600 dark:text-[var(--color-text-light)]">Armenia, Quindío<br />Centro Comercial</p>
             </motion.div>
             <motion.div className="text-center" variants={itemVariants}>
               <div className="text-4xl mb-4">🕒</div>
-              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2">Horarios</h3>
-              <p className="text-gray-600">Lun - Vie: 8:00 AM - 6:00 PM<br />Sáb: 8:00 AM - 2:00 PM</p>
+              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2 dark:text-[var(--color-text-light)]">Horarios</h3>
+              <p className="text-gray-600 dark:text-[var(--color-text-light)]">Lun - Vie: 8:00 AM - 6:00 PM<br />Sáb: 8:00 AM - 2:00 PM</p>
             </motion.div>
             <motion.div className="text-center" variants={itemVariants}>
               <div className="text-4xl mb-4">📞</div>
-              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2">Contacto</h3>
-              <p className="text-gray-600">+57 300 123 4567<br />info@odontologic.com</p>
+              <h3 className="text-xl font-bold text-[var(--color-primary)] mb-2 dark:text-[var(--color-text-light)]">Contacto</h3>
+              <p className="text-gray-600 dark:text-[var(--color-text-light)]">+57 300 123 4567<br />info@odontologic.com</p>
             </motion.div>
           </motion.div>
         </div>

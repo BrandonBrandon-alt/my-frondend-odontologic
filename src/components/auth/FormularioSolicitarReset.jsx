@@ -55,8 +55,7 @@ function FormularioSolicitarReset() {
   };
 
   return (
-    <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[500px]">
-
+    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[500px]">
       {/* Columna de la Imagen */}
       <motion.div
         className="hidden md:block md:w-1/2 relative overflow-hidden"
@@ -86,13 +85,13 @@ function FormularioSolicitarReset() {
         variants={formVariants}
       >
         <motion.h2
-          className="text-3xl md:text-4xl font-extrabold text-primary text-center mb-4"
+          className="text-3xl md:text-4xl font-extrabold text-[var(--color-text-main)] text-center mb-4"
           variants={textVariants}
         >
           ¿Olvidaste tu Contraseña?
         </motion.h2>
         <motion.p
-          className="text-base text-text-dark text-center mb-8"
+          className="text-base text-[var(--color-text-secondary)] text-center mb-8"
           variants={textVariants}
           transition={{ delay: 0.1 }}
         >
@@ -123,7 +122,7 @@ function FormularioSolicitarReset() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-text-dark text-sm">
+        <p className="mt-6 text-center text-[var(--color-text-secondary)] text-sm">
           <Link
             to="/login"
             className="font-semibold text-primary hover:text-secondary underline"

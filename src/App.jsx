@@ -54,6 +54,8 @@ const ScrollToTop = () => {
 // Componentes simples (dummies)
 const NotFound = () => <div className="flex items-center justify-center min-h-[calc(100vh-128px)] bg-red-100 text-red-700 text-4xl font-bold">404 - Página no encontrada</div>;
 
+// Elimino el componente temporal PatientDashboard
+
 
 function App() {
   return (

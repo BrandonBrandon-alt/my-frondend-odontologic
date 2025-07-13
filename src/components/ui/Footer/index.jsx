@@ -37,7 +37,7 @@ const serviceLinks = [
 
 const Footer = ({ children }) => {
   return (
-    <footer className="bg-[var(--color-primary)] text-white border-t-2 border-[var(--color-accent)] py-10 shadow-inner mt-12">
+    <footer className="bg-[var(--color-primary)] text-[var(--color-text-on-accent)] border-t-2 border-[var(--color-accent)] py-10 shadow-inner mt-12">
       <div className="container mx-auto px-4">
         {/* Navegación rápida principal */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -48,8 +48,8 @@ const Footer = ({ children }) => {
               Contáctanos
             </h3>
             <div className="space-y-2 text-sm opacity-90">
-              <p>Teléfono: <a href="tel:+573001234567" className="hover:underline hover:text-[var(--color-accent)]">+57 300 123 4567</a></p>
-              <p>Email: <a href="mailto:info@odontologic.com" className="hover:underline hover:text-[var(--color-accent)]">info@odontologic.com</a></p>
+              <p>Teléfono: <a href="tel:+573001234567" className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200">+57 300 123 4567</a></p>
+              <p>Email: <a href="mailto:info@odontologic.com" className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200">info@odontologic.com</a></p>
               <p>Dirección: Calle 10 #15-20, Armenia, Quindío</p>
             </div>
           </div>
@@ -99,7 +99,7 @@ const Footer = ({ children }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="bg-white/10 hover:bg-[var(--color-accent)] text-white hover:text-white rounded-full p-3 transition-colors duration-200 shadow-md"
+                  className="bg-[var(--color-accent)]/20 hover:bg-[var(--color-accent)] text-[var(--color-text-on-accent)] hover:text-[var(--color-text-on-accent)] rounded-full p-3 transition-colors duration-200 shadow-md"
                 >
                   {icon}
                 </a>
@@ -114,14 +114,14 @@ const Footer = ({ children }) => {
         </div>
 
         {/* Línea divisoria */}
-        <div className="border-t border-white/20 pt-6">
+        <div className="border-t border-[var(--color-accent)]/20 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Enlaces legales */}
             <div className="flex flex-wrap justify-center gap-4 text-sm opacity-90">
-              <Link to="/privacy" className="hover:underline hover:text-[var(--color-accent)]">Política de Privacidad</Link>
-              <Link to="/terms" className="hover:underline hover:text-[var(--color-accent)]">Términos de Servicio</Link>
-              <Link to="/about" className="hover:underline hover:text-[var(--color-accent)]">Sobre Nosotros</Link>
-              <Link to="/contact" className="hover:underline hover:text-[var(--color-accent)]">Contacto</Link>
+              <Link to="/privacy" className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200">Política de Privacidad</Link>
+              <Link to="/terms" className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200">Términos de Servicio</Link>
+              <Link to="/about" className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200">Sobre Nosotros</Link>
+              <Link to="/contact" className="hover:underline hover:text-[var(--color-accent)] transition-colors duration-200">Contacto</Link>
             </div>
             
             {/* Copyright */}

@@ -48,11 +48,11 @@ const UserProfile = ({
       initial="hidden"
       animate="visible"
     >
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-8">
+      <div className="max-w-2xl mx-auto bg-white dark:bg-[var(--color-background)] rounded-xl shadow-md p-8">
         <div className="text-center mb-8">
           {fields.find(f => f.icon) && fields[0].icon}
-          <h1 className="text-3xl font-bold text-gray-900 mt-4">{userData?.name || title}</h1>
-          <p className="text-md text-gray-500">{userData?.email}</p>
+          <h1 className="text-3xl font-bold text-[var(--color-text-main)] mt-4">{userData?.name || title}</h1>
+          <p className="text-md text-[var(--color-text-secondary)]">{userData?.email}</p>
         </div>
 
         <AnimatePresence>

@@ -25,7 +25,7 @@ const Form = ({
   return (
     <form 
       onSubmit={handleSubmit}
-      className={`space-y-6 ${className}`}
+      className={`space-y-6 text-[var(--color-text-dark)] ${className}`}
       {...rest}
     >
       {children}

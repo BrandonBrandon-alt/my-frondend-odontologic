@@ -1,19 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
+import Card from '../components/ui/Card';
+import {
   HeartIcon,
-  ShieldCheckIcon,
   SparklesIcon,
-  UserGroupIcon,
-  ClockIcon,
-  MapPinIcon,
-  PhoneIcon,
-  EnvelopeIcon,
-  AcademicCapIcon,
   TrophyIcon,
   StarIcon,
-  CheckCircleIcon
+  UserGroupIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline';
 import AgendarCitaButton from '../components/ui/Button/AgendarCitaButton';
 
@@ -202,27 +197,25 @@ function About() {
             </motion.div>
 
             <motion.div variants={itemVariants}>
-              <div className="bg-white rounded-xl p-8 shadow-lg">
-                <h3 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6 flex items-center">
-                  <HeartIcon className="w-8 h-8 text-[var(--color-primary)] mr-3" />
-                  Nuestra Misión
-                </h3>
-                <p className="text-[var(--color-text-secondary)] mb-6">
-                  Proporcionar atención dental integral de la más alta calidad, utilizando 
-                  tecnología de vanguardia y un equipo de profesionales altamente calificados, 
-                  para mejorar la salud bucal y la calidad de vida de nuestros pacientes.
-                </p>
-                
-                <h4 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4 flex items-center">
-                  <SparklesIcon className="w-6 h-6 text-[var(--color-accent)] mr-2" />
-                  Nuestra Visión
-                </h4>
-                <p className="text-[var(--color-text-secondary)]">
-                  Ser reconocidos como la clínica dental líder en Colombia, destacando por 
-                  nuestra innovación tecnológica, excelencia médica y compromiso con el 
-                  bienestar integral de nuestros pacientes.
-                </p>
-              </div>
+              <Card
+                variant="elevated"
+                className="p-8"
+                icon={<HeartIcon className="w-8 h-8 text-[var(--color-primary)]" />}
+                title="Nuestra Misión"
+                subtitle="Proporcionar atención dental integral de la más alta calidad, utilizando tecnología de vanguardia y un equipo de profesionales altamente calificados, para mejorar la salud bucal y la calidad de vida de nuestros pacientes."
+              >
+                <div className="mt-6">
+                  <h4 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4 flex items-center">
+                    <SparklesIcon className="w-6 h-6 text-[var(--color-accent)] mr-2" />
+                    Nuestra Visión
+                  </h4>
+                  <p className="text-[var(--color-text-secondary)]">
+                    Ser reconocidos como la clínica dental líder en Colombia, destacando por 
+                    nuestra innovación tecnológica, excelencia médica y compromiso con el 
+                    bienestar integral de nuestros pacientes.
+                  </p>
+                </div>
+              </Card>
             </motion.div>
           </div>
         </div>
@@ -230,7 +223,7 @@ function About() {
 
       {/* Valores */}
       <motion.section
-        className="py-16 bg-white"
+        className="py-16 bg-white dark:bg-[var(--color-background)]"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -240,10 +233,10 @@ function About() {
             className="text-center mb-12"
             variants={itemVariants}
           >
-            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4">
+            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] dark:text-[var(--color-text-light)] mb-4">
               Nuestros Valores
             </h2>
-            <p className="text-[var(--color-text-secondary)] text-lg max-w-2xl mx-auto">
+            <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-text-light)] text-lg max-w-2xl mx-auto">
               Los principios que guían nuestro trabajo y compromiso con la excelencia
             </p>
           </motion.div>
@@ -255,17 +248,16 @@ function About() {
             {clinicData.values.map((value, index) => (
               <motion.div
                 key={index}
-                className="bg-[var(--color-background-light)] rounded-xl p-6 text-center shadow-lg"
                 variants={cardVariants}
                 whileHover="hover"
               >
-                <div className="text-4xl mb-4">{value.icon}</div>
-                <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-[var(--color-text-secondary)]">
-                  {value.description}
-                </p>
+                <Card
+                  variant="elevated"
+                  className="p-6 text-center"
+                  icon={<div className="text-4xl mb-4">{value.icon}</div>}
+                  title={value.title}
+                  subtitle={value.description}
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -299,25 +291,24 @@ function About() {
             {clinicData.team.map((member, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-lg text-center"
                 variants={cardVariants}
                 whileHover="hover"
               >
-                <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">{member.image}</span>
-                </div>
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-1">
-                  {member.name}
-                </h3>
-                <p className="text-[var(--color-accent)] font-medium mb-2">
-                  {member.specialty}
-                </p>
-                <p className="text-sm text-[var(--color-text-secondary)] mb-2">
-                  {member.experience} de experiencia
-                </p>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  {member.education}
-                </p>
+                <Card
+                  variant="elevated"
+                  className="p-6 text-center"
+                  icon={
+                    <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-3xl">{member.image}</span>
+                    </div>
+                  }
+                  title={member.name}
+                  subtitle={`${member.specialty} - ${member.experience} de experiencia`}
+                >
+                  <p className="text-xs text-[var(--color-text-secondary)] mt-2">
+                    {member.education}
+                  </p>
+                </Card>
               </motion.div>
             ))}
           </motion.div>
@@ -326,7 +317,7 @@ function About() {
 
       {/* Servicios */}
       <motion.section
-        className="py-16 bg-white"
+        className="py-16 bg-white dark:bg-[var(--color-background)]"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -336,10 +327,10 @@ function About() {
             className="text-center mb-12"
             variants={itemVariants}
           >
-            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4">
+            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] dark:text-[var(--color-text-light)] mb-4">
               Nuestros Servicios
             </h2>
-            <p className="text-[var(--color-text-secondary)] text-lg max-w-2xl mx-auto">
+            <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-text-light)] text-lg max-w-2xl mx-auto">
               Ofrecemos una amplia gama de tratamientos odontológicos con tecnología de vanguardia
             </p>
           </motion.div>
@@ -351,21 +342,20 @@ function About() {
             {clinicData.services.map((service, index) => (
               <motion.div
                 key={index}
-                className="bg-[var(--color-background-light)] rounded-xl p-6 shadow-lg"
                 variants={cardVariants}
                 whileHover="hover"
               >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-[var(--color-primary)] rounded-lg flex items-center justify-center mr-4">
-                    <span className="text-white text-xl">🦷</span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
-                    {service}
-                  </h3>
-                </div>
-                <p className="text-[var(--color-text-secondary)]">
-                  Tratamientos especializados con la más alta tecnología y profesionales expertos.
-                </p>
+                <Card
+                  variant="elevated"
+                  className="p-6"
+                  icon={
+                    <div className="w-12 h-12 bg-[var(--color-primary)] rounded-lg flex items-center justify-center mr-4">
+                      <UserGroupIcon className="w-6 h-6 text-white" />
+                    </div>
+                  }
+                  title={service}
+                  subtitle="Tratamientos especializados con la más alta tecnología y profesionales expertos."
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -374,7 +364,7 @@ function About() {
 
       {/* Logros */}
       <motion.section
-        className="py-16"
+        className="py-16 dark:bg-[var(--color-background)]"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -384,29 +374,30 @@ function About() {
             className="text-center mb-12"
             variants={itemVariants}
           >
-            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-4">
+            <h2 className="text-3xl font-bold text-[var(--color-text-primary)] dark:text-[var(--color-text-light)] mb-4">
               Nuestros Logros
             </h2>
-            <p className="text-[var(--color-text-secondary)] text-lg max-w-2xl mx-auto">
+            <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-text-light)] text-lg max-w-2xl mx-auto">
               Reconocimientos y certificaciones que avalan nuestra calidad y compromiso
             </p>
           </motion.div>
 
           <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
             variants={containerVariants}
           >
             {clinicData.achievements.map((achievement, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-lg flex items-start"
                 variants={cardVariants}
                 whileHover="hover"
               >
-                <CheckCircleIcon className="w-6 h-6 text-[var(--color-success)] mr-3 mt-1 flex-shrink-0" />
-                <p className="text-[var(--color-text-secondary)]">
-                  {achievement}
-                </p>
+                <Card
+                  variant="elevated"
+                  className="flex items-center gap-3 p-6 h-full"
+                  icon={<ShieldCheckIcon className="w-6 h-6 text-[var(--color-success)] flex-shrink-0" />}
+                  subtitle={achievement}
+                />
               </motion.div>
             ))}
           </motion.div>

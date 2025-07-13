@@ -64,7 +64,7 @@ function FormularioRegistro() {
   };
 
   return (
-    <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[700px]">
+    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
       <motion.div
         className="hidden md:block md:w-1/2 relative overflow-hidden"
         variants={imageVariants}

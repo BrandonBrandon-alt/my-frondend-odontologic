@@ -23,7 +23,7 @@ const Alert = ({
   // Configuración por tipo
   const alertConfig = {
     success: {
-      bg: 'from-[var(--color-success)]/10 to-[var(--color-success)]/5',
+      bg: 'bg-[var(--color-success)]/10',
       border: 'border-[var(--color-success)]',
       text: 'text-[var(--color-success)]',
       icon: (
@@ -33,7 +33,7 @@ const Alert = ({
       )
     },
     error: {
-      bg: 'from-[var(--color-error)]/10 to-[var(--color-error)]/5',
+      bg: 'bg-[var(--color-error)]/10',
       border: 'border-[var(--color-error)]',
       text: 'text-[var(--color-error)]',
       icon: (
@@ -43,7 +43,7 @@ const Alert = ({
       )
     },
     warning: {
-      bg: 'from-[var(--color-accent)]/10 to-[var(--color-accent)]/5',
+      bg: 'bg-[var(--color-accent)]/10',
       border: 'border-[var(--color-accent)]',
       text: 'text-[var(--color-accent)]',
       icon: (
@@ -53,7 +53,7 @@ const Alert = ({
       )
     },
     info: {
-      bg: 'from-[var(--color-secondary)] to-[var(--color-primary)]',
+      bg: 'bg-[var(--color-secondary)]/10',
       border: 'border-[var(--color-secondary)]',
       text: 'text-[var(--color-primary)]',
       icon: (
@@ -75,7 +75,7 @@ const Alert = ({
     'items-center',
     'gap-4',
     'animate-fade-in-up',
-    `bg-gradient-to-br ${config.bg}`,
+    config.bg,
     config.border,
     className
   ].filter(Boolean).join(' ');
@@ -92,7 +92,7 @@ const Alert = ({
       {dismissible && (
         <button
           onClick={onDismiss}
-          className={`ml-2 rounded-full p-2 hover:bg-[var(--color-secondary)]/30 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]`}
+          className={`ml-2 rounded-full p-2 hover:bg-[var(--color-accent)]/20 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)] ${config.text}`}
         >
           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />

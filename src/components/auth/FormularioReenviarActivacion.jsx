@@ -1,96 +1,82 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { authService } from '../../services';
-import { Input, Button, Alert } from '../';
+import { motion } from 'framer-motion';
+import { authService } from '../../services/authService';
+import Card from '../ui/Card';
+import { Input } from '../ui';
+import { Button } from '../ui';
+import { Alert } from '../ui';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
-function FormularioReenviarActivacion() {
+const FormularioReenviarActivacion = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
-    setError('');
+    setError(null);
+    setMessage(null);
 
     try {
-      const response = await authService.resendActivationCode(email);
-      setMessage(response.message || 'Se ha reenviado el correo de activación. Por favor, revisa tu bandeja de entrada.');
-      setError(''); // Limpia cualquier error previo
-      setTimeout(() => navigate('/activate-account', { state: { email: email } }), 2000); // Redirige a activación después de 2 segundos
+      await authService.resendActivationCode(email);
+      setMessage('Código de activación reenviado. Revisa tu correo electrónico.');
+      setEmail('');
     } catch (err) {
-      setError(err.message || 'Hubo un error al reenviar el correo. Por favor, inténtalo de nuevo.');
-      setMessage(''); // Limpia cualquier mensaje de éxito previo
+      setError(err.message || 'Error al reenviar el código. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
   };
 
-  const formVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { delay: 0.2, duration: 0.5 } },
-  };
-
   return (
-    <motion.div
-      className="w-full max-w-md space-y-8"
-      variants={formVariants}
-    >
-      <div className="bg-white p-8 rounded-2xl shadow-lg">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            Reenviar Activación
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            ¿No recibiste el correo? Ingresa tu email para reenviarlo.
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-[var(--color-background-light)] to-white flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-md"
+      >
+        <Card
+          variant="elevated"
+          className="p-8"
+          icon={<EnvelopeIcon className="w-12 h-12 text-[var(--color-accent)]" />}
+          title="Reenviar Código de Activación"
+          subtitle="Ingresa tu correo electrónico y te enviaremos un nuevo código de activación."
+        >
+          {message && <Alert type="success" message={message} />}
+          {error && <Alert type="error" message={error} />}
 
-        {/* Mensajes de feedback */}
-        <AnimatePresence>
-          {message && <Alert key="success-alert" type="success" message={message} />}
-          {error && <Alert key="error-alert" type="error" message={error} />}
-        </AnimatePresence>
-
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <Input
-            label="Correo Electrónico"
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="tu@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
-          />
-
-          <div>
+          <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+            <Input
+              type="email"
+              name="email"
+              placeholder="Tu correo electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />}
+            />
+            
             <Button
               type="submit"
-              loading={loading}
-              fullWidth
+              disabled={loading}
+              className="w-full"
             >
-              {loading ? 'Reenviando...' : 'Reenviar Correo'}
+              {loading ? 'Enviando...' : 'Reenviar Código'}
             </Button>
-          </div>
-        </form>
+          </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm">
-            <Link to="/login" className="font-medium text-accent hover:text-primary transition duration-150">
-              Volver a Iniciar Sesión
-            </Link>
+          <p className="mt-6 text-center text-sm text-[var(--color-text-secondary)]">
+            ¿Ya tienes tu código?{' '}
+            <a href="/activate-account" className="font-semibold text-[var(--color-accent)] hover:text-[var(--color-primary)] underline">
+              Activar cuenta
+            </a>
           </p>
-        </div>
-      </div>
-    </motion.div>
+        </Card>
+      </motion.div>
+    </div>
   );
 };
 

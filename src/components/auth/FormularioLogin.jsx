@@ -66,7 +66,7 @@ function FormularioLogin() {
   };
 
   return (
-    <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
+    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
       <motion.div
         className="hidden md:block md:w-1/2 relative overflow-hidden"
         variants={imageVariants}
@@ -85,10 +85,10 @@ function FormularioLogin() {
         className="w-full md:w-1/2 p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
         variants={formVariants}
       >
-        <motion.h2 className="text-3xl md:text-4xl font-extrabold text-primary text-center mb-4" variants={textVariants}>
+        <motion.h2 className="text-3xl md:text-4xl font-extrabold text-[var(--color-text-main)] text-center mb-4" variants={textVariants}>
           Inicia Sesión
         </motion.h2>
-        <motion.p className="text-base text-text-dark text-center mb-8" variants={textVariants} transition={{ delay: 0.1 }}>
+        <motion.p className="text-base text-[var(--color-text-secondary)] text-center mb-8" variants={textVariants} transition={{ delay: 0.1 }}>
           Ingresa tus credenciales para continuar.
         </motion.p>
 
@@ -105,19 +105,19 @@ function FormularioLogin() {
             {loading ? 'Iniciando...' : 'Iniciar Sesión'}
           </Button>
 
-          <p className="text-xs text-left text-gray-500 mt-4">
+          <p className="text-xs text-left text-[var(--color-text-secondary)] mt-4">
             This site is protected by reCAPTCHA and the Google&nbsp;
             <a href="https://policies.google.com/privacy" className="underline hover:text-primary">Privacy Policy</a> and&nbsp;
             <a href="https://policies.google.com/terms" className="underline hover:text-primary">Terms of Service</a> apply.
           </p>
         </form>
 
-        <p className="mt-6 text-center text-text-dark text-sm">
+        <p className="mt-6 text-center text-[var(--color-text-secondary)] text-sm">
           <Link to="/solicitar-reset" className="font-semibold text-primary hover:text-secondary underline">
             ¿Olvidaste tu contraseña?
           </Link>
         </p>
-        <p className="mt-2 text-center text-text-dark text-sm">
+        <p className="mt-2 text-center text-[var(--color-text-secondary)] text-sm">
           ¿No tienes una cuenta?{' '}
           <Link to="/register" className="font-semibold text-primary hover:text-secondary underline">
             Regístrate aquí

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Importa motion para animaciones
 import ProfileCards from '../../components/features/ProfileCards';
+import Card from '../../components/ui/Card';
 
 // Importa el servicio de usuario
 import { userService } from '../../services';
@@ -21,7 +22,6 @@ import {
   TrophyIcon,        // Para logros
   StarIcon          // Para logros
 } from '@heroicons/react/24/outline';
-
 
 function PatientDashboard() {
   const [userProfile, setUserProfile] = useState(null);
@@ -123,7 +123,7 @@ function PatientDashboard() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-[var(--color-background-light)] via-white to-[var(--color-secondary)] p-6 md:p-10 lg:p-12"
+      className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -131,7 +131,7 @@ function PatientDashboard() {
       <div className="max-w-7xl mx-auto py-8">
         {/* --- Sección de Estadísticas Ficticias --- */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 items-start"
           variants={containerVariants}
         >
           <StatCard
@@ -217,7 +217,7 @@ function PatientDashboard() {
 
         {/* --- Sección de Logros --- */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-start"
           variants={containerVariants}
         >
           <AchievementCard
@@ -242,7 +242,7 @@ function PatientDashboard() {
 
         {/* --- Grid de Tarjetas de Funcionalidades --- */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-start"
           variants={containerVariants}
         >
           {/* Tarjeta: Agendar Cita */}
@@ -315,24 +315,21 @@ function PatientDashboard() {
 
 export default PatientDashboard;
 
-
 // ----------------------------------------------------
-// Componente de Tarjeta de Dashboard (Idealmente en src/components/DashboardCard.jsx)
+// Componente de Tarjeta de Dashboard (ahora usando Card global)
 // ----------------------------------------------------
 const DashboardCard = ({ to, icon, title, description }) => {
   return (
-    <Link
-      to={to}
-      className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up"
+    <Card
+      as="div"
+      className="h-full flex flex-col items-center text-center cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up"
+      onClick={() => to && window.location.assign(to)}
+      icon={icon}
+      title={title}
+      subtitle={description}
     >
-      <div className="mb-5">{icon}</div>
-      <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-300 drop-shadow-sm">
-        {title}
-      </h2>
-      <p className="text-[var(--color-text-dark)] text-center leading-relaxed text-base">
-        {description}
-      </p>
-    </Link>
+      {/* El contenido principal ya está en title/subtitle/icon */}
+    </Card>
   );
 };
 

@@ -45,7 +45,7 @@ function FormularioPaciente({ datos, onChange }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden md:flex md:min-h-[600px]">
       <div className="text-center">
         <UserIcon className="w-12 h-12 text-primary mx-auto mb-4" />
         <h2 className="text-2xl font-bold text-gray-900 mb-2">

@@ -1,77 +1,93 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import Card from '../ui/Card';
+import {
+  ShieldCheckIcon,
+  ClockIcon,
+  UserGroupIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline';
 
-const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            when: "beforeChildren",
-            staggerChildren: 0.15,
-            duration: 0.6,
-            ease: "easeOut"
-        },
+const WhyChooseUsSection = () => {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
     },
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 12 } },
-};
-
-const cardVariants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
     hover: {
-        scale: 1.04,
-        y: -8,
-        boxShadow: "0px 20px 32px rgba(0,0,0,0.13), 0px 0px 0px 4px var(--color-accent-light)",
-        transition: { duration: 0.3 }
-    },
-};
+      y: -10,
+      transition: { duration: 0.3, ease: "easeOut" }
+    }
+  };
 
-function WhyChooseUsSection() {
-    return (
-        <section className="py-24 bg-[var(--color-background-light)]">
+  const features = [
+    {
+      icon: <ShieldCheckIcon className="w-12 h-12 text-[var(--color-accent)]" />,
+      title: "Seguridad Garantizada",
+      description: "Tu información personal y médica está protegida con los más altos estándares de seguridad y confidencialidad."
+    },
+    {
+      icon: <ClockIcon className="w-12 h-12 text-[var(--color-primary)]" />,
+      title: "Atención Rápida",
+      description: "Agenda tu cita en minutos y recibe atención oportuna sin largas esperas."
+    },
+    {
+      icon: <UserGroupIcon className="w-12 h-12 text-[var(--color-secondary)]" />,
+      title: "Equipo Profesional",
+      description: "Contamos con dentistas certificados y personal capacitado para brindarte la mejor atención."
+    },
+    {
+      icon: <SparklesIcon className="w-12 h-12 text-[var(--color-accent)]" />,
+      title: "Tecnología Avanzada",
+      description: "Utilizamos equipos de última generación para diagnósticos precisos y tratamientos efectivos."
+    }
+  ];
+
+  return (
+    <section className="py-16 bg-gradient-to-br from-[var(--color-background-light)] to-white dark:from-[var(--color-background)] dark:to-[var(--color-background)]">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-dark)] mb-6">
+            ¿Por Qué Elegirnos?
+          </h2>
+          <p className="text-xl text-[var(--color-text-secondary)] max-w-3xl mx-auto leading-relaxed">
+            En Odontologic, nos comprometemos a brindarte la mejor experiencia dental con tecnología avanzada, 
+            profesionales expertos y un enfoque centrado en tu bienestar.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
             <motion.div
-                className="container mx-auto px-6 text-center"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={containerVariants}
+              key={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
             >
-                <motion.h2
-                    className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] mb-16 drop-shadow-md"
-                    variants={itemVariants}
-                >
-                    ¿Por Qué Confiar en Odontologic?
-                </motion.h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                    <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                        <div className="text-[var(--color-primary)] text-6xl mb-4 drop-shadow-lg">👨‍⚕️</div>
-                        <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Equipo Profesional y Dedicado</h3>
-                        <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Dentistas expertos con años de experiencia comprometidos con tu bienestar.</p>
-                    </motion.div>
-                    <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                        <div className="text-[var(--color-secondary)] text-6xl mb-4 drop-shadow-lg">💡</div>
-                        <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Tecnología de Última Generación</h3>
-                        <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Equipos avanzados para diagnósticos precisos y tratamientos eficientes.</p>
-                    </motion.div>
-                    <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                        <div className="text-[var(--color-accent)] text-6xl mb-4 drop-shadow-lg">😊</div>
-                        <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Atención Personalizada y Cálida</h3>
-                        <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Planes de tratamiento diseñados a tu medida en un ambiente cómodo y amigable.</p>
-                    </motion.div>
-                    <motion.div className="bg-[var(--color-background-light)] p-10 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 flex flex-col items-center animate-fade-in-up" variants={cardVariants} whileHover="hover">
-                        <div className="text-[var(--color-primary)] text-6xl mb-4 drop-shadow-lg">📍</div>
-                        <h3 className="text-[var(--color-text-dark)] text-xl font-bold mb-2">Ubicación Céntrica en Armenia</h3>
-                        <p className="text-[var(--color-text-dark)] text-base leading-relaxed">Encuéntranos fácilmente en una zona accesible de Armenia, Quindío.</p>
-                    </motion.div>
-                </div>
+              <Card
+                variant="elevated"
+                className="p-10 flex flex-col items-center text-center animate-fade-in-up"
+                icon={feature.icon}
+                title={feature.title}
+                subtitle={feature.description}
+              />
             </motion.div>
-        </section>
-    );
-}
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default WhyChooseUsSection; 

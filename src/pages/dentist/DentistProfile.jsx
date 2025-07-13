@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import UserProfile from '../../components/features/UserProfile';
 import { userService } from '../../services';
 import { useAuth } from '../../context/AuthContext';
 import { UserCircleIcon, MapPinIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import FormularioDentistProfile from '../../components/features/FormularioDentistProfile';
 
 function DentistProfile() {
   const { user, updateUserContext, loading: authLoading } = useAuth();
@@ -61,7 +61,7 @@ function DentistProfile() {
   ];
 
   return (
-    <UserProfile
+    <FormularioDentistProfile
       userData={userData}
       onChange={handleChange}
       onSubmit={handleSubmit}

@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { authService } from '../../services';
+import Card from '../../components/ui/Card';
 import {
   UserGroupIcon,
   Cog6ToothIcon,
@@ -44,14 +45,14 @@ function AdminDashboard() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-br from-[var(--color-background-light)] via-white to-[var(--color-primary)] p-6 md:p-10 lg:p-12"
+      className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       <div className="max-w-7xl mx-auto py-8">
         {/* Estadísticas ficticias */}
-        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12" variants={containerVariants}>
+        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 items-start" variants={containerVariants}>
           <StatCard icon={<UserGroupIcon className="w-10 h-10 text-[var(--color-accent)]" />} label="Usuarios Registrados" value="1,245" description="¡La comunidad crece!" color="from-[var(--color-accent)] to-[var(--color-primary)]" />
           <StatCard icon={<ChartBarIcon className="w-10 h-10 text-[var(--color-secondary)]" />} label="Citas del Mes" value="320" description="¡Mes récord de atención!" color="from-[var(--color-secondary)] to-[var(--color-primary)]" />
           <StatCard icon={<CheckBadgeIcon className="w-10 h-10 text-[var(--color-primary)]" />} label="Satisfacción" value="98%" description="¡Pacientes felices!" color="from-[var(--color-primary)] to-[var(--color-accent)]" />
@@ -59,41 +60,43 @@ function AdminDashboard() {
         </motion.div>
 
         {/* Gráfico animado ficticio */}
-        <motion.div className="bg-[var(--color-background-light)] rounded-2xl shadow-xl p-8 mb-12 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)] animate-fade-in-up" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}>
-          <div className="flex-1 flex flex-col items-center md:items-start">
-            <h3 className="text-2xl font-bold text-[var(--color-primary)] mb-2 flex items-center gap-2">
-              <ChartBarIcon className="w-7 h-7 text-[var(--color-accent)]" /> Estadísticas Generales
-            </h3>
-            <p className="text-[var(--color-text-dark)] mb-4 max-w-md">¡La clínica ha crecido un <span className="text-[var(--color-accent)] font-bold">+22%</span> este año! Sigue liderando la excelencia en salud.</p>
+        <motion.div className="mb-12" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}>
+          <Card
+            variant="elevated"
+            className="p-8 flex flex-col md:flex-row items-center gap-8 border-l-8 border-[var(--color-accent)]"
+            icon={<ChartBarIcon className="w-7 h-7 text-[var(--color-accent)]" />}
+            title="Estadísticas Generales"
+            subtitle="¡La clínica ha crecido un +22% este año! Sigue liderando la excelencia en salud."
+          >
             <div className="flex gap-3 mt-2">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-semibold"><StarIcon className="w-4 h-4 mr-1" /> Nivel Diamante</span>
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-semibold"><TrophyIcon className="w-4 h-4 mr-1" /> 7 Logros</span>
             </div>
-          </div>
-          <div className="flex-1 flex items-center justify-center w-full max-w-xs">
-            <AnimatedBarChart />
-          </div>
+            <div className="flex-1 flex items-center justify-center w-full max-w-xs mt-4">
+              <AnimatedBarChart />
+            </div>
+          </Card>
         </motion.div>
 
         {/* Logros */}
-        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" variants={containerVariants}>
+        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-start" variants={containerVariants}>
           <AchievementCard icon={<TrophyIcon className="w-8 h-8 text-[var(--color-accent)]" />} title="Clínica Destacada" description="Reconocida por excelencia en atención y gestión." color="from-[var(--color-accent)] to-[var(--color-primary)]" />
           <AchievementCard icon={<StarIcon className="w-8 h-8 text-[var(--color-secondary)]" />} title="Liderazgo" description="Has liderado el crecimiento y la innovación." color="from-[var(--color-secondary)] to-[var(--color-primary)]" />
           <AchievementCard icon={<CheckBadgeIcon className="w-8 h-8 text-[var(--color-primary)]" />} title="Cero Sanciones" description="Gestión impecable y cumplimiento normativo." color="from-[var(--color-primary)] to-[var(--color-accent)]" />
         </motion.div>
 
         {/* Bienvenida y perfil rápido */}
-        <motion.div className="bg-[var(--color-background-light)] rounded-3xl shadow-2xl p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)] overflow-hidden animate-fade-in-up" variants={itemVariants}>
-          <motion.h1 className="text-4xl md:text-5xl font-extrabold text-[var(--color-text-dark)] mb-3 leading-tight tracking-tight drop-shadow-lg" variants={textFadeIn}>
-            ¡Bienvenido, <span className="text-[var(--color-primary)] drop-shadow-md">{currentUser?.name || 'Administrador'}</span>!
-          </motion.h1>
-          <motion.p className="text-lg md:text-xl text-[var(--color-text-dark)] leading-relaxed max-w-2xl" variants={textFadeIn} transition={{ delay: 0.2 }}>
-            Gestiona usuarios, citas, reportes y mantén la clínica en la cima de la excelencia.
-          </motion.p>
+        <motion.div variants={itemVariants}>
+          <Card
+            variant="elevated"
+            className="p-6 md:p-10 mb-12 border-t-8 border-[var(--color-primary)]"
+            title={`¡Bienvenido, ${currentUser?.name || 'Administrador'}!`}
+            subtitle="Gestiona usuarios, citas, reportes y mantén la clínica en la cima de la excelencia."
+          />
         </motion.div>
 
         {/* Cards de funcionalidades */}
-        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" variants={containerVariants}>
+        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-start" variants={containerVariants}>
           <motion.div variants={itemVariants}>
             <DashboardCard to="/admin/users" icon={<CircleIconBg><UserGroupIcon className="w-8 h-8" /></CircleIconBg>} title="Gestión de Usuarios" description="Administra pacientes, dentistas y otros roles." />
           </motion.div>
@@ -152,12 +155,16 @@ const AchievementCard = ({ icon, title, description, color }) => (
   </motion.div>
 );
 
-// Card funcional
+// Card funcional usando el componente Card global
 const DashboardCard = ({ to, icon, title, description }) => (
-  <Link to={to} className="bg-[var(--color-background-light)] p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center text-center border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up">
-    <div className="mb-5">{icon}</div>
-    <h2 className="text-2xl font-bold text-[var(--color-text-dark)] mb-2 group-hover:text-[var(--color-primary)] transition-colors duration-300 drop-shadow-sm">{title}</h2>
-    <p className="text-[var(--color-text-dark)] text-center leading-relaxed text-base">{description}</p>
+  <Link to={to}>
+    <Card
+      variant="elevated"
+      className="h-full flex flex-col items-center text-center cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-b-4 border-[var(--color-primary-darker)] hover:border-[var(--color-primary)] group animate-fade-in-up"
+      icon={icon}
+      title={title}
+      subtitle={description}
+    />
   </Link>
 );
 

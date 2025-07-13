@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import UserProfile from '../../components/features/UserProfile';
 import { userService } from '../../services';
 import { useAuth } from '../../context/AuthContext';
 import { UserCircleIcon, MapPinIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import FormularioAdminProfile from '../../components/features/FormularioAdminProfile';
 
 function AdminProfile() {
   const { user, updateUserContext, loading: authLoading } = useAuth();
@@ -61,7 +61,7 @@ function AdminProfile() {
   ];
 
   return (
-    <UserProfile
+    <FormularioAdminProfile
       userData={userData}
       onChange={handleChange}
       onSubmit={handleSubmit}
