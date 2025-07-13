@@ -55,7 +55,7 @@ function FormularioSolicitarReset() {
   };
 
   return (
-    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[500px]">
+    <div className="relative bg-white dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
       {/* Columna de la Imagen */}
       <motion.div
         className="hidden md:block md:w-1/2 relative overflow-hidden"
@@ -122,7 +122,7 @@ function FormularioSolicitarReset() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-[var(--color-text-secondary)] text-sm">
+        <p className="mt-6 text-center text-text-dark text-sm">
           <Link
             to="/login"
             className="font-semibold text-primary hover:text-secondary underline"

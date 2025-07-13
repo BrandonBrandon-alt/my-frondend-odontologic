@@ -112,8 +112,23 @@ function AdminDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard to="/admin/settings" icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>} title="Configuración" description="Ajusta los parámetros generales del sistema." />
           </motion.div>
+          {/* Tarjeta: Actualizar Perfil */}
           <motion.div variants={itemVariants}>
-            <ProfileCards profilePath="/admin-profile" changePasswordPath="/change-password" />
+            <DashboardCard
+              to="/admin-profile"
+              icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Actualizar Perfil"
+              description="Edita tu información personal y de contacto."
+            />
+          </motion.div>
+          {/* Tarjeta: Cambiar Contraseña */}
+          <motion.div variants={itemVariants}>
+            <DashboardCard
+              to="/change-password"
+              icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Cambiar Contraseña"
+              description="Actualiza tu contraseña para mayor seguridad."
+            />
           </motion.div>
         </motion.div>
 

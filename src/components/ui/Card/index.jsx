@@ -21,13 +21,12 @@ const Card = ({
   ...rest 
 }) => {
   const variants = {
-    default: 'bg-[var(--color-background)] border border-[var(--border-primary)] shadow-md',
+    default: 'bg-[var(--color-background)] border border-[var(--border-primary)] shadow-xl',
     elevated: 'bg-[var(--color-background)] border border-[var(--border-primary)] shadow-xl hover:shadow-2xl transition-shadow duration-300',
-    outlined: 'bg-[var(--color-background)] border-2 border-[var(--color-accent)]'
   };
   
   const cardClasses = [
-    'rounded-xl p-6 transition-all duration-200',
+    'rounded-xl p-8 transition-all duration-200',
     variants[variant],
     className
   ].filter(Boolean).join(' ');
@@ -39,19 +38,16 @@ const Card = ({
           {icon}
         </div>
       )}
-      
       {title && (
         <h3 className="text-2xl font-bold text-[var(--color-text-dark)] mb-1">
           {title}
         </h3>
       )}
-      
       {subtitle && (
         <p className="text-base text-[var(--color-text-secondary)] mb-4">
           {subtitle}
         </p>
       )}
-      
       <div className="text-[var(--color-text-dark)] text-base">
         {children}
       </div>

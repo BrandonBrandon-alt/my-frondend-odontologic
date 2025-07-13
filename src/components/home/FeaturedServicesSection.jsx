@@ -22,14 +22,14 @@ const FeaturedServicesSection = () => {
       icon: <SparklesIcon className="w-12 h-12 text-[var(--color-secondary)]" />,
       title: "Estética Dental",
       description: "Blanqueamientos, carillas y tratamientos para lograr la sonrisa que siempre has deseado.",
-      borderColor: "border-[var(--color-secondary)]",
+      borderColor: "border-[var(--color-primary)]",
       link: "/services#esthetic"
     },
     {
       icon: <HeartIcon className="w-12 h-12 text-[var(--color-accent)]" />,
       title: "Ortodoncia",
       description: "Alineación dental con brackets tradicionales o invisibles para una sonrisa perfecta.",
-      borderColor: "border-[var(--color-accent)]",
+      borderColor: "border-[var(--color-primary)]",
       link: "/services#orthodontics"
     }
   ];

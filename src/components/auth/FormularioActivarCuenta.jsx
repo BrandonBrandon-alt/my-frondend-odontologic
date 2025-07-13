@@ -122,7 +122,7 @@ function FormularioActivarCuenta() {
   };
 
   return (
-    <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
+    <div className="relative bg-white dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px]">
       {/* Columna de la Imagen (visible en md y superior) */}
       <motion.div
         className="hidden md:block md:w-1/2 relative overflow-hidden"

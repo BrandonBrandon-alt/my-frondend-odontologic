@@ -274,6 +274,13 @@ const Navbar = () => {
                       >
                         Mi Perfil
                       </NavLink>
+                      <NavLink
+                        to={'/change-password'}
+                        className="block px-5 py-3 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-main)] hover:bg-[var(--color-accent)]/10 dark:hover:bg-[var(--color-accent)]/20 hover:text-[var(--color-accent)] cursor-pointer transition duration-150"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Cambiar Contraseña
+                      </NavLink>
                       <button
                         onClick={handleLogout}
                         className="block w-full text-left px-5 py-3 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-main)] hover:bg-[var(--color-accent)]/10 dark:hover:bg-[var(--color-accent)]/20 hover:text-[var(--color-accent)] cursor-pointer transition duration-150 flex items-center"

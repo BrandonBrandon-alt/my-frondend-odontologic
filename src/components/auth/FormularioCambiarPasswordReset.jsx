@@ -145,7 +145,7 @@ function FormularioCambiarPasswordReset() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-background-light)] dark:bg-[var(--color-background-dark)]">
-      <div className="relative bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px] flex-row-reverse">
+      <div className="relative bg-white dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden md:flex md:min-h-[600px] flex-row-reverse">
         {/* Columna de la Imagen */}
         <motion.div
           className="hidden md:block md:w-1/2 relative overflow-hidden"

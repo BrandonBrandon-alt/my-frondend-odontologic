@@ -26,22 +26,22 @@ const WhyChooseUsSection = () => {
     {
       icon: <ShieldCheckIcon className="w-12 h-12 text-[var(--color-accent)]" />,
       title: "Seguridad Garantizada",
-      description: "Tu información personal y médica está protegida con los más altos estándares de seguridad y confidencialidad."
+      description: "Tu información personal y médica está protegida con los más altos estándares de seguridad y confidencialidad.",
     },
     {
-      icon: <ClockIcon className="w-12 h-12 text-[var(--color-primary)]" />,
+      icon: <ClockIcon className="w-12 h-12 text-[var(--color-accent)]" />,
       title: "Atención Rápida",
-      description: "Agenda tu cita en minutos y recibe atención oportuna sin largas esperas."
+      description: "Agenda tu cita en minutos y recibe atención oportuna sin largas esperas.",
     },
     {
-      icon: <UserGroupIcon className="w-12 h-12 text-[var(--color-secondary)]" />,
+      icon: <UserGroupIcon className="w-12 h-12 text-[var(--color-accent)]" />,
       title: "Equipo Profesional",
-      description: "Contamos con dentistas certificados y personal capacitado para brindarte la mejor atención."
+      description: "Contamos con dentistas certificados y personal capacitado para brindarte la mejor atención.",
     },
     {
       icon: <SparklesIcon className="w-12 h-12 text-[var(--color-accent)]" />,
       title: "Tecnología Avanzada",
-      description: "Utilizamos equipos de última generación para diagnósticos precisos y tratamientos efectivos."
+      description: "Utilizamos equipos de última generación para diagnósticos precisos y tratamientos efectivos.",
     }
   ];
 
@@ -77,7 +77,7 @@ const WhyChooseUsSection = () => {
             >
               <Card
                 variant="elevated"
-                className="p-10 flex flex-col items-center text-center animate-fade-in-up"
+                className="p-10 flex flex-col items-center text-center animate-fade-in-up border-b-4 border-[var(--color-accent)]"
                 icon={feature.icon}
                 title={feature.title}
                 subtitle={feature.description}

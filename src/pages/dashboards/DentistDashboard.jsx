@@ -105,8 +105,23 @@ function DentistDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard to="/dentist/availability" icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>} title="Mi Disponibilidad" description="Define tus horarios de atención y días libres." />
           </motion.div>
+          {/* Tarjeta: Actualizar Perfil */}
           <motion.div variants={itemVariants}>
-            <ProfileCards profilePath="/dentist-profile" changePasswordPath="/change-password" />
+            <DashboardCard
+              to="/dentist-profile"
+              icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Actualizar Perfil"
+              description="Edita tu información personal y de contacto."
+            />
+          </motion.div>
+          {/* Tarjeta: Cambiar Contraseña */}
+          <motion.div variants={itemVariants}>
+            <DashboardCard
+              to="/change-password"
+              icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Cambiar Contraseña"
+              description="Actualiza tu contraseña para mayor seguridad."
+            />
           </motion.div>
         </motion.div>
 
