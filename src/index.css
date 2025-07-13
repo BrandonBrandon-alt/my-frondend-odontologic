@@ -89,7 +89,6 @@ body {
   font-family: sans-serif;
   background-color: var(--color-background-light);
   color: var(--color-text-dark); /* Color de texto base */
-  padding-top: 80px; /* Compensar el navbar fijo */
 }
 
 /* Scrollbar personalizado */

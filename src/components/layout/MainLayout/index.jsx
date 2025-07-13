@@ -9,7 +9,7 @@ const MainLayout = ({ children }) => {
       <ScrollToTopOnRouteChange />
       <ScrollProgress />
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pt-[80px]">
         {children}
       </main>
       <Footer />
