@@ -9,7 +9,7 @@ import Tooltip from '../Tooltip';
  * Componente toggle para cambiar entre modo oscuro y claro
  */
 const ThemeToggle = ({ className = "", size = "md" }) => {
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
 
   // Configuración de tamaños
   const sizeClasses = {
@@ -33,9 +33,9 @@ const ThemeToggle = ({ className = "", size = "md" }) => {
   const iconVariants = {
     initial: { rotate: 0, scale: 1, y: 0 },
     animate: { 
-      rotate: isDarkMode ? 180 : 0, 
+      rotate: isDark ? 180 : 0, 
       scale: 1,
-      y: isDarkMode ? -2 : 0,
+      y: isDark ? -2 : 0,
       transition: { 
         type: "spring", 
         stiffness: 400, 
@@ -46,7 +46,7 @@ const ThemeToggle = ({ className = "", size = "md" }) => {
 
   return (
     <Tooltip 
-      content={isDarkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+      content={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
       position="bottom"
       delay={300}
     >
@@ -56,42 +56,65 @@ const ThemeToggle = ({ className = "", size = "md" }) => {
           className={`
             ${sizeClasses[size]}
             ${className}
-            relative rounded-xl bg-white dark:bg-white
-            border-2 border-gray-200 dark:border-gray-300
+            relative rounded-full
+            bg-[linear-gradient(135deg,_var(--color-primary)_0%,_var(--color-accent)_100%)]
+            dark:bg-[linear-gradient(135deg,_var(--color-background-dark)_60%,_var(--color-accent)_100%)]
+            border-2 border-[var(--border-primary)] dark:border-[var(--border-primary)]
             shadow-lg hover:shadow-xl
             transition-all duration-300
-            focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
-            backdrop-blur-sm
+            focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2
             overflow-hidden
           `}
           variants={buttonVariants}
           initial="initial"
           whileHover="hover"
           whileTap="tap"
-          aria-label={isDarkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+          aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
         >
-          {/* Efecto de brillo sutil */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent" />
-          
-          {/* Icono principal */}
+          {/* Fondo animado con branding */}
           <motion.div
-            className="relative flex items-center justify-center"
+            className="absolute inset-0 z-0"
+            initial={{ opacity: 0.8 }}
+            animate={{ opacity: isDark ? 0.95 : 0.8 }}
+            transition={{ duration: 0.5 }}
+            style={{ pointerEvents: 'none', background: isDark
+              ? 'linear-gradient(135deg, var(--color-background-dark) 60%, var(--color-accent) 100%)'
+              : 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%)'
+            }}
+          />
+          {/* Icono principal con transición */}
+          <motion.div
+            className="relative flex items-center justify-center z-10"
             variants={iconVariants}
             initial="initial"
             animate="animate"
           >
-            {isDarkMode ? (
-              <SunIcon className={`${iconSizes[size]} text-amber-600 drop-shadow-sm`} />
-            ) : (
-              <MoonIcon className={`${iconSizes[size]} text-slate-700 drop-shadow-sm`} />
-            )}
+            <motion.div
+              initial={{ rotate: 0, scale: 1 }}
+              animate={{ rotate: isDark ? 180 : 0, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              {!isDark ? (
+                <span className="relative flex items-center justify-center">
+                  <span className="absolute inset-0 rounded-full bg-yellow-300/40 blur-[2px] animate-pulse" style={{ zIndex: 0 }} />
+                  <SunIcon className={`${iconSizes[size]} drop-shadow-lg`} style={{ color: '#FFD600', zIndex: 1 }} />
+                </span>
+              ) : (
+                <MoonIcon className={`${iconSizes[size]} drop-shadow-lg`} style={{ color: 'var(--color-primary)' }} />
+              )}
+            </motion.div>
           </motion.div>
-          
-          {/* Efecto de partículas */}
-          <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <div className="absolute top-1 left-1 w-1 h-1 bg-amber-400 rounded-full animate-ping" />
-            <div className="absolute bottom-1 right-1 w-1 h-1 bg-slate-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-          </div>
+          {/* Efecto de destello al cambiar, usando branding */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isDark ? 0.18 : 0.13 }}
+            transition={{ duration: 0.4 }}
+            style={{ background: isDark
+              ? 'radial-gradient(circle at 70% 30%, var(--color-accent)33 0%, transparent 70%)'
+              : 'radial-gradient(circle at 30% 70%, var(--color-accent)33 0%, transparent 70%)'
+            }}
+          />
         </motion.button>
       </RippleEffect>
     </Tooltip>
