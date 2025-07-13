@@ -38,7 +38,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)] text-[var(--color-text-light)]">
+    <div className="min-h-screen text-[var(--color-text-dark)]">
       <div className="container mx-auto px-4 py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -63,11 +63,11 @@ function App() {
       <AuthProvider>
         <ThemeProvider>
           <ScrollToTop />
-          {/* 1. MainLayout ahora envuelve TODAS las rutas, asegurando que Navbar y Footer estén siempre presentes. */}
-          <MainLayout>
-            <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingSpinner /></div>}>
-              {/* 2. Usamos un solo componente <Routes> para toda la aplicación. */}
-              <Routes>
+        {/* 1. MainLayout ahora envuelve TODAS las rutas, asegurando que Navbar y Footer estén siempre presentes. */}
+        <MainLayout>
+          <Suspense fallback={<div className="flex items-center justify-center h-screen"><LoadingSpinner /></div>}>
+            {/* 2. Usamos un solo componente <Routes> para toda la aplicación. */}
+            <Routes>
               {/* --- RUTAS PÚBLICAS --- */}
               <Route path="/" element={<Home />} />
               <Route path="/services" element={<Services />} />

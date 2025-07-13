@@ -72,8 +72,8 @@ function DentistDashboard() {
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-semibold"><TrophyIcon className="w-4 h-4 mr-1" /> 5 Logros</span>
             </div>
             <div className="flex-1 flex items-center justify-center w-full max-w-xs mt-4">
-              <AnimatedBarChart />
-            </div>
+            <AnimatedBarChart />
+          </div>
           </Card>
         </motion.div>
 
