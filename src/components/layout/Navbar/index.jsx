@@ -248,7 +248,7 @@ const Navbar = () => {
                 <AnimatePresence>
                   {isDropdownOpen && (
                     <motion.div
-                      className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-10 overflow-hidden border border-gray-100 animate-fade-in-up"
+                      className="absolute right-0 mt-2 w-56 bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl py-2 z-10 overflow-hidden border border-gray-100 dark:border-gray-700 animate-fade-in-up"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
@@ -256,7 +256,7 @@ const Navbar = () => {
                     >
                       <NavLink
                         to={getDashboardPath(user?.role)}
-                        className="block px-5 py-3 text-base text-gray-700 hover:bg-accent/10 transition duration-150"
+                        className="block px-5 py-3 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-main)] hover:bg-[var(--color-accent)]/10 dark:hover:bg-[var(--color-accent)]/20 hover:text-[var(--color-accent)] cursor-pointer transition duration-150"
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         Dashboard
@@ -274,9 +274,16 @@ const Navbar = () => {
                       >
                         Mi Perfil
                       </NavLink>
+                      <NavLink
+                        to={'/change-password'}
+                        className="block px-5 py-3 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-main)] hover:bg-[var(--color-accent)]/10 dark:hover:bg-[var(--color-accent)]/20 hover:text-[var(--color-accent)] cursor-pointer transition duration-150"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Cambiar Contraseña
+                      </NavLink>
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-5 py-3 text-base text-[var(--color-text-dark)] hover:bg-[var(--color-accent)]/10 transition duration-150 flex items-center"
+                        className="block w-full text-left px-5 py-3 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-main)] hover:bg-[var(--color-accent)]/10 dark:hover:bg-[var(--color-accent)]/20 hover:text-[var(--color-accent)] cursor-pointer transition duration-150 flex items-center"
                       >
                         <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" />
                         Cerrar Sesión
@@ -372,7 +379,7 @@ const Navbar = () => {
                 <nav className="space-y-4">
                   <NavLink
                     to="/"
-                    className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                    className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <HomeIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
@@ -380,7 +387,7 @@ const Navbar = () => {
                   </NavLink>
                   <NavLink
                     to="/services"
-                    className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                    className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <WrenchScrewdriverIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
@@ -388,7 +395,7 @@ const Navbar = () => {
                   </NavLink>
                   <NavLink
                     to="/about"
-                    className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                    className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <InformationCircleIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
@@ -396,7 +403,7 @@ const Navbar = () => {
                   </NavLink>
                   <NavLink
                     to="/contact"
-                    className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                    className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <PhoneIcon className="h-5 w-5 inline mr-2 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-200" />
@@ -408,7 +415,7 @@ const Navbar = () => {
                       <hr className="my-4" />
                       <NavLink
                         to={getDashboardPath(user?.role)}
-                        className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                        className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Dashboard
@@ -421,7 +428,7 @@ const Navbar = () => {
                               ? '/dentist-profile'
                               : '/patient-profile'
                         }
-                        className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                        className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Mi Perfil
@@ -431,7 +438,7 @@ const Navbar = () => {
                           handleLogout();
                           setIsMenuOpen(false);
                         }}
-                        className="block w-full text-left py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150 flex items-center"
+                        className="block w-full text-left py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150 flex items-center"
                       >
                         <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" />
                         Cerrar Sesión
@@ -442,14 +449,14 @@ const Navbar = () => {
                       <hr className="my-4" />
                       <NavLink
                         to="/login"
-                        className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                        className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Iniciar Sesión
                       </NavLink>
                       <NavLink
                         to="/register"
-                        className="block py-2 text-[var(--color-text-dark)] hover:text-[var(--color-accent)] transition duration-150"
+                        className="block py-2 text-[var(--color-text-main)] hover:text-[var(--color-accent)] transition duration-150"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Registrarse

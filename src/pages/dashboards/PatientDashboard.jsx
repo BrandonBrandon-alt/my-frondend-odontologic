@@ -123,7 +123,7 @@ function PatientDashboard() {
 
   return (
     <motion.div
-      className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
+      className="min-h-screen text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -281,9 +281,23 @@ function PatientDashboard() {
               description="Revisa tus estados de cuenta y pagos pendientes."
             />
           </motion.div>
-          {/* Tarjeta: Mi Perfil */}
+          {/* Tarjeta: Actualizar Perfil */}
           <motion.div variants={itemVariants}>
-            <ProfileCards profilePath="/patient-profile" changePasswordPath="/change-password" />
+            <DashboardCard
+              to="/patient-profile"
+              icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Actualizar Perfil"
+              description="Edita tu información personal y de contacto."
+            />
+          </motion.div>
+          {/* Tarjeta: Cambiar Contraseña */}
+          <motion.div variants={itemVariants}>
+            <DashboardCard
+              to="/change-password"
+              icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Cambiar Contraseña"
+              description="Actualiza tu contraseña para mayor seguridad."
+            />
           </motion.div>
         </motion.div>
 

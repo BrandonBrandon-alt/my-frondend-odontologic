@@ -121,7 +121,7 @@ const clinicData = {
 
 function About() {
   return (
-    <div className="min-h-screen bg-[var(--color-background-light)]">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <motion.section
         className="bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] text-white py-20"
@@ -200,7 +200,7 @@ function About() {
               <Card
                 variant="elevated"
                 className="p-8"
-                icon={<HeartIcon className="w-8 h-8 text-[var(--color-primary)]" />}
+                icon={<HeartIcon className="w-12 h-12 text-[var(--color-accent)]" />}
                 title="Nuestra Misión"
                 subtitle="Proporcionar atención dental integral de la más alta calidad, utilizando tecnología de vanguardia y un equipo de profesionales altamente calificados, para mejorar la salud bucal y la calidad de vida de nuestros pacientes."
               >
@@ -253,7 +253,7 @@ function About() {
               >
                 <Card
                   variant="elevated"
-                  className="p-6 text-center"
+                  className="p-8 text-center border-b-4 border-[var(--color-accent)]"
                   icon={<div className="text-4xl mb-4">{value.icon}</div>}
                   title={value.title}
                   subtitle={value.description}
@@ -296,12 +296,8 @@ function About() {
               >
                 <Card
                   variant="elevated"
-                  className="p-6 text-center"
-                  icon={
-                    <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-3xl">{member.image}</span>
-                    </div>
-                  }
+                  className="p-8 text-center border-b-4 border-[var(--color-primary)]"
+                  icon={<UserGroupIcon className="w-12 h-12 text-[var(--color-accent)]" />}
                   title={member.name}
                   subtitle={`${member.specialty} - ${member.experience} de experiencia`}
                 >
@@ -347,7 +343,7 @@ function About() {
               >
                 <Card
                   variant="elevated"
-                  className="p-6"
+                  className="p-8 border-b-4 border-[var(--color-secondary)]"
                   icon={
                     <div className="w-12 h-12 bg-[var(--color-primary)] rounded-lg flex items-center justify-center mr-4">
                       <UserGroupIcon className="w-6 h-6 text-white" />
@@ -394,7 +390,7 @@ function About() {
               >
                 <Card
                   variant="elevated"
-                  className="flex items-center gap-3 p-6 h-full"
+                  className="flex items-center gap-3 p-8 h-full border-b-4 border-[var(--color-success)]"
                   icon={<ShieldCheckIcon className="w-6 h-6 text-[var(--color-success)] flex-shrink-0" />}
                   subtitle={achievement}
                 />

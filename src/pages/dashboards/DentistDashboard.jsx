@@ -44,7 +44,7 @@ function DentistDashboard() {
 
   return (
     <motion.div
-      className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
+      className="min-h-screen text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -72,8 +72,8 @@ function DentistDashboard() {
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-[var(--color-accent)] text-white text-xs font-semibold"><TrophyIcon className="w-4 h-4 mr-1" /> 5 Logros</span>
             </div>
             <div className="flex-1 flex items-center justify-center w-full max-w-xs mt-4">
-              <AnimatedBarChart />
-            </div>
+            <AnimatedBarChart />
+          </div>
           </Card>
         </motion.div>
 
@@ -105,8 +105,23 @@ function DentistDashboard() {
           <motion.div variants={itemVariants}>
             <DashboardCard to="/dentist/availability" icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>} title="Mi Disponibilidad" description="Define tus horarios de atención y días libres." />
           </motion.div>
+          {/* Tarjeta: Actualizar Perfil */}
           <motion.div variants={itemVariants}>
-            <ProfileCards profilePath="/dentist-profile" changePasswordPath="/change-password" />
+            <DashboardCard
+              to="/dentist-profile"
+              icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Actualizar Perfil"
+              description="Edita tu información personal y de contacto."
+            />
+          </motion.div>
+          {/* Tarjeta: Cambiar Contraseña */}
+          <motion.div variants={itemVariants}>
+            <DashboardCard
+              to="/change-password"
+              icon={<CircleIconBg><Cog6ToothIcon className="w-8 h-8" /></CircleIconBg>}
+              title="Cambiar Contraseña"
+              description="Actualiza tu contraseña para mayor seguridad."
+            />
           </motion.div>
         </motion.div>
 

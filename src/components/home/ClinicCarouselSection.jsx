@@ -9,7 +9,7 @@ const itemVariants = {
 
 function ClinicCarouselSection() {
     return (
-        <section className="py-24 bg-[var(--color-background-light)] dark:bg-[var(--color-background)]">
+        <section className="py-24">
             <div className="container mx-auto px-6 text-center">
                 <motion.h2
                     className="text-3xl md:text-4xl font-extrabold text-[var(--color-primary)] mb-12 drop-shadow-md"

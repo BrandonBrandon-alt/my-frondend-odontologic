@@ -71,7 +71,7 @@ const ContactForm = () => {
   ];
 
   return (
-    <div className="py-16 bg-gradient-to-br from-[var(--color-background-light)] to-white">
+    <div className="py-16">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

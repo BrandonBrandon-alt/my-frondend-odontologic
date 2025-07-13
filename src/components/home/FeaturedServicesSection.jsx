@@ -22,19 +22,19 @@ const FeaturedServicesSection = () => {
       icon: <SparklesIcon className="w-12 h-12 text-[var(--color-secondary)]" />,
       title: "Estética Dental",
       description: "Blanqueamientos, carillas y tratamientos para lograr la sonrisa que siempre has deseado.",
-      borderColor: "border-[var(--color-secondary)]",
+      borderColor: "border-[var(--color-primary)]",
       link: "/services#esthetic"
     },
     {
       icon: <HeartIcon className="w-12 h-12 text-[var(--color-accent)]" />,
       title: "Ortodoncia",
       description: "Alineación dental con brackets tradicionales o invisibles para una sonrisa perfecta.",
-      borderColor: "border-[var(--color-accent)]",
+      borderColor: "border-[var(--color-primary)]",
       link: "/services#orthodontics"
     }
   ];
 
-  return (
+    return (
     <section className="py-16 bg-white dark:bg-[var(--color-background)]">
       <div className="container mx-auto px-4">
         <motion.div
@@ -60,7 +60,7 @@ const FeaturedServicesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-            >
+                >
               <Link to={service.link}>
                 <Card
                   variant="elevated"
@@ -69,12 +69,12 @@ const FeaturedServicesSection = () => {
                   title={service.title}
                   subtitle={service.description}
                 />
-              </Link>
-            </motion.div>
+                        </Link>
+                    </motion.div>
           ))}
         </div>
 
-        <motion.div
+                    <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
@@ -86,11 +86,11 @@ const FeaturedServicesSection = () => {
             className="inline-block bg-[var(--color-primary)] hover:bg-[var(--color-accent)] hover:text-white text-white font-extrabold py-4 px-10 rounded-full shadow-xl transition duration-300 ease-in-out text-xl transform hover:scale-105"
           >
             Ver Todos los Servicios
-          </Link>
-        </motion.div>
-      </div>
-    </section>
-  );
+                        </Link>
+                    </motion.div>
+                </div>
+        </section>
+    );
 };
 
 export default FeaturedServicesSection; 

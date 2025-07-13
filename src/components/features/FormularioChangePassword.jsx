@@ -41,7 +41,7 @@ export default function FormularioChangePassword({
       animate="visible"
       variants={pageVariants}
     >
-      <div className="bg-white dark:bg-[var(--color-background)] rounded-xl shadow-2xl w-full max-w-xl p-6 sm:p-10 lg:p-12">
+      <div className="bg-white dark:bg-[var(--color-background)] border border-[var(--border-primary)] rounded-xl shadow-2xl w-full max-w-xl p-6 sm:p-10 lg:p-12">
         <motion.h2
           className="text-3xl md:text-4xl font-extrabold text-[var(--color-text-main)] text-center mb-6"
           variants={textVariants}

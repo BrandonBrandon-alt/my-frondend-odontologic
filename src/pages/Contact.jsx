@@ -38,7 +38,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] dark:bg-[var(--color-background)] text-[var(--color-text-light)]">
+    <div className="min-h-screen text-[var(--color-text-dark)]">
       <div className="container mx-auto px-4 py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -67,8 +67,13 @@ const Contact = () => {
             >
               <Card
                 variant="elevated"
-                className="p-6 text-center"
-                icon={info.icon}
+                className={`p-8 text-center border-b-4 ${
+                  index === 0 ? 'border-[var(--color-primary)]' :
+                  index === 1 ? 'border-[var(--color-accent)]' :
+                  index === 2 ? 'border-[var(--color-secondary)]' :
+                  'border-[var(--color-success)]'
+                }`}
+                icon={React.cloneElement(info.icon, { className: 'w-12 h-12 text-[var(--color-accent)]' })}
                 title={info.title}
                 subtitle={
                   info.link ? (

@@ -175,7 +175,7 @@ const servicesData = {
 
 function Services() {
   return (
-    <div className="min-h-screen bg-[var(--color-background-light)]">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <motion.section
         className="bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] text-white py-20"
@@ -245,14 +245,12 @@ function Services() {
                   >
                     <Card
                       variant="elevated"
-                      className="p-8 border-l-4 border-[var(--color-accent)] h-auto"
+                      className="p-8 h-auto border-b-4 border-[var(--color-accent)]"
                       title={service.name}
                       subtitle={service.description}
+                      icon={service.icon ? React.cloneElement(service.icon, { className: 'w-12 h-12 text-[var(--color-accent)]' }) : <SparklesIcon className="w-12 h-12 text-[var(--color-accent)]" />}
                     >
-                      <div className="flex justify-between items-center mt-6">
-                        <span className="text-2xl font-bold text-[var(--color-primary)]">
-                          {service.price}
-                        </span>
+                      <div className="flex justify-end items-center mt-6">
                         <span className="text-sm bg-[var(--color-accent)] text-white px-3 py-1 rounded-full ml-2">
                           {service.duration}
                         </span>
