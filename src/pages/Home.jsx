@@ -7,7 +7,7 @@ import CallToActionSection from '../components/home/CallToActionSection';
 
 function Home() {
   return (
-    <div className="bg-[var(--color-background-light)] min-h-screen text-[var(--color-text-dark)] font-inter">
+    <div className="min-h-screen text-[var(--color-text-dark)] font-inter">
       <HeroSection />
       <ClinicCarouselSection />
       <FeaturedServicesSection />

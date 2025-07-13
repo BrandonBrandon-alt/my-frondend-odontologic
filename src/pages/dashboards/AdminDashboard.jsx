@@ -45,7 +45,7 @@ function AdminDashboard() {
 
   return (
     <motion.div
-      className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
+      className="min-h-screen text-[var(--color-text-light)] p-6 md:p-10 lg:p-12"
       initial="hidden"
       animate="visible"
       variants={containerVariants}

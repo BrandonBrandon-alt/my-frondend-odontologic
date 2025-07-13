@@ -121,7 +121,7 @@ const clinicData = {
 
 function About() {
   return (
-    <div className="min-h-screen bg-[var(--color-background-light)]">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <motion.section
         className="bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] text-white py-20"
