@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { useAuth } from '../../../context/AuthContext';
+import useScrollDirection from '../../../hooks/useScrollDirection';
 
 /**
  * Componente Navbar profesional y atractivo
@@ -24,6 +25,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isLoggedIn, user, logout: logoutContext, loading } = useAuth();
   const dropdownRef = useRef(null);
+  const { isVisible } = useScrollDirection();
 
   // Cerrar dropdown al hacer clic fuera
   useEffect(() => {
@@ -51,6 +53,24 @@ const Navbar = () => {
   const navVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 20, delay: 0.1 } },
+    hiddenScroll: { 
+      y: -100, 
+      opacity: 0, 
+      transition: { 
+        type: "tween", 
+        duration: 0.25,
+        ease: "easeInOut"
+      } 
+    },
+    visibleScroll: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { 
+        type: "tween", 
+        duration: 0.25,
+        ease: "easeInOut"
+      } 
+    },
   };
 
   const linkVariants = {
@@ -105,9 +125,9 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      className="bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] shadow-2xl border-b border-white/20 sticky top-0 z-50 animate-fade-in-up backdrop-blur-md"
+      className="bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-primary)] to-[var(--color-accent)] shadow-2xl border-b border-white/20 fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
       initial="hidden"
-      animate="visible"
+      animate={isVisible ? "visibleScroll" : "hiddenScroll"}
       variants={navVariants}
     >
       <div className="container mx-auto flex justify-between items-center py-3 px-2 md:px-0">

@@ -33,6 +33,7 @@ body {
   font-family: sans-serif;
   background-color: var(--color-background-light);
   color: var(--color-text-dark); /* Color de texto base */
+  padding-top: 80px; /* Compensar el navbar fijo */
 }
 
 /* Scrollbar personalizado */
@@ -100,4 +101,13 @@ html {
 
 ::-webkit-scrollbar-thumb:horizontal:hover {
   background: linear-gradient(90deg, var(--color-primary-darker), var(--color-primary));
+}
+
+/* Estilos adicionales para el botón ScrollToTop */
+.shadow-3xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.hover\:shadow-3xl:hover {
+  box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
 }

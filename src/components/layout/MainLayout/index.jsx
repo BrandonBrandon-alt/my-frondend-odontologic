@@ -1,7 +1,7 @@
 // src/components/layout/MainLayout/index.jsx
 import React from 'react';
 import { Navbar } from '../../';
-import { Footer } from '../../ui';
+import { Footer, ScrollToTop } from '../../ui';
 
 const MainLayout = ({ children }) => {
   return (
@@ -11,6 +11,7 @@ const MainLayout = ({ children }) => {
         {children}
       </main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
