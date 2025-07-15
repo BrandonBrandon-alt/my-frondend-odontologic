@@ -30,6 +30,7 @@ const PatientAppointment = lazy(() => import('./pages/PatientAppointment'));
 const Services = lazy(() => import('./pages/Services'));
 const Contact = lazy(() => import('./pages/Contact'));
 const About = lazy(() => import('./pages/About'));
+const AdminDentists = lazy(() => import('./pages/admin/AdminDentists'));
 
 // Componente para scroll automático
 const ScrollToTop = () => {
@@ -100,11 +101,14 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/admin-profile" element={<AdminProfile />} />
+                <Route path="/admin-dentists" element={<AdminDentists/>} />
               </Route>
               
               <Route element={<ProtectedRoute allowedRoles={['user', 'dentist', 'admin']} />}>
                 <Route path="/change-password" element={<ChangePassword />} />
               </Route>
+
+              
 
               {/* 3. La ruta "catch-all" para 404 va al final para atrapar cualquier URL no coincidente. */}
               <Route path="*" element={<NotFound />} />

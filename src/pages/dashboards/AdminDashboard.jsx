@@ -101,7 +101,7 @@ function AdminDashboard() {
             <DashboardCard to="/admin/users" icon={<CircleIconBg><UserGroupIcon className="w-8 h-8" /></CircleIconBg>} title="Gestión de Usuarios" description="Administra pacientes, dentistas y otros roles." />
           </motion.div>
           <motion.div variants={itemVariants}>
-            <DashboardCard to="/admin/dentists" icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>} title="Gestión de Dentistas" description="Administra la información y disponibilidad de los profesionales." />
+            <DashboardCard to="/admin-dentists" icon={<CircleIconBg><UserCircleIcon className="w-8 h-8" /></CircleIconBg>} title="Gestión de Dentistas" description="Administra la información y disponibilidad de los profesionales." />
           </motion.div>
           <motion.div variants={itemVariants}>
             <DashboardCard to="/admin/appointments" icon={<CircleIconBg><CalendarDaysIcon className="w-8 h-8" /></CircleIconBg>} title="Gestión de Citas" description="Supervisa y modifica todas las citas agendadas." />
