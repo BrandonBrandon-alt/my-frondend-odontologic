@@ -1,5 +1,3 @@
-// src/components/ui/Table.jsx
-
 import React from 'react';
 
 export default function Table({
@@ -7,41 +5,39 @@ export default function Table({
   data = [],
   currentPage = 1,
   totalPages = 1,
-  onPageChange = () => {}
+  onPageChange = () => {},
 }) {
   return (
-    <div className="overflow-x-auto w-full">
-      <table className="min-w-full border-collapse border border-gray-300">
-        <thead className="bg-gray-100">
+    <div className="w-full overflow-x-auto rounded-lg border border-[var(--border-primary)] shadow-sm bg-[var(--bg-secondary)]">
+      <table className="min-w-full text-sm text-left text-[var(--text-primary)]">
+        <thead className="bg-[var(--color-primary)] text-[var(--color-text-on-accent)] uppercase text-xs font-bold">
           <tr>
             {columns.map((col, index) => (
-              <th
-                key={index}
-                className="px-4 py-2 border border-gray-300 text-left font-semibold text-sm"
-              >
+              <th key={index} className="px-5 py-3 border-b border-[var(--border-secondary)]">
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+
+        <tbody className="divide-y divide-[var(--border-primary)]">
           {data.length === 0 ? (
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-4 py-4 text-center text-gray-500"
+                className="px-5 py-4 text-center text-[var(--text-muted)] italic"
               >
-                No data available
+                No hay datos disponibles
               </td>
             </tr>
           ) : (
             data.map((row, rowIndex) => (
-              <tr key={rowIndex} className="hover:bg-gray-50">
+              <tr
+                key={rowIndex}
+                className="hover:bg-[var(--color-secondary)] transition-colors duration-200"
+              >
                 {columns.map((col, colIndex) => (
-                  <td
-                    key={colIndex}
-                    className="px-4 py-2 border border-gray-200 text-sm"
-                  >
+                  <td key={colIndex} className="px-5 py-3 text-sm">
                     {typeof col.accessor === 'function'
                       ? col.accessor(row)
                       : row[col.accessor]}
@@ -53,25 +49,25 @@ export default function Table({
         </tbody>
       </table>
 
-      {/* Paginación simple */}
-      <div className="flex justify-between items-center mt-4">
-        <p className="text-sm text-gray-600">
-          Page {currentPage} of {totalPages}
+      {/* Paginación */}
+      <div className="flex justify-between items-center px-4 py-3 border-t border-[var(--border-primary)] bg-[var(--bg-primary)]">
+        <p className="text-xs text-[var(--text-muted)]">
+          Página {currentPage} de {totalPages}
         </p>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage <= 1}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            className="px-3 py-1 text-xs rounded bg-[var(--color-secondary)] text-white hover:bg-[var(--color-primary)] hover:text-white  transition"
           >
-            Prev
+            Anterior
           </button>
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            className="px-3 py-1 text-xs rounded bg-[var(--color-secondary)] text-white hover:bg-[var(--color-primary)] hover:text-white  transition"
           >
-            Next
+            Siguiente
           </button>
         </div>
       </div>

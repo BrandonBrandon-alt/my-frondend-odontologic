@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Table from '../ui/Table/Table.jsx';
-import { fetchDentists } from '../../services/dentistsService';
+import Table from './Table.jsx';
+import { fetchDentists } from '../../../services/dentistsService.js';
 
 export default function DentistsTable() {
   const [dentists, setDentists] = useState([]);
@@ -39,12 +39,25 @@ export default function DentistsTable() {
 
   const columns = [
     { header: 'ID', accessor: 'id' },
-    {header: 'CC' , accessor: 'id_number'},
+    { header: 'CC', accessor: 'id_number' },
     { header: 'Name', accessor: 'name' },
     { header: 'Email', accessor: 'email' },
     { header: 'Phone', accessor: 'phone' },
-    {header: 'Role' , accessor: 'role'},
-    { header: 'Status', accessor: 'status' },
+    { header: 'Role', accessor: 'role' },
+    {
+      header: 'Status',
+      accessor: (row) => {
+        const base = 'px-2 py-1 rounded-full text-xs font-semibold w-fit capitalize';
+        const colorMap = {
+          active: 'bg-[var(--success)] text-white',
+          locked: 'bg-yellow-400 text-white',
+          inactive: 'bg-red-500 text-white',
+        };
+        const colorClass = colorMap[row.status] || 'bg-gray-300 text-gray-800';
+
+        return <span className={`${base} ${colorClass}`}>{row.status}</span>;
+      },
+    },
   ];
 
   return (
