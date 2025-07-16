@@ -171,7 +171,7 @@ const AchievementCard = ({ icon, title, description, color }) => (
 );
 
 // Card funcional usando el componente Card global
-const DashboardCard = ({ to, icon, title, description }) => (
+ export const DashboardCard = ({ to, icon, title, description }) => (
   <Link to={to}>
     <Card
       variant="elevated"
