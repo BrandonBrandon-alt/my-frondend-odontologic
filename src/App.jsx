@@ -31,6 +31,9 @@ const Services = lazy(() => import('./pages/Services'));
 const Contact = lazy(() => import('./pages/Contact'));
 const About = lazy(() => import('./pages/About'));
 const AdminDentists = lazy(() => import('./pages/admin/AdminDentists'));
+const DentistList = lazy(() => import('./pages/admin/DentistList'));
+const DentistAvailabilityList = lazy(() => import('./pages/admin/DentistAvailabilityList'));
+
 
 // Componente para scroll automático
 const ScrollToTop = () => {
@@ -102,6 +105,8 @@ function App() {
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/admin-profile" element={<AdminProfile />} />
                 <Route path="/admin-dentists" element={<AdminDentists/>} />
+                <Route path="/admin/dentists/list" element={<DentistList />} />
+                <Route path="/admin/dentists/availability" element={<DentistAvailabilityList />} />
               </Route>
               
               <Route element={<ProtectedRoute allowedRoles={['user', 'dentist', 'admin']} />}>
