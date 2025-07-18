@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input, Button, Alert } from '../../components';
-import { EyeIcon, EyeSlashIcon, KeyIcon } from '@heroicons/react/24/outline';
+import { FaKey, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function FormularioChangePassword({
   currentPassword,
@@ -85,12 +85,12 @@ export default function FormularioChangePassword({
             onChange={handleChange}
             placeholder="Tu contraseña actual"
             required
-            icon={<KeyIcon className="h-5 w-5 text-gray-400" />}
+            icon={<FaKey className="h-5 w-5 text-gray-400" />}
             actionIcon={
               showCurrentPassword ? (
-                <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowCurrentPassword(false)} />
+                <FaEyeSlash className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowCurrentPassword(false)} />
               ) : (
-                <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowCurrentPassword(true)} />
+                <FaEye className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowCurrentPassword(true)} />
               )
             }
           />
@@ -103,12 +103,12 @@ export default function FormularioChangePassword({
             onChange={handleChange}
             placeholder="Mínimo 6 caracteres"
             required
-            icon={<KeyIcon className="h-5 w-5 text-gray-400" />}
+            icon={<FaKey className="h-5 w-5 text-gray-400" />}
             actionIcon={
               showNewPassword ? (
-                <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowNewPassword(false)} />
+                <FaEyeSlash className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowNewPassword(false)} />
               ) : (
-                <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowNewPassword(true)} />
+                <FaEye className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowNewPassword(true)} />
               )
             }
           />
@@ -121,12 +121,12 @@ export default function FormularioChangePassword({
             onChange={handleChange}
             placeholder="Repite tu nueva contraseña"
             required
-            icon={<KeyIcon className="h-5 w-5 text-gray-400" />}
+            icon={<FaKey className="h-5 w-5 text-gray-400" />}
             actionIcon={
               showConfirmPassword ? (
-                <EyeSlashIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowConfirmPassword(false)} />
+                <FaEyeSlash className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowConfirmPassword(false)} />
               ) : (
-                <EyeIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowConfirmPassword(true)} />
+                <FaEye className="h-5 w-5 text-gray-500 cursor-pointer hover:text-primary" onClick={() => setShowConfirmPassword(true)} />
               )
             }
           />

@@ -8,7 +8,7 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 
 // Importa componentes de UI e iconos
 import { Input, Button, Alert } from '../';
-import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import loginImage from '../../assets/Login.png';
 
 // --- Animaciones de Framer Motion ---
@@ -98,8 +98,8 @@ function FormularioLogin() {
         </AnimatePresence>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <Input label="Correo Electrónico" type="email" name="email" value={formData.email} onChange={handleChange} required startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} />
-          <Input label="Contraseña" type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} required startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} endIcon={<button type="button" onClick={() => setShowPassword(!showPassword)} className="ml-2 p-1" aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword}>{showPassword ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}</button>} />
+          <Input label="Correo Electrónico" type="email" name="email" value={formData.email} onChange={handleChange} required startIcon={<FaEnvelope className="h-5 w-5 text-gray-400" />} />
+          <Input label="Contraseña" type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} required startIcon={<FaLock className="h-5 w-5 text-gray-400" />} endIcon={<button type="button" onClick={() => setShowPassword(!showPassword)} className="ml-2 p-1" aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword}>{showPassword ? <FaEyeSlash className="h-5 w-5 text-gray-500" /> : <FaEye className="h-5 w-5 text-gray-500" />}</button>} />
 
           <Button type="submit" loading={loading} disabled={!isScriptLoaded} className="w-full py-3 mt-6">
             {loading ? 'Iniciando...' : 'Iniciar Sesión'}

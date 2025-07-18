@@ -43,6 +43,13 @@ export const useAuthForm = (initialState, authAction, options = {}) => {
       // 3. OBTENEMOS EL TOKEN JUSTO ANTES DE ENVIAR
       const captchaToken = await executeRecaptcha(actionName);
 
+      // Validación explícita del token
+      if (!captchaToken || typeof captchaToken !== 'string' || captchaToken.trim() === '') {
+        setError('No se pudo obtener el token de seguridad. Por favor, recarga la página e inténtalo de nuevo.');
+        setLoading(false);
+        return;
+      }
+
       // 4. LLAMAMOS A LA ACCIÓN DE AUTENTICACIÓN CON TODOS LOS DATOS
       const response = await authAction({ ...formData, captchaToken });
       setMessage(response.message || 'Operación exitosa.');
@@ -71,7 +78,11 @@ export const useAuthForm = (initialState, authAction, options = {}) => {
 
     } catch (err) {
       console.error('Error en la acción de autenticación:', err);
-      const errorMessage = err.response?.data?.error || err.message || 'Ocurrió un error inesperado.';
+      // Mejorar el mensaje de error para casos de captcha
+      let errorMessage = err.response?.data?.error || err.message || 'Ocurrió un error inesperado.';
+      if (errorMessage && (errorMessage.toLowerCase().includes('captcha') || errorMessage.toLowerCase().includes('token'))) {
+        errorMessage = 'Error de seguridad: ' + errorMessage;
+      }
       setError(errorMessage);
     } finally {
       setLoading(false);

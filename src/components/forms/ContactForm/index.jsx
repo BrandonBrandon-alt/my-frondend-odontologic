@@ -5,7 +5,7 @@ import Card from '../../ui/Card';
 import { Input } from '../../ui';
 import { Button } from '../../ui';
 import { Alert } from '../../ui';
-import { PhoneIcon, EnvelopeIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaUser, FaRegCommentDots, FaRegEdit } from 'react-icons/fa';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -51,19 +51,19 @@ const ContactForm = () => {
 
   const contactInfo = [
     {
-      icon: <PhoneIcon className="w-6 h-6" />,
+      icon: <FaPhone className="w-6 h-6" />,
       title: "Teléfono",
       content: "+57 300 123 4567",
       link: "tel:+573001234567"
     },
     {
-      icon: <EnvelopeIcon className="w-6 h-6" />,
+      icon: <FaEnvelope className="w-6 h-6" />,
       title: "Email",
       content: "info@odontologic.com",
       link: "mailto:info@odontologic.com"
     },
     {
-      icon: <MapPinIcon className="w-6 h-6" />,
+      icon: <FaMapMarkerAlt className="w-6 h-6" />,
       title: "Dirección",
       content: "Calle 15 #23-45, Armenia, Quindío",
       link: "https://maps.google.com"
@@ -155,6 +155,7 @@ const ContactForm = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    startIcon={<FaUser className="h-5 w-5 text-gray-400" />}
                   />
                   <Input
                     type="email"
@@ -163,6 +164,7 @@ const ContactForm = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
+                    startIcon={<FaEnvelope className="h-5 w-5 text-gray-400" />}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -172,6 +174,7 @@ const ContactForm = () => {
                     placeholder="Tu teléfono (opcional)"
                     value={formData.phone}
                     onChange={handleChange}
+                    startIcon={<FaPhone className="h-5 w-5 text-gray-400" />}
                   />
                   <Input
                     type="text"
@@ -180,9 +183,10 @@ const ContactForm = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    startIcon={<FaRegCommentDots className="h-5 w-5 text-gray-400" />}
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <textarea
                     name="message"
                     placeholder="Tu mensaje..."
@@ -192,6 +196,7 @@ const ContactForm = () => {
                     rows="5"
                     className="w-full px-4 py-3 border border-[var(--border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent bg-[var(--color-background)] text-[var(--color-text-dark)] placeholder-[var(--color-text-muted)] transition-all duration-200 resize-none"
                   />
+                  <FaRegEdit className="absolute left-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
                 </div>
                 <Button
                   type="submit"

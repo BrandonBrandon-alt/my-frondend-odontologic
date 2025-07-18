@@ -4,60 +4,68 @@
 /****************************
  * Variables de Color Globales
  ****************************/
+
+ /* Variables CSS para modo oscuro */
 :root {
   /* Colores principales */
-  --color-primary: #009688;
-  --color-primary-darker: #004D40;
-  --color-accent: #00B8D4;
-  --color-secondary: #B2DFDB;
-
+  --color-primary: #009688;         /* Verde azulado */
+  --color-primary-darker: #004D40;  /* Verde oscuro */
+  --color-secondary: #B2DFDB;       /* Verde agua claro */
+  --color-accent: #00B8D4;          /* Celeste acento */
+  
   /* Fondos */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f5;
-  --bg-tertiary: #e8ddea;
-
+  --color-background: #ffffff;      /* Fondo principal */
+  --color-background-light: #F5F5F5;/* Gris muy claro */
+  --color-background-dark: #23272f; /* Fondo alternativo oscuro real */
+  
   /* Textos */
-  --text-primary: #1a1a1a;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  --color-text-main: #222831; /* Texto principal sobre fondo claro */
-  --color-text-secondary: #6b7280; /* Texto secundario sobre fondo claro */
-  --color-text-muted: #9ca3af;
-
-  /* Bordes */
-  --border-primary: #e5e7eb;
-  --border-secondary: #d1d5db;
-
-  /* Estados */
-  --success: #10b981;
-  --error: #ef4444;
-  --warning: #f59e0b;
+  --color-text-dark: #004D40;       /* Gris azulado oscuro */
+  --color-text-on-accent: #ffffff;  /* Texto sobre acento */
+  --color-text-on-secondary: #004D40; /* Texto sobre secundario */
+  --color-text-muted: #9ca3af;      /* Texto atenuado */
+  
+  /* Estados y efectos */
+  --color-success: #4caf50;         /* Verde éxito */
+  --color-error: #e53935;           /* Rojo error */
+  --color-accent-hover: rgba(0, 184, 212, 0.1); /* Hover del acento */
+  --color-secondary-hover: #9FCCC7; /* Hover del secundario */
+  
+  /* Sombras */
+  --shadow-accent: 0 4px 14px 0 rgba(0, 184, 212, 0.3);
+  --shadow-secondary: 0 4px 14px 0 rgba(178, 223, 219, 0.3);
+  --shadow-outline: 0 2px 8px 0 rgba(0, 184, 212, 0.2);
 }
 
 .dark {
-  --color-primary: #00BFA5;
-  --color-primary-darker: #008E76;
-  --color-accent: #00D4FF;
-  --color-secondary: #80CBC4;
-
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2d2d2d;
-  --bg-tertiary: #374151;
-
-  --text-primary: #ffffff;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --color-text-main: #fff; /* Texto principal sobre fondo oscuro */
-  --color-text-secondary: #b0b0b0; /* Texto secundario sobre fondo oscuro */
-  --color-text-muted: #6b7280;
-
-  --border-primary: #374151;
-  --border-secondary: #4b5563;
-
-  --success: #22d3ee;
-  --error: #f87171;
-  --warning: #fbbf24;
+  /* Colores principales */
+  --color-primary: #00BFA5;         /* Verde azulado más claro */
+  --color-primary-darker: #008E76;  /* Verde oscuro más claro */
+  --color-secondary: #80CBC4;       /* Verde agua más claro */
+  --color-accent: #00D4FF;          /* Celeste acento más brillante */
+  
+  /* Fondos */
+  --color-background: #1a1a1a;      /* Fondo principal oscuro */
+  --color-background-light: #1A1A1A;/* Gris muy oscuro */
+  --color-background-dark: #2D2D2D; /* Fondo alternativo oscuro */
+  
+  /* Textos */
+  --color-text-dark: #E0E0E0;       /* Gris claro para texto */
+  --color-text-on-accent: #1a1a1a;  /* Texto sobre acento en modo oscuro */
+  --color-text-on-secondary: #1a1a1a; /* Texto sobre secundario en modo oscuro */
+  --color-text-muted: #6b7280;      /* Texto atenuado en modo oscuro */
+  
+  /* Estados y efectos */
+  --color-success: #66BB6A;         /* Verde éxito más claro */
+  --color-error: #EF5350;           /* Rojo error más claro */
+  --color-accent-hover: rgba(0, 212, 255, 0.15); /* Hover del acento en modo oscuro */
+  --color-secondary-hover: #6BC4B8; /* Hover del secundario en modo oscuro */
+  
+  /* Sombras */
+  --shadow-accent: 0 4px 14px 0 rgba(0, 212, 255, 0.4);
+  --shadow-secondary: 0 4px 14px 0 rgba(128, 203, 196, 0.4);
+  --shadow-outline: 0 2px 8px 0 rgba(0, 212, 255, 0.3);
 }
+
 
 /* Transiciones suaves para cambios de tema */
 * {

@@ -2,14 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Card from '../components/ui/Card';
-import {
-  HeartIcon,
-  SparklesIcon,
-  TrophyIcon,
-  StarIcon,
-  UserGroupIcon,
-  ShieldCheckIcon
-} from '@heroicons/react/24/outline';
+import { FaHeart, FaMagic, FaTrophy, FaStar, FaUsers, FaShieldAlt } from 'react-icons/fa';
 import AgendarCitaButton from '../components/ui/Button/AgendarCitaButton';
 
 // Animaciones
@@ -200,13 +193,13 @@ function About() {
               <Card
                 variant="elevated"
                 className="p-8"
-                icon={<HeartIcon className="w-12 h-12 text-[var(--color-accent)]" />}
+                icon={<FaHeart className="w-12 h-12 text-[var(--color-accent)]" />}
                 title="Nuestra Misión"
                 subtitle="Proporcionar atención dental integral de la más alta calidad, utilizando tecnología de vanguardia y un equipo de profesionales altamente calificados, para mejorar la salud bucal y la calidad de vida de nuestros pacientes."
               >
                 <div className="mt-6">
                   <h4 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4 flex items-center">
-                    <SparklesIcon className="w-6 h-6 text-[var(--color-accent)] mr-2" />
+                    <FaMagic className="w-6 h-6 text-[var(--color-accent)] mr-2" />
                     Nuestra Visión
                   </h4>
                   <p className="text-[var(--color-text-secondary)]">
@@ -254,7 +247,15 @@ function About() {
                 <Card
                   variant="elevated"
                   className="p-8 text-center border-b-4 border-[var(--color-accent)]"
-                  icon={<div className="text-4xl mb-4">{value.icon}</div>}
+                  icon={(() => {
+                    switch (index) {
+                      case 0: return <FaTrophy className="w-12 h-12 text-[var(--color-accent)] mb-4 mx-auto" />; // Excelencia Médica
+                      case 1: return <FaMagic className="w-12 h-12 text-[var(--color-accent)] mb-4 mx-auto" />; // Tecnología Avanzada
+                      case 2: return <FaHeart className="w-12 h-12 text-[var(--color-accent)] mb-4 mx-auto" />; // Atención Personalizada
+                      case 3: return <FaUsers className="w-12 h-12 text-[var(--color-accent)] mb-4 mx-auto" />; // Compromiso Social
+                      default: return <FaStar className="w-12 h-12 text-[var(--color-accent)] mb-4 mx-auto" />;
+                    }
+                  })()}
                   title={value.title}
                   subtitle={value.description}
                 />
@@ -297,7 +298,7 @@ function About() {
                 <Card
                   variant="elevated"
                   className="p-8 text-center border-b-4 border-[var(--color-primary)]"
-                  icon={<UserGroupIcon className="w-12 h-12 text-[var(--color-accent)]" />}
+                  icon={<FaUsers className="w-12 h-12 text-[var(--color-accent)]" />}
                   title={member.name}
                   subtitle={`${member.specialty} - ${member.experience} de experiencia`}
                 >
@@ -346,7 +347,7 @@ function About() {
                   className="p-8 border-b-4 border-[var(--color-secondary)]"
                   icon={
                     <div className="w-12 h-12 bg-[var(--color-primary)] rounded-lg flex items-center justify-center mr-4">
-                      <UserGroupIcon className="w-6 h-6 text-white" />
+                      <FaUsers className="w-6 h-6 text-white" />
                     </div>
                   }
                   title={service}
@@ -391,7 +392,7 @@ function About() {
                 <Card
                   variant="elevated"
                   className="flex items-center gap-3 p-8 h-full border-b-4 border-[var(--color-success)]"
-                  icon={<ShieldCheckIcon className="w-6 h-6 text-[var(--color-success)] flex-shrink-0" />}
+                  icon={<FaShieldAlt className="w-6 h-6 text-[var(--color-success)] flex-shrink-0" />}
                   subtitle={achievement}
                 />
               </motion.div>

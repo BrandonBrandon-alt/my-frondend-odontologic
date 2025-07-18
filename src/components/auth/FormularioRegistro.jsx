@@ -8,7 +8,7 @@ import { useAuthForm } from '../../hooks/useAuthForm';
 
 // Importa componentes de UI e iconos
 import { Input, Button, Alert } from '../';
-import { EyeIcon, EyeSlashIcon, UserIcon, IdentificationIcon, EnvelopeIcon, PhoneIcon, MapPinIcon, CalendarIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { FaUser, FaIdCard, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaPhone, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import registerImage from '../../assets/Registro.png';
 
 // --- Animaciones de Framer Motion ---
@@ -32,7 +32,7 @@ function FormularioRegistro() {
     error,
     message,
     isScriptLoaded, // Para saber si el script de reCAPTCHA cargó
-    handleChange,
+    handleChange: originalHandleChange,
     handleSubmit: handleAuthSubmit, // Renombramos para claridad
     setError,
   } = useAuthForm(
@@ -52,14 +52,67 @@ function FormularioRegistro() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  // Validación en vivo por campo
+  const validateField = (name, value) => {
+    let error = '';
+    switch (name) {
+      case 'name':
+        if (!value.trim()) error = 'El nombre es obligatorio.';
+        else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/.test(value)) error = 'Solo letras y espacios.';
+        break;
+      case 'idNumber':
+        if (!value.trim()) error = 'La identificación es obligatoria.';
+        else if (!/^[0-9]+$/.test(value)) error = 'Solo números.';
+        else if (value.length < 6) error = 'Mínimo 6 dígitos.';
+        break;
+      case 'email':
+        if (!value.trim()) error = 'El correo es obligatorio.';
+        else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) error = 'Correo inválido.';
+        break;
+      case 'password':
+        if (value.length < 6) error = 'Mínimo 6 caracteres.';
+        break;
+      case 'confirmPassword':
+        if (value !== formData.password) error = 'Las contraseñas no coinciden.';
+        break;
+      case 'phone':
+        if (!/^[0-9]+$/.test(value)) error = 'Solo números.';
+        else if (value.length < 7) error = 'Mínimo 7 dígitos.';
+        break;
+      case 'address':
+        if (!value.trim()) error = 'La dirección es obligatoria.';
+        break;
+      case 'birth_date':
+        if (!value) error = 'La fecha es obligatoria.';
+        break;
+      default:
+        break;
+    }
+    setFieldErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  // handleChange modificado para validar en vivo
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    originalHandleChange(e);
+    validateField(name, value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validar todos los campos antes de enviar
+    let valid = true;
+    Object.entries(formData).forEach(([name, value]) => {
+      validateField(name, value);
+      if (value === '' || fieldErrors[name]) valid = false;
+    });
     if (formData.password !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden.');
-      return;
+      setFieldErrors((prev) => ({ ...prev, confirmPassword: 'Las contraseñas no coinciden.' }));
+      valid = false;
     }
-    // Le pasamos el nombre de la acción para reCAPTCHA v3
+    if (!valid) return;
     handleAuthSubmit(e, 'register');
   };
 
@@ -97,14 +150,14 @@ function FormularioRegistro() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* --- Tus Inputs (sin cambios) --- */}
-          <Input label="Nombre Completo" name="name" value={formData.name} onChange={handleChange} required startIcon={<UserIcon className="h-5 w-5 text-gray-400" />} />
-          <Input label="Número de Identificación" name="idNumber" value={formData.idNumber} onChange={handleChange} required startIcon={<IdentificationIcon className="h-5 w-5 text-gray-400" />} />
-          <Input label="Correo Electrónico" name="email" type="email" value={formData.email} onChange={handleChange} required startIcon={<EnvelopeIcon className="h-5 w-5 text-gray-400" />} />
-          <Input label="Contraseña" name="password" type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handleChange} required minLength="6" startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} endIcon={<button type="button" onClick={() => setShowPassword(!showPassword)} className="ml-2 p-1" aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword}>{showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}</button>} />
-          <Input label="Confirmar Contraseña" name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} value={formData.confirmPassword} onChange={handleChange} required startIcon={<LockClosedIcon className="h-5 w-5 text-gray-400" />} endIcon={<button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="ml-2 p-1" aria-label={showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showConfirmPassword}>{showConfirmPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}</button>} />
-          <Input label="Teléfono" name="phone" type="tel" value={formData.phone} onChange={handleChange} required startIcon={<PhoneIcon className="h-5 w-5 text-gray-400" />} />
-          <Input label="Dirección" name="address" value={formData.address} onChange={handleChange} required startIcon={<MapPinIcon className="h-5 w-5 text-gray-400" />} />
-          <Input label="Fecha de Nacimiento" name="birth_date" type="date" value={formData.birth_date} onChange={handleChange} required startIcon={<CalendarIcon className="h-5 w-5 text-gray-400" />} />
+          <Input label="Nombre Completo" name="name" value={formData.name} onChange={handleChange} required startIcon={<FaUser className="h-5 w-5 text-gray-400" />} error={fieldErrors.name} />
+          <Input label="Número de Identificación" name="idNumber" value={formData.idNumber} onChange={handleChange} required startIcon={<FaIdCard className="h-5 w-5 text-gray-400" />} error={fieldErrors.idNumber} />
+          <Input label="Correo Electrónico" name="email" type="email" value={formData.email} onChange={handleChange} required startIcon={<FaEnvelope className="h-5 w-5 text-gray-400" />} error={fieldErrors.email} />
+          <Input label="Contraseña" name="password" type={showPassword ? 'text' : 'password'} value={formData.password} onChange={handleChange} required minLength="6" startIcon={<FaLock className="h-5 w-5 text-gray-400" />} endIcon={<button type="button" onClick={() => setShowPassword(!showPassword)} className="ml-2 p-1" aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showPassword}>{showPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}</button>} error={fieldErrors.password} />
+          <Input label="Confirmar Contraseña" name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} value={formData.confirmPassword} onChange={handleChange} required startIcon={<FaLock className="h-5 w-5 text-gray-400" />} endIcon={<button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="ml-2 p-1" aria-label={showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"} aria-pressed={showConfirmPassword}>{showConfirmPassword ? <FaEyeSlash className="h-5 w-5" /> : <FaEye className="h-5 w-5" />}</button>} error={fieldErrors.confirmPassword} />
+          <Input label="Teléfono" name="phone" type="tel" value={formData.phone} onChange={handleChange} required startIcon={<FaPhone className="h-5 w-5 text-gray-400" />} error={fieldErrors.phone} />
+          <Input label="Dirección" name="address" value={formData.address} onChange={handleChange} required startIcon={<FaMapMarkerAlt className="h-5 w-5 text-gray-400" />} error={fieldErrors.address} />
+          <Input label="Fecha de Nacimiento" name="birth_date" type="date" value={formData.birth_date} onChange={handleChange} required startIcon={<FaCalendarAlt className="h-5 w-5 text-gray-400" />} error={fieldErrors.birth_date} />
 
           <Button type="submit" loading={loading} disabled={!isScriptLoaded} className="w-full py-3 mt-6">
             {loading ? 'Registrando...' : 'Registrarse'}

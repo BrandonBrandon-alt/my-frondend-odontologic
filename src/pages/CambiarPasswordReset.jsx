@@ -8,8 +8,9 @@ const pageVariants = {
 
 function CambiarPasswordReset() {
   return (
+    // 👇 SE HAN ELIMINADO LAS CLASES p-4 y md:p-8 DE AQUÍ
     <motion.div
-      className="min-h-screen bg-background-light flex items-center justify-center p-4 md:p-8"
+     className="min-h-screen bg-background-light flex items-center justify-center p-4 md:p-8"
       initial="hidden"
       animate="visible"
       variants={pageVariants}
