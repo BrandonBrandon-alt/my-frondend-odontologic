@@ -18,20 +18,70 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (error) setError(null);
     if (message) setMessage(null);
+    setFormErrors(prev => ({ ...prev, [name]: null })); // Clear specific error on change
+  };
+
+  const validate = () => {
+    const errors = {};
+    // Validación de nombre
+    if (!formData.name.trim()) {
+      errors.name = 'El nombre es requerido';
+    } else if (formData.name.length < 2) {
+      errors.name = 'El nombre debe tener al menos 2 caracteres';
+    } else if (formData.name.length > 100) {
+      errors.name = 'El nombre no puede exceder 100 caracteres';
+    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(formData.name)) {
+      errors.name = 'El nombre solo puede contener letras y espacios';
+    }
+    // Validación de email
+    if (!formData.email.trim()) {
+      errors.email = 'El email es requerido';
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = 'El email no tiene un formato válido';
+    } else if (formData.email.length > 255) {
+      errors.email = 'El email es demasiado largo';
+    }
+    // Validación de teléfono (opcional)
+    if (formData.phone && formData.phone.length > 20) {
+      errors.phone = 'El teléfono es demasiado largo';
+    } else if (formData.phone && !/^[\+]?([0-9\s\-\(\)]*)$/.test(formData.phone)) {
+      errors.phone = 'El teléfono no tiene un formato válido';
+    }
+    // Validación de asunto
+    const validSubjects = ['consulta', 'cita', 'emergencia', 'presupuesto', 'otro'];
+    if (!formData.subject) {
+      errors.subject = 'El asunto es requerido';
+    } else if (!validSubjects.includes(formData.subject)) {
+      errors.subject = 'El asunto seleccionado no es válido';
+    }
+    // Validación de mensaje
+    if (!formData.message.trim()) {
+      errors.message = 'El mensaje es requerido';
+    } else if (formData.message.length < 10) {
+      errors.message = 'El mensaje debe tener al menos 10 caracteres';
+    } else if (formData.message.length > 1000) {
+      errors.message = 'El mensaje no puede exceder 1000 caracteres';
+    }
+    return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
     setMessage(null);
-
+    const errors = validate();
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+    setLoading(true);
     try {
       await contactService.sendMessage(formData);
       setMessage('¡Mensaje enviado exitosamente! Te responderemos pronto.');
@@ -42,6 +92,7 @@ const ContactForm = () => {
         subject: '',
         message: ''
       });
+      setFormErrors({});
     } catch (err) {
       setError(err.message || 'Error al enviar el mensaje. Inténtalo de nuevo.');
     } finally {
@@ -148,43 +199,65 @@ const ContactForm = () => {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Input
-                    type="text"
-                    name="name"
-                    placeholder="Tu nombre completo"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    startIcon={<FaUser className="h-5 w-5 text-gray-400" />}
-                  />
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Tu correo electrónico"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    startIcon={<FaEnvelope className="h-5 w-5 text-gray-400" />}
-                  />
+                  <div>
+                    <Input
+                      type="text"
+                      name="name"
+                      placeholder="Tu nombre completo"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      startIcon={<FaUser className="h-5 w-5 text-gray-400" />}
+                    />
+                    {formErrors.name && <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>}
+                  </div>
+                  <div>
+                    <Input
+                      type="email"
+                      name="email"
+                      placeholder="Tu correo electrónico"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      startIcon={<FaEnvelope className="h-5 w-5 text-gray-400" />}
+                    />
+                    {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Input
-                    type="tel"
-                    name="phone"
-                    placeholder="Tu teléfono (opcional)"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    startIcon={<FaPhone className="h-5 w-5 text-gray-400" />}
-                  />
-                  <Input
-                    type="text"
-                    name="subject"
-                    placeholder="Asunto del mensaje"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    startIcon={<FaRegCommentDots className="h-5 w-5 text-gray-400" />}
-                  />
+                  <div>
+                    <Input
+                      type="tel"
+                      name="phone"
+                      placeholder="Tu teléfono (opcional)"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      startIcon={<FaPhone className="h-5 w-5 text-gray-400" />}
+                      maxLength={20}
+                    />
+                    {formErrors.phone && <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                      Asunto del mensaje
+                    </label>
+                    <select
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 border border-[var(--border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent bg-[var(--color-background)] text-[var(--color-text-dark)] placeholder-[var(--color-text-muted)] transition-all duration-200"
+                    >
+                      <option value="">Selecciona un asunto</option>
+                      <option value="consulta">Consulta</option>
+                      <option value="cita">Cita</option>
+                      <option value="emergencia">Emergencia</option>
+                      <option value="presupuesto">Presupuesto</option>
+                      <option value="otro">Otro</option>
+                    </select>
+                    {formErrors.subject && <p className="text-red-500 text-sm mt-1">{formErrors.subject}</p>}
+                  </div>
                 </div>
                 <div className="relative">
                   <textarea
@@ -197,6 +270,7 @@ const ContactForm = () => {
                     className="w-full px-4 py-3 border border-[var(--border-primary)] rounded-lg focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent bg-[var(--color-background)] text-[var(--color-text-dark)] placeholder-[var(--color-text-muted)] transition-all duration-200 resize-none"
                   />
                   <FaRegEdit className="absolute left-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
+                  {formErrors.message && <p className="text-red-500 text-sm mt-1">{formErrors.message}</p>}
                 </div>
                 <Button
                   type="submit"
